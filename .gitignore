@@ -1,0 +1,19 @@
+node_modules
+.DS_Store
+dist
+dist-ssr
+*.local
+
+# production
+/main
+/dist
+/src/out
+
+# debug
+npm-debug.log*
+
+# local env files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
