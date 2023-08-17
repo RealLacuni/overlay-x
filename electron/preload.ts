@@ -30,6 +30,7 @@ const api = {
   Close: () => {
     ipcRenderer.send('close');
   },
+
   /**
    * Provide an easier way to listen to events
    */
