@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 // Native
-import { join } from 'path';
+import path from 'path';
+import url from 'url';
 
 // Packages
 import { BrowserWindow, app, ipcMain, IpcMainEvent } from 'electron';
@@ -20,18 +21,38 @@ function createWindow() {
     resizable: true,
     fullscreenable: true,
     webPreferences: {
-      preload: join(__dirname, 'preload.js')
+      preload: path.join(__dirname, 'preload.js')
     }
   });
 
-  const port = process.env.PORT || 3000;
-  const url = isDev ? `http://localhost:${port}` : join(__dirname, '../src/out/index.html');
+  const displayWindow = new BrowserWindow({
+    width: 400,
+    height: 400,
+    frame: false,
+    show: true,
+    transparent: true,
+    fullscreenable: true,
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js')
+    }
+  });
 
+
+  const port = process.env.PORT || 3000;
+  
+  const mainUrl = isDev ? `http://localhost:${port}` : url.format({ pathname: path.join(__dirname, '../src/out/index.html'), hash: '/', protocol: 'file:', slashes: true });
+  const displayUrl = isDev ? mainUrl + '/display' : url.format({ pathname: path.join(__dirname, '../src/out/index.html'), hash: '/display', protocol: 'file:', slashes: true });
+
+  console.log('loading main at ', mainUrl);
+  
   // and load the index.html of the app.
   if (isDev) {
-    window?.loadURL(url);
+    window?.loadURL(mainUrl);
+    displayWindow?.loadURL(displayUrl);
+
   } else {
-    window?.loadFile(url);
+    window?.loadFile(mainUrl);
+    displayWindow?.loadFile(displayUrl);
   }
   // Open the DevTools.
   // window.webContents.openDevTools();

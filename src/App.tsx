@@ -5,7 +5,7 @@ function App() {
   return (
     <>
       <AppBar />
-      <div className="App">hello world</div>{' '}
+      <div className={"bg-slate-400"}>hello world</div>
     </>
   );
 }
