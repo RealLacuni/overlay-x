@@ -1,11 +1,14 @@
 import React from 'react';
 import AppBar from './AppBar';
 
-function App() {
+const App = () => {
+  const sendLoadDisplay = () => {
+    window.Main.LoadDisplay();
+    }
   return (
     <>
       <AppBar />
-      <div className={"bg-slate-400"}>hello world</div>
+      <button className={"bg-slate-400 hover:bg-slate-300 hover:text-black"} onClick={sendLoadDisplay}>Launch Overlay</button>
     </>
   );
 }

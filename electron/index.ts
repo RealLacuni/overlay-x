@@ -30,7 +30,7 @@ function createWindow() {
     width: screenWidth,
     height: screenHeight,
     frame: false,
-    show: true,
+    show: false,
     transparent: true,
     fullscreenable: true,
     webPreferences: {
@@ -61,6 +61,11 @@ function createWindow() {
   // Open the DevTools.
   // window.webContents.openDevTools();
 
+  ipcMain.on('loadDisplay', () => {
+    console.log('loadDisplay');
+    displayWindow.show();
+    window.close();
+  });
   // For AppBar
   ipcMain.on('minimize', () => {
     // eslint-disable-next-line no-unused-expressions
@@ -89,7 +94,6 @@ app.whenReady().then(() => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
 });
-
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
