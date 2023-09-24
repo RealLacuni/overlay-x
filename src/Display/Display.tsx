@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
+type DisplayProps = {
+  radius: number;
+};
+
 const Display = () => {
+  const radius = 400;
+  const thickness = 550;
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
@@ -16,20 +22,19 @@ const Display = () => {
   }, []);
 
   return (
-    <div className="fixed top-0 left-0 w-full h-full pointer-events-none opacity-20 bg-slate-500">
-      <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" className='opacity-50'>
+    <div className={'fixed top-0 left-0 w-full h-full pointer-events-none'}>
+      <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" className={'opacity-80'}>
         <circle
           cx={cursorPosition.x}
           cy={cursorPosition.y}
-          r={20} // You can adjust the thickness by changing the radius
+          r={radius} // radius of center of element, control how much empty space can be available 
           stroke="black" // Ring color
-          strokeWidth={5} // Ring thickness
+          strokeWidth={thickness} // Ring thickness
           fill="transparent"
         />
       </svg>
-      <div className={'w-10 h-10 bg-pink-500'}>test</div>
     </div>
   );
-}
+};
 
 export default Display;

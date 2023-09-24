@@ -4,7 +4,7 @@ import path from 'path';
 import url from 'url';
 
 // Packages
-import { BrowserWindow, app, ipcMain, IpcMainEvent } from 'electron';
+import { BrowserWindow, app, ipcMain, IpcMainEvent, screen } from 'electron';
 import isDev from 'electron-is-dev';
 
 const height = 600;
@@ -25,9 +25,10 @@ function createWindow() {
     }
   });
 
+  const { width: screenWidth, height: screenHeight } = screen.getPrimaryDisplay().workAreaSize;
   const displayWindow = new BrowserWindow({
-    width: 400,
-    height: 400,
+    width: screenWidth,
+    height: screenHeight,
     frame: false,
     show: true,
     transparent: true,
@@ -36,6 +37,9 @@ function createWindow() {
       preload: path.join(__dirname, 'preload.js')
     }
   });
+
+  displayWindow.setAlwaysOnTop(true);
+  displayWindow.setIgnoreMouseEvents(true, { forward: true });
 
 
   const port = process.env.PORT || 3000;
