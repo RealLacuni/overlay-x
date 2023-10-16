@@ -13,8 +13,11 @@ const api = {
    * that can be sent back to the main process
     */
   
-  LoadDisplay: () => {
+  LoadOverlay: () => {
     ipcRenderer.send('loadDisplay');
+  },
+  OpenDevTools: () => {
+    ipcRenderer.send('openDevTools');
   },
   Minimize: () => {
     ipcRenderer.send('minimize');
@@ -29,8 +32,8 @@ const api = {
   /**
    * Provide an easier way to listen to events
    */
-  on: (channel: string, callback: (data: any) => void) => {
-    ipcRenderer.on(channel, (_, data) => callback(data));
-  }
+  // on: (channel: string, callback: (data: any) => void) => {
+  //   ipcRenderer.on(channel, (_, data) => callback(data));
+  // }
 };
 contextBridge.exposeInMainWorld('Main', api);
