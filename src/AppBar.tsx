@@ -16,7 +16,7 @@ function AppBar() {
   return (
     <div className=" flex justify-between draggable border-b bg-gray-100 border-black">
       <div className="inline-flex">
-        <img className="h-6 lg:-ml-2"  alt="Icon of Electron" />
+        <img className="h-6 lg:-ml-2"  alt="Icon of Electron" src='/assets/icons/Icon-Electron.png'/>
         <p className="text-xs md:pt-1 md:-ml-1 lg:-ml-2">Overlay X</p>
       </div>
       <div className="inline-flex -mt-1">

@@ -1,12 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
-type DisplayProps = {
-  radius: number;
-};
-
 const Display = () => {
-  const radius = 400;
-  const thickness = 550;
+  const radius = 100;
+  const thickness = 100;
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
