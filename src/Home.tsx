@@ -2,9 +2,9 @@ import React from 'react';
 // import AppBar from './AppBar';
 
 const Home = () => {
-  
+
   const sendLoadDisplay = () => {
-    window.Main.LoadDisplay();
+    window.Main.LoadOverlay();
     }
 
   return (

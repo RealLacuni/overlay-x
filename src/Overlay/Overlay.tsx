@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Settings from '../Settings/Settings';
 
 type DisplayProps = {
   radius: number;
@@ -10,7 +11,7 @@ type DisplayProps = {
 
 const Overlay = (props: DisplayProps) => {
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
-
+  const isDev = window.Main.isDev();
 
   useEffect(() => {
     const updateCursorPosition = (e: MouseEvent) => {
@@ -36,6 +37,13 @@ const Overlay = (props: DisplayProps) => {
           fill="transparent"
         />
       </svg>
+      {
+        isDev && ( // if in dev mode, display a small settings window at the bottom right corner of the screen
+          <div className={'fixed bottom-0 right-0 bg-white p-2 text-xs'}>
+            <Settings />
+          </div>
+        )
+      }
     </div>
   );
 };

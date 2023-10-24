@@ -28,7 +28,9 @@ const api = {
   Close: () => {
     ipcRenderer.send('close');
   },
-
+  isDev: () => {
+    return process.env.NODE_ENV === 'development';
+  }
   /**
    * Provide an easier way to listen to events
    */
