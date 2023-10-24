@@ -61,14 +61,18 @@ function createWindow() {
   // Open the DevTools.
   // window.webContents.openDevTools();
 
-  ipcMain.on('loadDisplay', () => {
-    console.log('loadDisplay');
+  //loads the "display" aka overlay
+  ipcMain.on('loadOverlay', () => {
     displayWindow.show();
     window.close();
   });
+
+  // For DevTools
+  ipcMain.on('openDevTools', () => {
+    window.webContents.openDevTools();
+  });
   // For AppBar
   ipcMain.on('minimize', () => {
-    // eslint-disable-next-line no-unused-expressions
     window.isMinimized() ? window.restore() : window.minimize();
     // or alternatively: win.isVisible() ? win.hide() : win.show()
   });
@@ -81,6 +85,7 @@ function createWindow() {
     window.close();
   });
 }
+
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.

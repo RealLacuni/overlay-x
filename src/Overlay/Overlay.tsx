@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from 'react';
 
-const Display = () => {
-  const radius = 100;
-  const thickness = 100;
+type DisplayProps = {
+  radius: number;
+  opacity: number;
+  width: number;
+  color: string;
+  
+};
+
+const Overlay = (props: DisplayProps) => {
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
+
 
   useEffect(() => {
     const updateCursorPosition = (e: MouseEvent) => {
@@ -23,9 +30,9 @@ const Display = () => {
         <circle
           cx={cursorPosition.x}
           cy={cursorPosition.y}
-          r={radius} // radius of center of element, control how much empty space can be available 
-          stroke="black" // Ring color
-          strokeWidth={thickness} // Ring thickness
+          r={props.radius ?? 100} // radius of center of element, control how much empty space can be available 
+          stroke= 'black'  // Ring color
+          strokeWidth={ props.width ?? 200} // Ring thickness
           fill="transparent"
         />
       </svg>
@@ -33,4 +40,4 @@ const Display = () => {
   );
 };
 
-export default Display;
+export default Overlay;
