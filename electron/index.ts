@@ -109,6 +109,12 @@ app.on('window-all-closed', () => {
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
 
+app.getPath('home');
+console.log('home', app.getPath('home'));
+app.getPath('appData');
+console.log('appData', app.getPath('appData'));
+app.getPath('userData');
+console.log('userData', app.getPath('userData'));
 // listen the channel `message` and resend the received message to the renderer process
 ipcMain.on('message', (event: IpcMainEvent, message: string) => {
   console.log(message);
