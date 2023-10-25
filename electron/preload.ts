@@ -12,6 +12,8 @@ const api = {
    * Expose functions to use in the renderer process
    * that can be sent back to the main process
     */
+
+  // TODO: Create functions related to preferences: loading/updating
   
   LoadOverlay: () => {
     ipcRenderer.send('loadDisplay');
