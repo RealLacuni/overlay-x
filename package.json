@@ -2,7 +2,7 @@
   "name": "overlay-x",
   "version": "0.0.1",
   "license": "MIT",
-  "main": "main/index.js",
+  "main": "main/electron/index.js",
   "author": {
     "name": "Rene Pazitny"
   },
@@ -47,6 +47,7 @@
     "vite": "^4.4.9"
   },
   "devDependencies": {
+    "@types/babel__core": "^7.20.3",
     "@types/node": "^20.5.0",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
