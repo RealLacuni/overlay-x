@@ -25,7 +25,10 @@ const router = createBrowserRouter([
 
 ReactDOM.render(
   <>
-  <AppBar />
+  {
+    // if current route is not /overlay then load appBar
+    window.location.pathname !== '/overlay' && <AppBar />
+  }
   <React.StrictMode>
     <RouterProvider router={router} />
   </React.StrictMode></>,

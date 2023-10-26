@@ -20,10 +20,9 @@ function createPreferences(preferences: Preferences) {
   fs.writeFileSync(preferencesPath, JSON.stringify({ profiles: { default : preferences } }));
 }
 
-//TODO: Create update preferences function and then pass it into context bridge
+// TODO: Create update preferences function and then pass it into context bridge
 const defaultPreferences: Preferences = {
   version: process.env.npm_package_version ?? '0.0.0',
 }
 
 export { getPreferences, createPreferences };
-

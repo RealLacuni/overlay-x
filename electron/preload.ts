@@ -14,9 +14,14 @@ const api = {
     */
 
   // TODO: Create functions related to preferences: loading/updating
-  
-  LoadOverlay: () => {
-    ipcRenderer.send('loadDisplay');
+  IsDevMode: () => {
+    console.log('IsDevMode successfully called from renderer, now sending to main with ipc');   
+    return ipcRenderer.sendSync('isDevMode');
+  },
+  LoadOverlay: (useDev : boolean) => {
+    console.log('LoadOverlay successfully called from renderer, now sending to main with ipc');
+
+    ipcRenderer.send('loadOverlay', useDev);
   },
   OpenDevTools: () => {
     ipcRenderer.send('openDevTools');
@@ -30,9 +35,6 @@ const api = {
   Close: () => {
     ipcRenderer.send('close');
   },
-  isDev: () => {
-    return process.env.NODE_ENV === 'development';
-  }
   /**
    * Provide an easier way to listen to events
    */

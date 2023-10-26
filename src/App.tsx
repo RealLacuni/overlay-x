@@ -24,9 +24,8 @@ const App = () => {
         <SecondaryButton
           className={' hover:text-black'}
           onClick={sendLoadOverlay}
-          text="Launch Overlay"
         ></SecondaryButton>
-        <SecondaryButton className={' hover:text-black'} onClick={redirectToSettings} text="Settings"></SecondaryButton>
+        <SecondaryButton className={' hover:text-black'} onClick={redirectToSettings}></SecondaryButton>
         <p>
           press <span className={'text-blue-900'}>*key here*</span> at any time to toggle the overlay.
         </p>
