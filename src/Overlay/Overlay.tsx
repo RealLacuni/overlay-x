@@ -6,13 +6,11 @@ type DisplayProps = {
   opacity: number;
   width: number;
   color: string;
-  
 };
 
 const Overlay = (props: DisplayProps) => {
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
-  const isDev = window.Main.isDev();
-
+  const isDev = true;
   useEffect(() => {
     const updateCursorPosition = (e: MouseEvent) => {
       setCursorPosition({ x: e.clientX, y: e.clientY });
@@ -31,19 +29,17 @@ const Overlay = (props: DisplayProps) => {
         <circle
           cx={cursorPosition.x}
           cy={cursorPosition.y}
-          r={props.radius ?? 100} // radius of center of element, control how much empty space can be available 
-          stroke= 'black'  // Ring color
-          strokeWidth={ props.width ?? 200} // Ring thickness
+          r={props.radius ?? 100} // radius of center of element, control how much empty space can be available
+          stroke="black" // Ring color
+          strokeWidth={props.width ?? 200} // Ring thickness
           fill="transparent"
         />
       </svg>
-      {
-        isDev && ( // if in dev mode, display a small settings window at the bottom right corner of the screen
-          <div className={'fixed bottom-0 right-0 bg-white p-2 text-xs'}>
-            <Settings />
-          </div>
-        )
-      }
+      {isDev && ( // if in dev mode, display a small settings window at the bottom right corner of the screen
+        <div className={'fixed bottom-0 right-0 bg-white p-2 text-xs'}>
+          <Settings />
+        </div>
+      )}
     </div>
   );
 };

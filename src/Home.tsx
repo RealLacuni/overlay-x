@@ -1,28 +1,60 @@
 import React from 'react';
 import { SecondaryButton } from './components/Buttons';
-// import AppBar from './AppBar';
+import { useNavigate } from 'react-router-dom';
+
+const sendLoadOverlay = (useDev = false) => {
+  console.log('sending load overlay');
+  window.Main.LoadOverlay(useDev);
+};
+
+const checkDevMode = () => {
+  console.log('checking dev mode');
+
+  const devMode = window.Main.IsDevMode();
+
+  console.log(devMode);
+  return devMode;
+}
 
 const Home = () => {
+  //open dev tools
   window.Main.OpenDevTools();
-
-  const sendLoadOverlay = () => {
-    window.Main.LoadOverlay();
-    }
+  const nav = useNavigate();
+  const isDev = checkDevMode();
+  const redirectToSettings = () => {
+    console.log('redirecting to settings');
+    nav('/settings');
+  };
 
   return (
-    <div className="flex flex-col h-screen gap-12 items-center bg-pink-200 justify-evenly">
-      <SecondaryButton className={"bg-slate-400 w-36 h-18 text-lg hover:bg-slate-300"} onClick={sendLoadOverlay}>Launch Overlay</SecondaryButton>
-      <SecondaryButton className={"bg-slate-400 w-36 hover:bg-slate-300"} onClick={() => {}}>Settings</SecondaryButton>
-
-      <div>
-        <p>To return to the main menu from the overlay, press the "Keybind" keyboard shortcut.</p>
+    <>
+      <div className={'flex flex-col bg-blue-300 pt-10 items-center gap-24'}>
+        <SecondaryButton className={' hover:text-black'} onClick={sendLoadOverlay}>
+          Launch Overlay
+        </SecondaryButton>
+        {
+          isDev && (
+            <SecondaryButton className={' hover:text-black'} onClick={() => sendLoadOverlay(true)}>
+              Launch Overlay (Dev)
+            </SecondaryButton>
+          )
+        }
+        <SecondaryButton className={' hover:text-black'} onClick={redirectToSettings}>
+          Settings
+        </SecondaryButton>
+        {/* <button
+          onClick={async () => {
+            console.log(await getDevMode());
+          }}
+        >
+          dev mode check
+        </button> */}
+        <p>
+          press <span className={'text-blue-900'}>*key here*</span> at any time to toggle the overlay.
+        </p>
       </div>
-      <div>
-        <p className={"text-center text-2xl"}>Overlay X</p>
-        <p className={"text-center text-sm"}>Version 0.1.0</p>
-      </div>
-          </div>
+    </>
   );
-}
+};
 
 export default Home;
