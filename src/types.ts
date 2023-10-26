@@ -10,4 +10,5 @@ type NavItem = {
   icon: typeof HomeIcon;
   current: boolean;
 }
+
 export type { ClassNameProps, NavItem };
