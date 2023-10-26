@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Settings from '../Settings/Settings';
+import DevSettings from '../Settings/DevSettings';
 
 type DisplayProps = {
   radius: number;
@@ -37,7 +37,7 @@ const Overlay = (props: DisplayProps) => {
       </svg>
       {isDev && ( // if in dev mode, display a small settings window at the bottom right corner of the screen
         <div className={'fixed bottom-0 right-0 bg-white p-2 text-xs'}>
-          <Settings />
+          <DevSettings />
         </div>
       )}
     </div>
