@@ -13,8 +13,10 @@ const api = {
    * that can be sent back to the main process
     */
   
+    // TODO: Create functions related to preferences: loading/updating
+
   LoadOverlay: () => {
-    ipcRenderer.send('loadDisplay');
+    ipcRenderer.send('loadOverlay');
   },
   OpenDevTools: () => {
     ipcRenderer.send('openDevTools');
