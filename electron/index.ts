@@ -7,6 +7,13 @@ import url from 'url';
 import { BrowserWindow, app, ipcMain, IpcMainEvent, screen } from 'electron';
 import isDev from 'electron-is-dev';
 
+// print current environment
+if (isDev) {
+  console.log('Running in development');
+} else {
+  console.log('Running in production');
+}
+
 const height = 600;
 const width = 800;
 
@@ -41,18 +48,35 @@ function createWindow() {
   displayWindow.setAlwaysOnTop(true);
   displayWindow.setIgnoreMouseEvents(true, { forward: true });
 
+  let devWindow: BrowserWindow | null = null;
+  if (isDev) {
+    devWindow = new BrowserWindow({
+      width: screenWidth,
+      height: screenHeight,
+      frame: false,
+      show: false,
+      transparent: true,
+      fullscreenable: true,
+      webPreferences: {
+        preload: path.join(__dirname, 'preload.js')
+      }
+    });
+    devWindow.setAlwaysOnTop(true);
+    // devWindow.setIgnoreMouseEvents(true, { forward: true });
+  }
+
 
   const port = process.env.PORT || 3000;
-  
+
   const mainUrl = isDev ? `http://localhost:${port}` : url.format({ pathname: path.join(__dirname, '../src/out/index.html'), hash: '/', protocol: 'file:', slashes: true });
-  const displayUrl = isDev ? mainUrl + '/display' : url.format({ pathname: path.join(__dirname, '../src/out/index.html'), hash: '/display', protocol: 'file:', slashes: true });
+  const displayUrl = isDev ? mainUrl + '/overlay' : url.format({ pathname: path.join(__dirname, '../src/out/index.html'), hash: '/overlay', protocol: 'file:', slashes: true });
 
   console.log('loading main at ', mainUrl);
-  
   // and load the index.html of the app.
   if (isDev) {
     window?.loadURL(mainUrl);
     displayWindow?.loadURL(displayUrl);
+    devWindow?.loadURL(displayUrl);
 
   } else {
     window?.loadFile(mainUrl);
@@ -61,12 +85,20 @@ function createWindow() {
   // Open the DevTools.
   // window.webContents.openDevTools();
 
-  //loads the "display" aka overlay
-  ipcMain.on('loadOverlay', () => {
-    displayWindow.show();
+  //loads the overlay and hides the main app window
+  ipcMain.on('loadOverlay', (useDev) => {
+    if (useDev && devWindow != null) {
+      console.log('loading dev overlay');
+      
+      devWindow.show();
+    }
+    else {
+      console.log('loading prod overlay');
+      
+      displayWindow.show();
+    }
     window.close();
   });
-
   // For DevTools
   ipcMain.on('openDevTools', () => {
     window.webContents.openDevTools();
@@ -84,6 +116,7 @@ function createWindow() {
   ipcMain.on('close', () => {
     window.close();
   });
+
 }
 
 
@@ -114,3 +147,8 @@ ipcMain.on('message', (event: IpcMainEvent, message: string) => {
   console.log(message);
   setTimeout(() => event.sender.send('message', 'hi from electron'), 500);
 });
+
+ipcMain.on('isDevMode', (event: IpcMainEvent) => {
+  event.returnValue = isDev;
+});
+
