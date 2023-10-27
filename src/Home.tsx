@@ -3,16 +3,11 @@ import { SecondaryButton } from './components/Buttons';
 import { useNavigate } from 'react-router-dom';
 
 const sendLoadOverlay = (useDev = false) => {
-  console.log('sending load overlay');
   window.Main.LoadOverlay(useDev);
 };
 
 const checkDevMode = () => {
-  console.log('checking dev mode');
-
   const devMode = window.Main.IsDevMode();
-
-  console.log(devMode);
   return devMode;
 }
 
@@ -20,7 +15,8 @@ const Home = () => {
   //open dev tools
   window.Main.OpenDevTools();
   const nav = useNavigate();
-  const isDev = checkDevMode();
+  const isDev : boolean = checkDevMode();
+
   const redirectToSettings = () => {
     console.log('redirecting to settings');
     nav('/settings');
@@ -29,7 +25,7 @@ const Home = () => {
   return (
     <>
       <div className={'flex flex-col bg-blue-300 pt-10 items-center gap-24'}>
-        <SecondaryButton className={' hover:text-black'} onClick={sendLoadOverlay}>
+        <SecondaryButton className={' hover:text-black'} onClick={() => sendLoadOverlay(false)}>
           Launch Overlay
         </SecondaryButton>
         {

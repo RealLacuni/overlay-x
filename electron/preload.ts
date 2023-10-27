@@ -20,6 +20,9 @@ const api = {
   IsDevMode: () => {
     return ipcRenderer.sendSync('isDevMode');
   },
+  IsDevWindow: () => {
+    return ipcRenderer.sendSync('isDevWindow');
+  },
   LoadOverlay: (useDev: boolean) => {
     ipcRenderer.send('loadOverlay', useDev);
   },

@@ -90,10 +90,9 @@ function createWindow() {
   // window.webContents.openDevTools();
 
   //loads the overlay and hides the main app window
-  ipcMain.on('loadOverlay', (useDev) => {
+  ipcMain.on('loadOverlay', (_event, useDev) => {
     if (useDev && devWindow != null) {
       console.log('loading dev overlay');
-
       devWindow.show();
     }
     else {
@@ -105,8 +104,6 @@ function createWindow() {
   // For DevTools
   ipcMain.on('openDevTools', (_event, targetWindow) => {
     if (targetWindow == 'display' && devWindow != null) {
-      console.log('opening dev tools for dev display window');
-      
       devWindow.webContents.openDevTools();
       return;
     } else {
@@ -127,6 +124,14 @@ function createWindow() {
     window.close();
   });
 
+  ipcMain.on('isDevWindow', (event: IpcMainEvent) => {
+    if (devWindow) {
+      event.returnValue = devWindow.isVisible();  
+    }
+    else {
+      event.returnValue = false;
+    }
+  });
 }
 
 
@@ -165,6 +170,7 @@ ipcMain.on('message', (event: IpcMainEvent, message: string) => {
 });
 
 ipcMain.on('isDevMode', (event: IpcMainEvent) => {
+  console.log('isDevMode in main process is ', isDev);
   event.returnValue = isDev;
 });
 

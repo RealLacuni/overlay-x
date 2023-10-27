@@ -5,14 +5,14 @@ import { CircleFields, Preferences } from '../../shared/types';
 import Circle from './Circle';
 
 const Overlay = () => {
+  // TODO: stop rerendering entire component when cursor position changes
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
-  const isDev = true;
+  const isDev = window.Main.IsDevWindow();
   const preferences: Preferences = useContext(PreferenceContext);
 
   //get active profile
   console.log("indexing into preferences: ", preferences);
   console.log("using ", preferences.activeProfile, " as active profile");
-  window.Main.OpenDevTools("display");
   const currentProfile = preferences.profiles[preferences.activeProfile];
   console.log("current profile: ", currentProfile);
   
