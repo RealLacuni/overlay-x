@@ -1,15 +1,7 @@
 import React from 'react';
 import Slider from '../components/Slider';
+import { InputProps } from '../types';
 
-type InputProps = {
-    label: string;
-    type: string;
-    handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    minVal: number;
-    maxVal: number;
-    stepSize: number;
-    startVal: number;
-    }
 
 const SettingInput = ( props: InputProps ) => {
   return (

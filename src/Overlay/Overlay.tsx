@@ -1,16 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import DevSettings from '../Settings/DevSettings';
 
-type DisplayProps = {
-  radius: number;
-  opacity: number;
-  width: number;
-  color: string;
-};
 
 const Overlay = (props: DisplayProps) => {
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
   const isDev = true;
+  //use effect to add listener for tracking mouse position
   useEffect(() => {
     const updateCursorPosition = (e: MouseEvent) => {
       setCursorPosition({ x: e.clientX, y: e.clientY });
@@ -37,11 +32,18 @@ const Overlay = (props: DisplayProps) => {
       </svg>
       {isDev && ( // if in dev mode, display a small settings window at the bottom right corner of the screen
         <div className={'fixed bottom-0 right-0 bg-white p-2 text-xs'}>
-          <DevSettings />
+          <DevSettings settingInputs={[]}/>
         </div>
       )}
     </div>
   );
+};
+
+type DisplayProps = {
+  radius: number;
+  opacity: number;
+  width: number;
+  color: string;
 };
 
 export default Overlay;
