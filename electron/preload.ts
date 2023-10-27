@@ -14,17 +14,17 @@ const api = {
     */
 
   // TODO: Create functions related to preferences: loading/updating
+  GetPreferences: () => {
+    return ipcRenderer.sendSync('getPreferences');
+  },
   IsDevMode: () => {
-    console.log('IsDevMode successfully called from renderer, now sending to main with ipc');   
     return ipcRenderer.sendSync('isDevMode');
   },
-  LoadOverlay: (useDev : boolean) => {
-    console.log('LoadOverlay successfully called from renderer, now sending to main with ipc');
-
+  LoadOverlay: (useDev: boolean) => {
     ipcRenderer.send('loadOverlay', useDev);
   },
-  OpenDevTools: () => {
-    ipcRenderer.send('openDevTools');
+  OpenDevTools: (targetWindow = 'main') => {
+    ipcRenderer.send('openDevTools', targetWindow);
   },
   Minimize: () => {
     ipcRenderer.send('minimize');

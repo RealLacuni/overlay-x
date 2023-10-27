@@ -6,6 +6,7 @@ import url from 'url';
 // Packages
 import { BrowserWindow, app, ipcMain, IpcMainEvent, screen } from 'electron';
 import isDev from 'electron-is-dev';
+import { getPreferences } from './preferences';
 
 // print current environment
 if (isDev) {
@@ -24,12 +25,15 @@ function createWindow() {
     height,
     //  change to false to use AppBar
     frame: false,
-    show: true,
+    show: false,
     resizable: true,
     fullscreenable: true,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
     }
+  });
+  window.once('ready-to-show', () => {
+    window.show();
   });
 
   const { width: screenWidth, height: screenHeight } = screen.getPrimaryDisplay().workAreaSize;
@@ -89,19 +93,25 @@ function createWindow() {
   ipcMain.on('loadOverlay', (useDev) => {
     if (useDev && devWindow != null) {
       console.log('loading dev overlay');
-      
+
       devWindow.show();
     }
     else {
       console.log('loading prod overlay');
-      
       displayWindow.show();
     }
-    window.close();
+    window.hide();
   });
   // For DevTools
-  ipcMain.on('openDevTools', () => {
-    window.webContents.openDevTools();
+  ipcMain.on('openDevTools', (_event, targetWindow) => {
+    if (targetWindow == 'display' && devWindow != null) {
+      console.log('opening dev tools for dev display window');
+      
+      devWindow.webContents.openDevTools();
+      return;
+    } else {
+      window.webContents.openDevTools();
+    }
   });
   // For AppBar
   ipcMain.on('minimize', () => {
@@ -156,5 +166,9 @@ ipcMain.on('message', (event: IpcMainEvent, message: string) => {
 
 ipcMain.on('isDevMode', (event: IpcMainEvent) => {
   event.returnValue = isDev;
+});
+
+ipcMain.on('getPreferences', (event: IpcMainEvent) => {
+  event.returnValue = getPreferences();
 });
 
