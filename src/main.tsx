@@ -6,31 +6,40 @@ import AppBar from './AppBar';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import Overlay from './Overlay/Overlay';
 import Settings from './Settings/Settings';
+import { PreferenceProvider } from './util/PreferenceContext';
 
 const router = createBrowserRouter([
-
   {
     path: '/',
-    element: <Home />,
+    element: <Home />
   },
-    {
-      path: '/overlay',
-      element: <Overlay radius = {100} opacity={0.6} width={200} color={'black'}/>, //eventually pass in props using user settings, stored in a properties file maybe?
+  {
+    path: '/overlay',
+    element: (
+      <PreferenceProvider>
+        <Overlay/>
+      </PreferenceProvider>
+    )
   },
   {
     path: '/settings',
-    element: <Settings />,
+    element: (
+      <PreferenceProvider>
+        <Settings />
+      </PreferenceProvider>
+    )
   }
 ]);
 
 ReactDOM.render(
   <>
-  {
-    // if current route is not /overlay then load appBar
-    window.location.pathname !== '/overlay' && <AppBar />
-  }
-  <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode></>,
+    {
+      // if current route is not /overlay then load appBar
+      window.location.pathname !== '/overlay' && <AppBar />
+    }
+    <React.StrictMode>
+      <RouterProvider router={router} />
+    </React.StrictMode>
+  </>,
   document.getElementById('root')
 );
