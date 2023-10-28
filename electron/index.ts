@@ -68,8 +68,6 @@ function createWindow() {
     devWindow.setAlwaysOnTop(true);
     // devWindow.setIgnoreMouseEvents(true, { forward: true });
   }
-
-
   const port = process.env.PORT || 3000;
 
   const mainUrl = isDev ? `http://localhost:${port}` : url.format({ pathname: path.join(__dirname, '../src/out/index.html'), hash: '/', protocol: 'file:', slashes: true });
