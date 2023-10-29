@@ -1,5 +1,4 @@
 import { ipcRenderer, contextBridge } from 'electron';
-import { Preferences } from '../shared/types';
 
 declare global {
   interface Window {
@@ -15,10 +14,6 @@ const api = {
     */
 
   // TODO: Create functions related to preferences: loading/updating
-  //returns true or false if the preferences were updated on disk
-  UpdatePreferences: (preferences: Preferences) => {
-    return ipcRenderer.sendSync('updatePreferences', preferences);
-  },
   GetPreferences: () => {
     return ipcRenderer.sendSync('getPreferences');
   },
