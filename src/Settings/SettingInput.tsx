@@ -4,6 +4,8 @@ import { InputProps } from '../types';
 
 
 const SettingInput = ( props: InputProps ) => {
+  // TODO: Add all options for possible input types, possibly with switch case
+  // and output accordingly.
   return (
     <div>
       <h1>Input</h1>

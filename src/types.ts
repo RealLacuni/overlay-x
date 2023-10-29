@@ -11,12 +11,8 @@ type NavItem = {
   current: boolean;
 }
 type InputProps = {
-  label: string;
-  type: string;
+  fieldName: string;
+  startValue: string;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  minVal: number;
-  maxVal: number;
-  stepSize: number;
-  startVal: number;
   }
 export type { ClassNameProps, NavItem, InputProps };

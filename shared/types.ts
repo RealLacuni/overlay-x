@@ -32,6 +32,8 @@ type EllipseFields = {
   color: string;
   width: number;
   height: number;
+  opacity: number;                                                                                                                                                                                                 
 }
+
 
 export type { Preferences, Profile, ShapeType, ShapeFields, CircleFields, SquareFields, EllipseFields };
