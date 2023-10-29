@@ -6,7 +6,8 @@ import url from 'url';
 // Packages
 import { BrowserWindow, app, ipcMain, IpcMainEvent, screen } from 'electron';
 import isDev from 'electron-is-dev';
-import { getPreferences } from './preferences';
+import { getPreferences, updatePreferences } from './preferences';
+import { Preferences } from '../shared/types';
 
 // print current environment
 if (isDev) {
@@ -174,5 +175,10 @@ ipcMain.on('isDevMode', (event: IpcMainEvent) => {
 
 ipcMain.on('getPreferences', (event: IpcMainEvent) => {
   event.returnValue = getPreferences();
+});
+
+ipcMain.on('updatePreferences', (event: IpcMainEvent, preferences: Preferences) => {
+  console.log('updatePreferences', preferences);
+  event.returnValue = updatePreferences(preferences);
 });
 
