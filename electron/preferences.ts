@@ -33,6 +33,17 @@ function createPreferences(preferences: Preferences) {
   fs.writeFileSync(preferencesPath, JSON.stringify(preferences));
 }
 
+function updatePreferences(preferences: Preferences) {
+  try {
+    fs.writeFileSync(preferencesPath, JSON.stringify(preferences));
+    return true;
+  }
+  catch {
+    console.log("error updating preferences file");
+    return false;
+  }
+}
+
 // TODO: Create update preferences function and then pass it into context bridge
 const defaultPreferences: Preferences = {
   version: process.env.npm_package_version ?? '0.0.0',
@@ -51,4 +62,4 @@ const defaultPreferences: Preferences = {
   }
 }
 
-export { getPreferences, createPreferences };
+export { getPreferences, createPreferences, updatePreferences };
