@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "@babel/core": "^7.22.10",
+    "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
     "@types/react-router-dom": "^5.3.3",
     "@vitejs/plugin-react": "^4.0.4",
