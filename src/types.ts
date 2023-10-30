@@ -10,9 +10,5 @@ type NavItem = {
   icon: typeof HomeIcon;
   current: boolean;
 }
-type InputProps = {
-  fieldName: string;
-  startValue: string;
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  }
-export type { ClassNameProps, NavItem, InputProps };
+
+export type { ClassNameProps, NavItem };
