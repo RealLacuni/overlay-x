@@ -11,14 +11,16 @@ type InputProps = {
 const SettingInput = ({ fieldName, startValue, handleChange }: InputProps) => {
   // TODO: Add all options for possible input types, possibly with switch case
   // and output accordingly.
-  const handleChangeEvent = (e : React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeEvent = (e: React.ChangeEvent<HTMLInputElement>) => {
     handleChange(e.target.value);
-  }
+  };
 
   let inputComponent;
   if (typeof startValue === 'number') {
     // value is numeric, can safely render a slider along with the input
-    let minVal; let maxVal; let stepSize;
+    let minVal;
+    let maxVal;
+    let stepSize;
     if (fieldName === 'opacity') {
       minVal = 0.0;
       maxVal = 1.0;
@@ -38,32 +40,29 @@ const SettingInput = ({ fieldName, startValue, handleChange }: InputProps) => {
           stepSize={stepSize}
           handleChange={handleChange}
         />
-              </div>
+      </div>
     );
-  }
-  else if (typeof startValue === 'string') {
+  } else if (typeof startValue === 'string') {
     // value is a string, probably as part of a dropdown
     if (fieldName === 'color') {
       inputComponent = (
-        <div className="flex flex-row items-start justify-center">
-          <span>Overlay Color</span>
+        <div className="flex flex-row gap-1">
+          <span>Overlay Color: </span>
           <input
             type="color"
             defaultValue={startValue}
             onChange={handleChangeEvent}
-            className={' bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700'}
-          />
-          <p>{startValue}</p>
+            className={'w-6 h-6 bg-gray-200 rounded-md appearance-none cursor-pointer dark:bg-gray-700'}
+          /> {startValue}
         </div>
       );
     }
-  }
-  else if (fieldName == "inverse") {
+  } else if (fieldName == 'inverse') {
     // TODO: Add a checkbox for inverse
     inputComponent = (
       <div className="flex flex-col items-start">
         <span>Invert Overlay</span>
-        <Toggle checked = {startValue} handleChange={handleChange}/>
+        <Toggle checked={startValue} handleChange={handleChange} />
       </div>
     );
   }
