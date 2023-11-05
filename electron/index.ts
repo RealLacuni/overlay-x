@@ -176,3 +176,12 @@ ipcMain.on('getPreferences', (event: IpcMainEvent) => {
   event.returnValue = getPreferences();
 });
 
+ipcMain.on('updatePreferences', (event: IpcMainEvent, preferences: Preferences) => {
+  console.log('updatePreferences', preferences);
+  event.returnValue = updatePreferences(preferences);
+});
+
+ipcMain.on('printInBackend', (_event: IpcMainEvent, message: string) => {
+  console.log(message);
+});
+

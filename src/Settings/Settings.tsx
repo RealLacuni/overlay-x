@@ -1,31 +1,68 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import SettingInput from './SettingInput';
 import { PrimaryButton } from '../components/Buttons';
 import { useNavigate } from 'react-router-dom';
+import { PreferenceContext } from '../util/PreferenceContext';
+import { Preferences, Profile } from '../../shared/types';
 
 const Settings = () => {
+  const { preferences, updatePreferences } = useContext(PreferenceContext);
   const nav = useNavigate();
-  const [testVal, setTestVal] = useState(50);
+  const profiles = preferences.profiles;
+  const [currentProfile, setCurrentProfile] = useState({ ...profiles[preferences.activeProfile] });
+  const inputFields = currentProfile.shapeInputs;
 
-  console.log(testVal);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTestVal(Number(e.target.value));
+  const saveSettings = (newSettings: Preferences) => {
+    updatePreferences({ ...newSettings });
   };
+
+  const handleFieldChange = (fieldName: string, value: string | number | boolean) => {
+    setCurrentProfile((prevProfile: Profile) => ({
+      ...prevProfile,
+      shapeInputs: {
+        ...prevProfile.shapeInputs,
+        [fieldName]: value
+      }
+    }));
+    
+  };
+
+  const renderInputFields = () => {
+    return Object.keys(inputFields).map((fieldName, index) => (
+      <SettingInput
+        key={index}
+        fieldName={fieldName}
+        startValue={currentProfile.shapeInputs[fieldName]}
+        handleChange={(value) => handleFieldChange(fieldName, value)}
+      />
+    ));
+  };
+
   return (
     <>
-      <div className="bg-slate-300 bg-opacity-80 h-48 w-36">
+      <div className="flex flex-col gap-8 p-2 justify-start align">
         <h1 className={'text-center text-4xl'}>Settings</h1>
-        <SettingInput
-          label={'Input'}
-          type={'number'}
-          handleChange={handleChange}
-          minVal={0}
-          maxVal={100}
-          stepSize={1}
-          startVal={testVal}
-        />
+        {/* TODO:
+        shape selection and display current using dropdown menu */}
+        {renderInputFields()}
         <PrimaryButton
+          className={'h-16 w-20 justify-center'}
+          onClick={() => {
+            const newProfiles = {...profiles}; // Create a new copy of the profiles array
+            newProfiles[preferences.activeProfile] = { ...currentProfile }; // Assign a copy of the current profile
+            console.log("old profiles: ", profiles);
+            
+            console.log("new profiles: ", newProfiles);
+            
+            saveSettings({
+              ...preferences,
+              profiles: newProfiles
+            });
+          }}
+        >Save
+        </PrimaryButton>
+        <PrimaryButton
+          className={'h-16 w-36 justify-center self-center'}
           onClick={() => {
             nav('/');
           }}

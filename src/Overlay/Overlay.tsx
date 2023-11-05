@@ -11,8 +11,8 @@ const Overlay = () => {
   const preferences: Preferences = useContext(PreferenceContext);
 
   //get active profile
-  console.log('indexing into preferences: ', preferences);
-  console.log('using ', preferences.activeProfile, ' as active profile');
+  window.Main.PrintInBackend(`indexing into preferences: , ${preferences}`);
+  console.log(`using , ${preferences.activeProfile},  as active profile`);
   const currentProfile = preferences.profiles[preferences.activeProfile];
   console.log('current profile: ', currentProfile);
 
