@@ -6,8 +6,7 @@ import url from 'url';
 // Packages
 import { BrowserWindow, app, ipcMain, IpcMainEvent, screen } from 'electron';
 import isDev from 'electron-is-dev';
-import { getPreferences, updatePreferences } from './preferences';
-import { Preferences } from '../shared/types';
+import { getPreferences } from './preferences';
 
 // print current environment
 if (isDev) {
