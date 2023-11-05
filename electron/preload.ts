@@ -16,6 +16,9 @@ const api = {
 
   // TODO: Create functions related to preferences: loading/updating
   //returns true or false if the preferences were updated on disk
+  PrintInBackend: (message: string) => {
+    return ipcRenderer.send('printInBackend', message);
+  },
   UpdatePreferences: (preferences: Preferences) => {
     return ipcRenderer.sendSync('updatePreferences', preferences);
   },

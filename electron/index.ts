@@ -182,3 +182,7 @@ ipcMain.on('updatePreferences', (event: IpcMainEvent, preferences: Preferences) 
   event.returnValue = updatePreferences(preferences);
 });
 
+ipcMain.on('printInBackend', (_event: IpcMainEvent, message: string) => {
+  console.log(message);
+});
+
