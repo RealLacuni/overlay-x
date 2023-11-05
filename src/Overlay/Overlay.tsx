@@ -7,7 +7,6 @@ import Shape from './Shape';
 const isDev = window.Main.IsDevWindow();
 
 const Overlay = () => {
-  // TODO: stop rerendering entire component when cursor position changes
   const preferences: Preferences = useContext(PreferenceContext);
 
   //get active profile
