@@ -44,7 +44,6 @@ function updatePreferences(preferences: Preferences) {
   }
 }
 
-// TODO: Create update preferences function and then pass it into context bridge
 const defaultPreferences: Preferences = {
   version: process.env.npm_package_version ?? '0.0.0',
   activeProfile: 'default',
@@ -59,6 +58,10 @@ const defaultPreferences: Preferences = {
         inverse: false
       }
     }
+  },
+  shortcuts: {
+    toggleOverlay: 'Control+Alt+A',
+    openMenu: 'Control+Shift+X'
   }
 }
 

@@ -8,6 +8,7 @@ import { BrowserWindow, app, ipcMain, IpcMainEvent, screen } from 'electron';
 import isDev from 'electron-is-dev';
 import { getPreferences, updatePreferences } from './preferences';
 import { Preferences } from '../shared/types';
+import { setupIPCListeners } from './ipcHandlers';
 
 // print current environment
 if (isDev) {
@@ -19,7 +20,7 @@ if (isDev) {
 const height = 600;
 const width = 800;
 
-function createWindow() {
+function createWindow(): Array<BrowserWindow | null> {
   // Create the browser window.
   const window = new BrowserWindow({
     width,
@@ -67,8 +68,8 @@ function createWindow() {
       }
     });
     devWindow.setAlwaysOnTop(true);
-    // devWindow.setIgnoreMouseEvents(true, { forward: true });
   }
+  // devWindow.setIgnoreMouseEvents(true, { forward: true });
   const port = process.env.PORT || 3000;
 
   const mainUrl = isDev ? `http://localhost:${port}` : url.format({ pathname: path.join(__dirname, '../src/out/index.html'), hash: '/', protocol: 'file:', slashes: true });
@@ -76,69 +77,25 @@ function createWindow() {
 
   console.log('loading main at ', mainUrl);
   // and load the index.html of the app.
-  if (isDev) {
-    window?.loadURL(mainUrl);
-    displayWindow?.loadURL(displayUrl);
-    devWindow?.loadURL(displayUrl);
+  if (isDev) devWindow?.loadURL(displayUrl);
+  window?.loadFile(mainUrl);
+  displayWindow?.loadFile(displayUrl);
 
-  } else {
-    window?.loadFile(mainUrl);
-    displayWindow?.loadFile(displayUrl);
-  }
-  // Open the DevTools.
-  // window.webContents.openDevTools();
-
-  //loads the overlay and hides the main app window
-  ipcMain.on('loadOverlay', (_event, useDev) => {
-    if (useDev && devWindow != null) {
-      console.log('loading dev overlay');
-      devWindow.show();
-    }
-    else {
-      console.log('loading prod overlay');
-      displayWindow.show();
-    }
-    window.hide();
-  });
-  // For DevTools
-  ipcMain.on('openDevTools', (_event, targetWindow) => {
-    if (targetWindow == 'display' && devWindow != null) {
-      devWindow.webContents.openDevTools();
-      return;
-    } else {
-      window.webContents.openDevTools();
-    }
-  });
-  // For AppBar
-  ipcMain.on('minimize', () => {
-    window.isMinimized() ? window.restore() : window.minimize();
-    // or alternatively: win.isVisible() ? win.hide() : win.show()
-  });
-  ipcMain.on('maximize', () => {
-    // eslint-disable-next-line no-unused-expressions
-    window.isMaximized() ? window.restore() : window.maximize();
-  });
-
-  ipcMain.on('close', () => {
-    window.close();
-  });
-
-  ipcMain.on('isDevWindow', (event: IpcMainEvent) => {
-    if (devWindow) {
-      event.returnValue = devWindow.isVisible();  
-    }
-    else {
-      event.returnValue = false;
-    }
-  });
+  return [window, displayWindow, devWindow];
 }
-
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
-  createWindow();
+  const [window, displayWindow, devWindow] = createWindow();
+
+  //just for type checking purposes, the windows should never be null
+  if (window == null || displayWindow == null) {
+    console.log('window is null');
+    return;
+  }
+  setupIPCListeners(window, displayWindow, devWindow);
 
   app.on('activate', () => {
     // On macOS it's common to re-create a window in the app when the
@@ -153,15 +110,13 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
 });
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
+// Can include the rest of app's specific main process code.
+//Or can put them in separate files and require them here.
 
-app.getPath('home');
-console.log('home', app.getPath('home'));
-app.getPath('appData');
-console.log('appData', app.getPath('appData'));
-app.getPath('userData');
-console.log('userData', app.getPath('userData'));
+//get preferences to setup global shortcut
+const preferences = getPreferences();
+console.log('preferences', preferences);
+
 // listen the channel `message` and resend the received message to the renderer process
 ipcMain.on('message', (event: IpcMainEvent, message: string) => {
   console.log(message);

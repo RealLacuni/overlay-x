@@ -2,6 +2,12 @@ type Preferences = {
   version: string;
   activeProfile: string;
   profiles: Record<string, Profile>;
+  shortcuts: Shortcuts;
+}
+
+type Shortcuts = {
+  toggleOverlay: string;
+  openMenu: string;
 }
 
 type Profile = {
@@ -36,4 +42,4 @@ type EllipseFields = {
 }
 
 
-export type { Preferences, Profile, ShapeType, ShapeFields, CircleFields, SquareFields, EllipseFields };
+export type { Preferences, Profile, ShapeType, ShapeFields, CircleFields, SquareFields, EllipseFields, Shortcuts };
