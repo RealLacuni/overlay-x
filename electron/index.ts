@@ -4,10 +4,9 @@ import path from 'path';
 import url from 'url';
 
 // Packages
-import { BrowserWindow, app, ipcMain, IpcMainEvent, screen } from 'electron';
+import { BrowserWindow, app, screen } from 'electron';
 import isDev from 'electron-is-dev';
-import { getPreferences, updatePreferences } from './preferences';
-import { Preferences } from '../shared/types';
+import { getPreferences,  } from './preferences';
 import { setupIPCListeners } from './ipcHandlers';
 
 // print current environment
@@ -117,27 +116,4 @@ app.on('window-all-closed', () => {
 const preferences = getPreferences();
 console.log('preferences', preferences);
 
-// listen the channel `message` and resend the received message to the renderer process
-ipcMain.on('message', (event: IpcMainEvent, message: string) => {
-  console.log(message);
-  setTimeout(() => event.sender.send('message', 'hi from electron'), 500);
-});
-
-ipcMain.on('isDevMode', (event: IpcMainEvent) => {
-  console.log('isDevMode in main process is ', isDev);
-  event.returnValue = isDev;
-});
-
-ipcMain.on('getPreferences', (event: IpcMainEvent) => {
-  event.returnValue = getPreferences();
-});
-
-ipcMain.on('updatePreferences', (event: IpcMainEvent, preferences: Preferences) => {
-  console.log('updatePreferences', preferences);
-  event.returnValue = updatePreferences(preferences);
-});
-
-ipcMain.on('printInBackend', (_event: IpcMainEvent, message: string) => {
-  console.log(message);
-});
 
