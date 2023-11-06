@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { app } from 'electron';
 import { Preferences } from '../shared/types';
+import { validatePreferences } from '../shared/validatePreferences';
 
 const appPath = app.getPath('userData');
 const preferencesPath = path.join(appPath, 'profiles', 'preferences.json');
@@ -18,12 +19,14 @@ function getPreferences() {
     createPreferences(defaultPreferences);
     return defaultPreferences;
   }
-  try {
-    const file = fs.readFileSync(preferencesPath, 'utf8');
-    return JSON.parse(file);
+  
+  const file = fs.readFileSync(preferencesPath, 'utf8');
+  const pref = JSON.parse(file);
+  if (validatePreferences(pref)) {
+    return pref;
   }
-  catch (e) {
-    console.log("error reading preferences file, creating defaults");
+  else {
+    console.log("preferences file is invalid, creating defaults");
     createPreferences(defaultPreferences);
     return defaultPreferences;
   }

@@ -24,7 +24,7 @@
   "scripts": {
     "dev": "concurrently \"npm run dev:vite\" \" npm run dev:electron\"",
     "dev:vite": "vite",
-    "dev:electron": "npm run build:electron && electron .",
+    "dev:electron": "npm run build:electron && electron --trace-warnings .",
     "build": "npm run build:vite && npm run build:electron",
     "build:vite": "vite build",
     "build:electron": "tsc -p electron",

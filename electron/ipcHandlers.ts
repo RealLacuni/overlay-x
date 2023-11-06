@@ -45,12 +45,18 @@ export function setupIPCListeners(mainWindow: BrowserWindow, displayWindow: Brow
 
 
     //registers keybind for toggling the overlay
-    const ret = globalShortcut.register(preferences.shortcut.toggleOverlay, (useDev) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    let usingDevWindow = false;
+
+    const toggleReg = globalShortcut.register(preferences.shortcuts.toggleOverlay, () => {
         /* toggles the overlay, used for keyboard shortcut 
-        *  if useDev is true, then it will toggle the dev overlay
+        *  if isDev is true, assume we will only use the devOverlay to test the shortcut
         *  else it will toggle the prod overlay
             */
-        if (useDev && devWindow != null) {
+        // use a flag to signal the dev overlay is being used, just so that dev overlay can be toggled
+        // will break if swapping from dev to prod overlay, as the flag will be set to true
+        if (devWindow != null && (usingDevWindow || isDev)) {
+            usingDevWindow = true;
             console.log('toggling dev overlay');
             devWindow.isVisible() ? devWindow.hide() : devWindow.show();
         }
@@ -59,6 +65,40 @@ export function setupIPCListeners(mainWindow: BrowserWindow, displayWindow: Brow
             displayWindow.isVisible() ? displayWindow.hide() : displayWindow.show();
         }
     });
+
+    if (!toggleReg) {
+        console.log('toggle shortcut registration failed');
+    }
+
+    const menuReg = globalShortcut.register(preferences.shortcuts.openMenu, () => {
+        /* opens the menu AND toggles the overlay off.
+        *  if isDev is true, assume we will only use the devOverlay to test the shortcut
+        *  else it will toggle the prod overlay
+            */
+        if (devWindow != null && (usingDevWindow || isDev)) {
+            usingDevWindow = true;
+            console.log('opening dev menu');
+            devWindow.webContents.send('openMenu');
+            devWindow.show();
+        }
+        else {
+            console.log('opening prod menu');
+            displayWindow.webContents.send('openMenu');
+            displayWindow.show();
+        }
+        mainWindow.show();
+
+    });
+
+    if (!menuReg) {
+        console.log('menu shortcut registration failed');
+    }
+
+    if (isDev) {
+        console.log(globalShortcut.isRegistered(preferences.shortcuts.toggleOverlay))
+        console.log(globalShortcut.isRegistered(preferences.shortcuts.openMenu))
+    }
+
 
     // For DevTools
     ipcMain.on('openDevTools', (_event, targetWindow) => {

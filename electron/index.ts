@@ -6,114 +6,108 @@ import url from 'url';
 // Packages
 import { BrowserWindow, app, screen } from 'electron';
 import isDev from 'electron-is-dev';
-import { getPreferences,  } from './preferences';
+
 import { setupIPCListeners } from './ipcHandlers';
 
 // print current environment
 if (isDev) {
-  console.log('Running in development');
+    console.log('Running in development');
 } else {
-  console.log('Running in production');
+    console.log('Running in production');
 }
 
 const height = 600;
 const width = 800;
 
 function createWindow(): Array<BrowserWindow | null> {
-  // Create the browser window.
-  const window = new BrowserWindow({
-    width,
-    height,
-    //  change to false to use AppBar
-    frame: false,
-    show: false,
-    resizable: true,
-    fullscreenable: true,
-    webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
-    }
-  });
-  window.once('ready-to-show', () => {
-    window.show();
-  });
-
-  const { width: screenWidth, height: screenHeight } = screen.getPrimaryDisplay().workAreaSize;
-  const displayWindow = new BrowserWindow({
-    width: screenWidth,
-    height: screenHeight,
-    frame: false,
-    show: false,
-    transparent: true,
-    fullscreenable: true,
-    webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
-    }
-  });
-
-  displayWindow.setAlwaysOnTop(true);
-  displayWindow.setIgnoreMouseEvents(true, { forward: true });
-
-  let devWindow: BrowserWindow | null = null;
-  if (isDev) {
-    devWindow = new BrowserWindow({
-      width: screenWidth,
-      height: screenHeight,
-      frame: false,
-      show: false,
-      transparent: true,
-      fullscreenable: true,
-      webPreferences: {
-        preload: path.join(__dirname, 'preload.js')
-      }
+    // Create the browser window.
+    const window = new BrowserWindow({
+        width,
+        height,
+        //  change to false to use AppBar
+        frame: false,
+        show: false,
+        resizable: true,
+        fullscreenable: true,
+        webPreferences: {
+            preload: path.join(__dirname, 'preload.js')
+        }
     });
-    devWindow.setAlwaysOnTop(true);
-  }
-  // devWindow.setIgnoreMouseEvents(true, { forward: true });
-  const port = process.env.PORT || 3000;
+    window.once('ready-to-show', () => {
+        window.show();
+    });
 
-  const mainUrl = isDev ? `http://localhost:${port}` : url.format({ pathname: path.join(__dirname, '../src/out/index.html'), hash: '/', protocol: 'file:', slashes: true });
-  const displayUrl = isDev ? mainUrl + '/overlay' : url.format({ pathname: path.join(__dirname, '../src/out/index.html'), hash: '/overlay', protocol: 'file:', slashes: true });
+    const { width: screenWidth, height: screenHeight } = screen.getPrimaryDisplay().workAreaSize;
+    const overlayWindow = new BrowserWindow({
+        width: screenWidth,
+        height: screenHeight,
+        frame: false,
+        show: false,
+        transparent: true,
+        fullscreenable: true,
+        webPreferences: {
+            preload: path.join(__dirname, 'preload.js')
+        }
+    });
 
-  console.log('loading main at ', mainUrl);
-  // and load the index.html of the app.
-  if (isDev) devWindow?.loadURL(displayUrl);
-  window?.loadFile(mainUrl);
-  displayWindow?.loadFile(displayUrl);
+    overlayWindow.setAlwaysOnTop(true);
+    overlayWindow.setIgnoreMouseEvents(true, { forward: true });
 
-  return [window, displayWindow, devWindow];
+    let devWindow: BrowserWindow | null = null;
+    if (isDev) {
+        devWindow = new BrowserWindow({
+            width: screenWidth,
+            height: screenHeight,
+            frame: false,
+            show: false,
+            transparent: true,
+            fullscreenable: true,
+            webPreferences: {
+                preload: path.join(__dirname, 'preload.js')
+            }
+        });
+        devWindow.setAlwaysOnTop(true);
+    }
+
+    // devWindow.setIgnoreMouseEvents(true, { forward: true });
+    const port = process.env.PORT || 3000;
+
+    const mainUrl = isDev ? `http://localhost:${port}` : url.format({ pathname: path.join(__dirname, '../src/out/index.html'), hash: '/', protocol: 'file:', slashes: true });
+    const displayUrl = isDev ? mainUrl + '/overlay' : url.format({ pathname: path.join(__dirname, '../src/out/index.html'), hash: '/overlay', protocol: 'file:', slashes: true });
+
+    // and load the index.html of the app.
+    isDev && devWindow?.loadURL(displayUrl);
+    window?.loadURL(mainUrl);
+    overlayWindow?.loadURL(displayUrl);
+
+    return [window, overlayWindow, devWindow];
 }
+
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
-  const [window, displayWindow, devWindow] = createWindow();
+    const [mainWindow, overlayWindow, devWindow] = createWindow();
+    
+    if (mainWindow == null || overlayWindow == null) {
+        console.log('window is null');
+        return;
+    }
+    setupIPCListeners(mainWindow, overlayWindow, devWindow);
 
-  //just for type checking purposes, the windows should never be null
-  if (window == null || displayWindow == null) {
-    console.log('window is null');
-    return;
-  }
-  setupIPCListeners(window, displayWindow, devWindow);
-
-  app.on('activate', () => {
-    // On macOS it's common to re-create a window in the app when the
-    // dock icon is clicked and there are no other windows open.
-    if (BrowserWindow.getAllWindows().length === 0) createWindow();
-  });
+    app.on('activate', () => {
+        // On macOS it's common to re-create a window in the app when the
+        // dock icon is clicked and there are no other windows open.
+        if (BrowserWindow.getAllWindows().length === 0) createWindow();
+    });
 });
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') app.quit();
+    if (process.platform !== 'darwin') app.quit();
 });
 
-// Can include the rest of app's specific main process code.
-//Or can put them in separate files and require them here.
-
-//get preferences to setup global shortcut
-const preferences = getPreferences();
-console.log('preferences', preferences);
-
-
+app.getPath('userData');
+console.log('userData', app.getPath('userData'));
