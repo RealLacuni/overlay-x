@@ -14,8 +14,15 @@ const api = {
    * that can be sent back to the main process
     */
 
-  // TODO: Create functions related to preferences: loading/updating
   //returns true or false if the preferences were updated on disk
+
+  HotkeyChangeToggle: (newKey: string) => {
+    return ipcRenderer.sendSync('hotkey::changeToggle', newKey);
+  },
+  HotkeyChangeMenu: (newKey: string) => {
+    return ipcRenderer.sendSync('hotkey::changeMenu', newKey);
+  },
+  
   PrintInBackend: (message: string) => {
     return ipcRenderer.send('printInBackend', message);
   },

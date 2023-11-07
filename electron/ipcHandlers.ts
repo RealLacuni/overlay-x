@@ -5,7 +5,7 @@ import { Preferences } from '../shared/types';
 import isDev from 'electron-is-dev';
 
 // Export the function that sets up IPC handlers
-export function setupIPCListeners(mainWindow: BrowserWindow, displayWindow: BrowserWindow, devWindow: BrowserWindow | null) {
+export function setupIPCListeners(mainWindow: BrowserWindow, overlayWindow: BrowserWindow, devWindow: BrowserWindow | null) {
     const preferences = getPreferences();
     // For AppBar
     ipcMain.on('minimize', () => {
@@ -38,7 +38,7 @@ export function setupIPCListeners(mainWindow: BrowserWindow, displayWindow: Brow
         }
         else {
             console.log('loading prod overlay');
-            displayWindow.show();
+            overlayWindow.show();
         }
         mainWindow.hide();
     });
@@ -46,24 +46,10 @@ export function setupIPCListeners(mainWindow: BrowserWindow, displayWindow: Brow
 
     //registers keybind for toggling the overlay
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    let usingDevWindow = false;
+
 
     const toggleReg = globalShortcut.register(preferences.shortcuts.toggleOverlay, () => {
-        /* toggles the overlay, used for keyboard shortcut 
-        *  if isDev is true, assume we will only use the devOverlay to test the shortcut
-        *  else it will toggle the prod overlay
-            */
-        // use a flag to signal the dev overlay is being used, just so that dev overlay can be toggled
-        // will break if swapping from dev to prod overlay, as the flag will be set to true
-        if (devWindow != null && (usingDevWindow || isDev)) {
-            usingDevWindow = true;
-            console.log('toggling dev overlay');
-            devWindow.isVisible() ? devWindow.hide() : devWindow.show();
-        }
-        else {
-            console.log('toggling prod overlay');
-            displayWindow.isVisible() ? displayWindow.hide() : displayWindow.show();
-        }
+        toggleCallback(overlayWindow);
     });
 
     if (!toggleReg) {
@@ -71,23 +57,7 @@ export function setupIPCListeners(mainWindow: BrowserWindow, displayWindow: Brow
     }
 
     const menuReg = globalShortcut.register(preferences.shortcuts.openMenu, () => {
-        /* opens the menu AND toggles the overlay off.
-        *  if isDev is true, assume we will only use the devOverlay to test the shortcut
-        *  else it will toggle the prod overlay
-            */
-        if (devWindow != null && (usingDevWindow || isDev)) {
-            usingDevWindow = true;
-            console.log('opening dev menu');
-            devWindow.webContents.send('openMenu');
-            devWindow.show();
-        }
-        else {
-            console.log('opening prod menu');
-            displayWindow.webContents.send('openMenu');
-            displayWindow.show();
-        }
-        mainWindow.show();
-
+        menuCallback(mainWindow, overlayWindow);
     });
 
     if (!menuReg) {
@@ -99,6 +69,27 @@ export function setupIPCListeners(mainWindow: BrowserWindow, displayWindow: Brow
         console.log(globalShortcut.isRegistered(preferences.shortcuts.openMenu))
     }
 
+    ipcMain.on('hotkey::changeToggle', (event, newKey) => {
+        console.log('changing toggle hotkey to ', newKey);
+        globalShortcut.unregister(preferences.shortcuts.toggleOverlay);
+        preferences.shortcuts.toggleOverlay = newKey;
+        updatePreferences(preferences);
+        const reg = globalShortcut.register(preferences.shortcuts.toggleOverlay, () => {
+            toggleCallback(overlayWindow);
+        });
+        event.returnValue = reg;
+    });
+
+    ipcMain.on('hotkey::changeMenu', (event, newKey) => {
+        console.log('changing menu hotkey to ', newKey);
+        globalShortcut.unregister(preferences.shortcuts.openMenu);
+        preferences.shortcuts.openMenu = newKey;
+        updatePreferences(preferences);
+        const reg = globalShortcut.register(preferences.shortcuts.openMenu, () => {
+            menuCallback(mainWindow, overlayWindow);
+        });
+        event.returnValue = reg;
+    });
 
     // For DevTools
     ipcMain.on('openDevTools', (_event, targetWindow) => {
@@ -133,4 +124,17 @@ export function setupIPCListeners(mainWindow: BrowserWindow, displayWindow: Brow
     ipcMain.on('printInBackend', (_event: IpcMainEvent, message: string) => {
         console.log(message);
     });
+}
+
+function toggleCallback(overlayWindow: BrowserWindow) {
+    // toggles the overlay, used for keyboard shortcut 
+
+    overlayWindow.isVisible() ? overlayWindow.hide() : overlayWindow.show();
+}
+
+function menuCallback(mainWindow: BrowserWindow, overlayWindow: BrowserWindow) {
+    // opens the menu AND toggles the overlay off.
+    console.log('opening prod menu');
+    overlayWindow.hide();
+    mainWindow.show();
 }

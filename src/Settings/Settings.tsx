@@ -4,6 +4,7 @@ import { PrimaryButton } from '../components/Buttons';
 import { useNavigate } from 'react-router-dom';
 import { PreferenceContext } from '../util/PreferenceContext';
 import { Preferences, Profile } from '../../shared/types';
+import HotkeyInput from '../Overlay/HotkeyInput';
 
 const Settings = () => {
   const { preferences, updatePreferences } = useContext(PreferenceContext);
@@ -24,7 +25,6 @@ const Settings = () => {
         [fieldName]: value
       }
     }));
-    
   };
 
   const renderInputFields = () => {
@@ -45,21 +45,23 @@ const Settings = () => {
         {/* TODO:
         shape selection and display current using dropdown menu */}
         {renderInputFields()}
+        <HotkeyInput hotkeyApiFunction={window.Main.HotkeyChangeToggle} feature_name={'Toggle'} />
         <PrimaryButton
           className={'h-16 w-20 justify-center'}
           onClick={() => {
-            const newProfiles = {...profiles}; // Create a new copy of the profiles array
+            const newProfiles = { ...profiles }; // Create a new copy of the profiles array
             newProfiles[preferences.activeProfile] = { ...currentProfile }; // Assign a copy of the current profile
-            console.log("old profiles: ", profiles);
-            
-            console.log("new profiles: ", newProfiles);
-            
+            console.log('old profiles: ', profiles);
+
+            console.log('new profiles: ', newProfiles);
+
             saveSettings({
               ...preferences,
               profiles: newProfiles
             });
           }}
-        >Save
+        >
+          Save
         </PrimaryButton>
         <PrimaryButton
           className={'h-16 w-36 justify-center self-center'}

@@ -9,9 +9,6 @@ const Overlay = () => {
   const {preferences} = useContext(PreferenceContext); //can also grab updatePreferences from provider here
   
   //get active profile
-  window.Main.PrintInBackend(`preferences from context: , ${JSON.stringify(preferences)}`);
-
-  window.Main.PrintInBackend(`indexing into preferences: , ${preferences.activeProfile}`);
   const currentProfile = preferences.profiles[preferences.activeProfile];
 
   return (
