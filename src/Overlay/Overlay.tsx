@@ -1,19 +1,18 @@
 import React, { useContext } from 'react';
 import DevSettings from '../Settings/DevSettings';
 import { PreferenceContext } from '../util/PreferenceContext';
-import { Preferences } from '../../shared/types';
 import Shape from './Shape';
 
 const isDev = window.Main.IsDevWindow();
 
 const Overlay = () => {
-  // TODO: stop rerendering entire component when cursor position changes
-  const preferences: Preferences = useContext(PreferenceContext);
-
+  const {preferences} = useContext(PreferenceContext); //can also grab updatePreferences from provider here
+  
   //get active profile
-  console.log(`using , ${preferences.activeProfile},  as active profile`);
+  window.Main.PrintInBackend(`preferences from context: , ${JSON.stringify(preferences)}`);
+
+  window.Main.PrintInBackend(`indexing into preferences: , ${preferences.activeProfile}`);
   const currentProfile = preferences.profiles[preferences.activeProfile];
-  console.log('current profile: ', currentProfile);
 
   return (
     <>
