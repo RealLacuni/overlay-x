@@ -46,13 +46,13 @@ function isProfile(obj: any): obj is Profile {
     obj &&
     typeof obj === 'object' &&
     typeof obj.shape === 'string' &&
-    isShapeFields(obj.shapeInputs)
+    isShapeFields(obj.shapeInputs, obj.shape)
   );
 }
 
-function isShapeFields(obj: any): obj is CircleFields | SquareFields | EllipseFields {
+function isShapeFields(obj: any, shape: string): obj is CircleFields | SquareFields | EllipseFields {
   if (obj && typeof obj === 'object') {
-    switch (obj.shape) {
+    switch (shape) {
       case 'circle':
         return isCircleFields(obj);
       case 'square':
