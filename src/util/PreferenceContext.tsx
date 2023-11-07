@@ -9,9 +9,10 @@ const getPreferences = () => {
 
 const preferences = getPreferences();
 const PreferenceContext = createContext(preferences);
+
 function PreferenceProvider({ children }: { children: React.ReactNode }) {
   const [preferences, setPreferences] = React.useState(getPreferences);
-
+  
   const updatePreferences = (newPreferences: Preferences) => {
     //write to disk
     if (!window.Main.UpdatePreferences(newPreferences)) {
