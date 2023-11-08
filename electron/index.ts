@@ -37,21 +37,22 @@ function createWindow(): Array<BrowserWindow | null> {
         window.show();
     });
 
-    const { width: screenWidth, height: screenHeight } = screen.getPrimaryDisplay().workAreaSize;
-    const overlayWindow = new BrowserWindow({
-        width: screenWidth,
-        height: screenHeight,
-        frame: false,
-        show: false,
-        transparent: true,
-        fullscreenable: true,
-        webPreferences: {
-            preload: path.join(__dirname, 'preload.js')
-        }
-    });
+  const { width: screenWidth, height: screenHeight } = screen.getPrimaryDisplay().workAreaSize;
+  const overlayWindow = new BrowserWindow({
+    width: screenWidth,
+    height: screenHeight,
+    hasShadow: false,
+    frame: false,
+    show: false,
+    transparent: true,
+    fullscreenable: true,
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js')
+    }
+  });
 
-    overlayWindow.setAlwaysOnTop(true);
-    overlayWindow.setIgnoreMouseEvents(true, { forward: true });
+  overlayWindow.setAlwaysOnTop(true);
+  overlayWindow.setIgnoreMouseEvents(true, { forward: true });
 
     let devWindow: BrowserWindow | null = null;
     if (isDev) {
