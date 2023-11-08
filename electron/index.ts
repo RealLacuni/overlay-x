@@ -38,9 +38,10 @@ function createWindow() {
   });
 
   const { width: screenWidth, height: screenHeight } = screen.getPrimaryDisplay().workAreaSize;
-  const displayWindow = new BrowserWindow({
+  const overlayWindow = new BrowserWindow({
     width: screenWidth,
     height: screenHeight,
+    hasShadow: false,
     frame: false,
     show: false,
     transparent: true,
@@ -50,8 +51,8 @@ function createWindow() {
     }
   });
 
-  displayWindow.setAlwaysOnTop(true);
-  displayWindow.setIgnoreMouseEvents(true, { forward: true });
+  overlayWindow.setAlwaysOnTop(true);
+  overlayWindow.setIgnoreMouseEvents(true, { forward: true });
 
   let devWindow: BrowserWindow | null = null;
   if (isDev) {
@@ -78,12 +79,12 @@ function createWindow() {
   // and load the index.html of the app.
   if (isDev) {
     window?.loadURL(mainUrl);
-    displayWindow?.loadURL(displayUrl);
+    overlayWindow?.loadURL(displayUrl);
     devWindow?.loadURL(displayUrl);
 
   } else {
     window?.loadFile(mainUrl);
-    displayWindow?.loadFile(displayUrl);
+    overlayWindow?.loadFile(displayUrl);
   }
   // Open the DevTools.
   // window.webContents.openDevTools();
@@ -96,7 +97,7 @@ function createWindow() {
     }
     else {
       console.log('loading prod overlay');
-      displayWindow.show();
+      overlayWindow.show();
     }
     window.hide();
   });
