@@ -7,7 +7,7 @@ type CircleProps = {
 };
 
 const calculateRadius = (thickness: number, offset: number) => {
-  return thickness + offset;
+  return 5*thickness + offset;
 };
 
 const Circle = ({ profile, cursorPosition }: CircleProps) => {
@@ -21,7 +21,7 @@ const Circle = ({ profile, cursorPosition }: CircleProps) => {
           cy={cursorPosition.y} 
           r={radius} // radius of center of element, control how much empty space can be available
           stroke={color} // Ring color
-          strokeWidth={thickness} // Ring thickness
+          strokeWidth={10*thickness} // Ring thickness
           fill="transparent"
         />
       </svg>

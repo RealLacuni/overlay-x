@@ -16,10 +16,10 @@ function PreferenceProvider({ children }: { children: React.ReactNode }) {
   const updatePreferences = (newPreferences: Preferences) => {
     //write to disk
     if (!window.Main.UpdatePreferences(newPreferences)) {
-      console.log('failed to write preferences to disk');
+      window.Main.PrintInBackend('failed to write preferences to disk');
       //try again
       if (!window.Main.UpdatePreferences(newPreferences)) {
-        console.log('failed to write preferences to disk again');
+        window.Main.PrintInBackend('failed to write preferences to disk again');
         return false;
       }
     }
