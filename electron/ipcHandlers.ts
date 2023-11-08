@@ -117,7 +117,6 @@ export function setupIPCListeners(mainWindow: BrowserWindow, overlayWindow: Brow
     });
 
     ipcMain.on('updatePreferences', (event: IpcMainEvent, preferences: Preferences) => {
-        console.log('updatePreferences', preferences);
         event.returnValue = updatePreferences(preferences);
     });
 

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { SecondaryButton } from './components/Buttons';
 import { useNavigate } from 'react-router-dom';
+import { PreferenceContext } from './util/PreferenceContext';
 
 const sendLoadOverlay = (useDev = false) => {
   window.Main.LoadOverlay(useDev);
@@ -12,6 +13,7 @@ const checkDevMode = () => {
 }
 
 const Home = () => {
+  const {preferences} = useContext(PreferenceContext);
   //open dev tools
   window.Main.OpenDevTools();
   const nav = useNavigate();
@@ -46,7 +48,7 @@ const Home = () => {
           dev mode check
         </button> */}
         <p>
-          press <span className={'text-blue-900'}>*key here*</span> at any time to toggle the overlay.
+          press <span className={'text-blue-900'}>{preferences.shortcuts.toggleOverlay}</span> at any time to toggle the overlay.
         </p>
       </div>
     </>

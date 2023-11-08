@@ -27,7 +27,7 @@ const SettingInput = ({ fieldName, startValue, handleChange }: InputProps) => {
       stepSize = 0.01;
     } else {
       minVal = 0;
-      maxVal = 100;
+      maxVal = 300;
       stepSize = 1;
     }
     inputComponent = (
