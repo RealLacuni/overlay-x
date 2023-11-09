@@ -43,11 +43,7 @@ export function setupIPCListeners(mainWindow: BrowserWindow, overlayWindow: Brow
         mainWindow.hide();
     });
 
-
     //registers keybind for toggling the overlay
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-
-
     const toggleReg = globalShortcut.register(preferences.shortcuts.toggleOverlay, () => {
         toggleCallback(overlayWindow);
     });
@@ -117,7 +113,14 @@ export function setupIPCListeners(mainWindow: BrowserWindow, overlayWindow: Brow
     });
 
     ipcMain.on('updatePreferences', (event: IpcMainEvent, preferences: Preferences) => {
-        event.returnValue = updatePreferences(preferences);
+        if (updatePreferences(preferences)) {
+            overlayWindow.webContents.send('updatedPreferences', preferences)
+            event.returnValue = true;
+        }
+        else {
+            event.returnValue = false;
+        }
+
     });
 
     ipcMain.on('printInBackend', (_event: IpcMainEvent, message: string) => {

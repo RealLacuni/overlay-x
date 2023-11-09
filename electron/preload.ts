@@ -3,26 +3,25 @@ import { Preferences } from '../shared/types';
 
 declare global {
   interface Window {
-    Main: typeof api;
+    Main: typeof mainAPI;
+    Overlay: typeof overlayAPI;
     ipcRenderer: typeof ipcRenderer;
   }
 }
 
-const api = {
+const mainAPI = {
   /**
    * Expose functions to use in the renderer process
    * that can be sent back to the main process
     */
 
   //returns true or false if the preferences were updated on disk
-
   HotkeyChangeToggle: (newKey: string) => {
     return ipcRenderer.sendSync('hotkey::changeToggle', newKey);
   },
   HotkeyChangeMenu: (newKey: string) => {
     return ipcRenderer.sendSync('hotkey::changeMenu', newKey);
   },
-  
   PrintInBackend: (message: string) => {
     return ipcRenderer.send('printInBackend', message);
   },
@@ -60,4 +59,11 @@ const api = {
   //   ipcRenderer.on(channel, (_, data) => callback(data));
   // }
 };
-contextBridge.exposeInMainWorld('Main', api);
+
+const overlayAPI = {
+  onUpdatedPreferences: (callback: (preferences: Preferences) => void) => {
+    ipcRenderer.on('updatedPreferences', (_, preferences) => callback(preferences));
+  },
+}
+contextBridge.exposeInMainWorld('Main', mainAPI);
+contextBridge.exposeInMainWorld('Overlay', overlayAPI);

@@ -6,8 +6,7 @@ import Shape from './Shape';
 const isDev = window.Main.IsDevWindow();
 
 const Overlay = () => {
-  const {preferences} = useContext(PreferenceContext); //can also grab updatePreferences from provider here
-  
+  const { preferences } = useContext(PreferenceContext); //can also grab updatePreferences from provider here
   //get active profile
   const currentProfile = preferences.profiles[preferences.activeProfile];
 

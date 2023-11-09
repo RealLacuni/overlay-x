@@ -10,9 +10,18 @@ const getPreferences = () => {
 const preferences = getPreferences();
 const PreferenceContext = createContext(preferences);
 
+
 function PreferenceProvider({ children }: { children: React.ReactNode }) {
   const [preferences, setPreferences] = React.useState(getPreferences);
   
+  /* This block of code is for the Overlay window, so that it can update context through receiving an IPC message
+  alternatively could get rid of context altogether for the overlay and just move this code directly into the component*/
+  const updateCB = (newPreferences: Preferences) => {
+    window.Main.PrintInBackend('\noverlay received changed preferences\n');
+    setPreferences(newPreferences);
+  };
+  window.Overlay.onUpdatedPreferences(updateCB);
+
   const updatePreferences = (newPreferences: Preferences) => {
     //write to disk
     if (!window.Main.UpdatePreferences(newPreferences)) {

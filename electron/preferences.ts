@@ -38,8 +38,6 @@ function createPreferences(preferences: Preferences) {
 
 function updatePreferences(preferences: Preferences) {
   try {
-    console.log("updating preferences to: ", JSON.stringify(preferences));
-    
     fs.writeFileSync(preferencesPath, JSON.stringify(preferences));
     return true;
   }

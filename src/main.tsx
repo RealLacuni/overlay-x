@@ -11,15 +11,17 @@ import { PreferenceProvider } from './util/PreferenceContext';
 const router = createBrowserRouter([
   {
     path: '/',
-    element:       <PreferenceProvider>
-    <Home/>
-  </PreferenceProvider>
+    element: (
+      <PreferenceProvider>
+        <Home />
+      </PreferenceProvider>
+    )
   },
   {
     path: '/overlay',
     element: (
       <PreferenceProvider>
-        <Overlay/>
+        <Overlay />
       </PreferenceProvider>
     )
   },

@@ -14,6 +14,7 @@ const checkDevMode = () => {
 
 const Home = () => {
   const {preferences} = useContext(PreferenceContext);
+  
   //open dev tools
   window.Main.OpenDevTools();
   const nav = useNavigate();
@@ -40,13 +41,7 @@ const Home = () => {
         <SecondaryButton className={' hover:text-black'} onClick={redirectToSettings}>
           Settings
         </SecondaryButton>
-        {/* <button
-          onClick={async () => {
-            console.log(await getDevMode());
-          }}
-        >
-          dev mode check
-        </button> */}
+
         <p>
           press <span className={'text-blue-900'}>{preferences.shortcuts.toggleOverlay}</span> at any time to toggle the overlay.
         </p>

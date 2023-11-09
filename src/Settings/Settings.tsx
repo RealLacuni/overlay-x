@@ -3,7 +3,7 @@ import SettingInput from './SettingInput';
 import { PrimaryButton } from '../components/Buttons';
 import { useNavigate } from 'react-router-dom';
 import { PreferenceContext } from '../util/PreferenceContext';
-import { Preferences, Profile } from '../../shared/types';
+import { Profile } from '../../shared/types';
 import HotkeyInput from '../Overlay/HotkeyInput';
 
 const Settings = () => {
@@ -13,9 +13,6 @@ const Settings = () => {
   const [currentProfile, setCurrentProfile] = useState({ ...profiles[preferences.activeProfile] });
   const inputFields = currentProfile.shapeInputs;
 
-  const saveSettings = (newSettings: Preferences) => {
-    updatePreferences({ ...newSettings });
-  };
 
   const handleFieldChange = (fieldName: string, value: string | number | boolean) => {
     setCurrentProfile((prevProfile: Profile) => ({
@@ -50,12 +47,8 @@ const Settings = () => {
           className={'h-16 w-20 justify-center'}
           onClick={() => {
             const newProfiles = { ...profiles }; // Create a new copy of the profiles array
-            newProfiles[preferences.activeProfile] = { ...currentProfile }; // Assign a copy of the current profile
-            console.log('old profiles: ', profiles);
-
-            console.log('new profiles: ', newProfiles);
-
-            saveSettings({
+            newProfiles[preferences.activeProfile] = { ...currentProfile }; // Overwrite current profile with the new current profile
+            updatePreferences({
               ...preferences,
               profiles: newProfiles
             });
