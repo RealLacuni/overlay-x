@@ -7,18 +7,13 @@ const sendLoadOverlay = (useDev = false) => {
   window.Main.LoadOverlay(useDev);
 };
 
-const checkDevMode = () => {
-  const devMode = window.Main.IsDevMode();
-  return devMode;
-}
-
 const Home = () => {
   const {preferences} = useContext(PreferenceContext);
   
   //open dev tools
   window.Main.OpenDevTools();
   const nav = useNavigate();
-  const isDev : boolean = checkDevMode();
+  const isDev : boolean = window.Main.IsDevMode();
 
   const redirectToSettings = () => {
     console.log('redirecting to settings');

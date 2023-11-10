@@ -3,30 +3,29 @@ import { PrimaryButton } from '../components/Buttons';
 import React from 'react';
 
 type HotkeyInputProps = {
-  hotkeyApiFunction: (hotkey: string) => boolean;
+  handleHotkeyUpdate: (identifier: string, hotkey: string) => void;
   className?: string | null;
-  feature_name: string;
+  featureName: string;
 };
 
-const HotkeyInput = ({ hotkeyApiFunction, className, feature_name }: HotkeyInputProps) => {
+const HotkeyInput = ({ handleHotkeyUpdate, className, featureName }: HotkeyInputProps) => {
   const [isListening, setIsListening] = useState(false);
 
   useEffect(() => {
     const handleKeyUp = (e: KeyboardEvent) => {
       if (isListening) {
         const { key, ctrlKey, metaKey, shiftKey, altKey } = e;
+        if (!key) {
+          // valid hotkey should have a key to press, can't be just modifiers
+          // TODO: display error here if incorrect hotkey
+          return;
+        }
+        const newHotkey = `${ctrlKey ? 'Control+' : ''}${metaKey ? 'Command+' : ''}${shiftKey ? 'Shift+' : ''}${
+          altKey ? 'Alt+' : ''
+        }${key.toUpperCase()}`;
 
-        const newHotkey = `${ctrlKey ? 'Control+' : ''}${metaKey ? 'Command+' : ''}${
-          shiftKey ? 'Shift+' : ''
-        }${altKey? 'Alt+' : ''}${key.toUpperCase()}`;
-
-        // Send the new hotkey to the main process
-        window.Main.PrintInBackend(`would set ${newHotkey}`);
-        // const updated = hotkeyApiFunction(newHotkey);
-        // if (!updated) {
-        //   //TODO: trigger an error popup
-        //   alert('Hotkey already in use, please choose another one.');
-        // }
+        // save new hot key to preferences
+        handleHotkeyUpdate(featureName, newHotkey);
         setIsListening(false); // Stop capturing keys after setting the new hotkey
       }
     };
@@ -36,7 +35,7 @@ const HotkeyInput = ({ hotkeyApiFunction, className, feature_name }: HotkeyInput
     return () => {
       window.removeEventListener('keyup', handleKeyUp);
     };
-  }, [hotkeyApiFunction, isListening]);
+  }, [isListening, handleHotkeyUpdate]);
 
   const handleCaptureKeys = () => {
     setIsListening(true); // Start capturing keys after the button click
@@ -44,10 +43,9 @@ const HotkeyInput = ({ hotkeyApiFunction, className, feature_name }: HotkeyInput
 
   return (
     <PrimaryButton className={className} onClick={handleCaptureKeys}>
-        {
-        isListening ? `Listening for key press...` : `Set new hotkey for ${feature_name}`
-        }
-
+      {isListening
+        ? 'Listening for key press...'
+        : `Set new hotkey for ${featureName === 'toggleOverlay' ? 'overlay' : 'menu'}`}
     </PrimaryButton>
   );
 };
