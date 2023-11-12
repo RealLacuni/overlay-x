@@ -7,7 +7,7 @@ type CircleProps = {
 };
 
 const calculateRadius = (thickness: number, offset: number) => {
-  return 5*thickness + offset;
+  return 5*thickness + 3*offset;
 };
 
 const Circle = ({ profile, cursorPosition }: CircleProps) => {
