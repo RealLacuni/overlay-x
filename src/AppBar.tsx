@@ -13,8 +13,8 @@ const AppBar = () => {
   };
 
   return (
-    <div className="draggable flex justify-end border-b bg-gray-100 border-black">
-      <div className="inline-flex -mt-1">
+    <div className="sticky top-0 w-full draggable select-none flex justify-end border-b bg-gray-100 border-b-slate-300">
+      <div className="inline-flex mb-0.5">
         <button onClick={window.Main.Minimize} className="undraggable px-6 md:px-4 lg:px-3 pt-1 hover:bg-gray-300">
           &#8211;
         </button>
