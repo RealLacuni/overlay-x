@@ -3,7 +3,8 @@ import { ExclamationCircleIcon, CheckIcon } from '@heroicons/react/24/solid';
 import React from 'react';
 
 type AlertProps = {
-  message: string;
+  // optional message prop
+  message?: string;
   type: 'success' | 'error';
 };
 
@@ -23,7 +24,7 @@ const Alert = ({ message, type }: AlertProps) => {
       {show && (
         type === 'success' ?
         (
-        <div className="rounded-md bg-green-50 p-4">
+        <div className="rounded-md absolute bg-green-50 px-4 py-2">
           <div className="flex">
             <div className="flex-shrink-0">
               <CheckIcon className="h-5 w-5 text-green-400" aria-hidden="true" />
