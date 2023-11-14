@@ -22,7 +22,7 @@ const Home = () => {
 
   return (
     <>
-      <div className={'flex flex-col bg-blue-300 pt-10 items-center gap-24'}>
+      <div className={'flex flex-col h-screen justify-center bg-blue-300 items-center gap-12'}>
         <SecondaryButton className={' hover:text-black'} onClick={() => sendLoadOverlay(false)}>
           Launch Overlay
         </SecondaryButton>

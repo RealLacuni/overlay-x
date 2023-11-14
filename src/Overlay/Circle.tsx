@@ -14,7 +14,9 @@ const calculateRadius = (thickness: number, offset: number) => {
 };
 
 const Circle = ({ profile, cursorPosition }: CircleProps) => {
-  const { color, thickness, offset, opacity } = profile;
+  const { color, offset, opacity } = profile;
+  const thickness = profile.thickness == 100 ? 2000 : profile.thickness;
+
   const radius = calculateRadius(thickness, offset);
   return (
     <div className={`fixed bg-[${color}] top-0 left-0 w-full h-full pointer-events-none`}>
@@ -24,7 +26,7 @@ const Circle = ({ profile, cursorPosition }: CircleProps) => {
           cy={cursorPosition.y}
           r={radius} // radius of center of element, control how much empty space can be available
           stroke={color} // Ring color
-          strokeWidth={thickness == 100 ? 2000 : 10 * thickness} // Ring thickness. When set to max value increase enough to cover entire screen, regardless of mouse position
+          strokeWidth={ 10 * thickness} // Ring thickness. When set to max value increase enough to cover entire screen, regardless of mouse position
           fill="transparent"
         />
       </svg>
