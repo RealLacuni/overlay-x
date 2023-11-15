@@ -12,3 +12,7 @@
 .undraggable {
     -webkit-app-region: no-drag;
   }
+
+body {
+  overflow: hidden;
+}
