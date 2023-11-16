@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 type SliderProps = {
   minVal: number;
@@ -10,27 +10,25 @@ type SliderProps = {
 };
 
 const Slider = (props: SliderProps) => {
-  const [sliderValue, setSliderValue] = useState(props.startVal);
 
-  const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = Number(e.target.value);
-    setSliderValue(newValue);
-    props.handleChange(newValue); // Call handleChange with the updated value directly here
-  };
-  
   return (
     <div className={'flex flex-col items-start justify-start gap-1'}>
       <input
         id="default-range"
         type="range"
-        value={sliderValue}
-        onChange={handleSliderChange}
+        value={props.startVal}
+        onChange={(e) => {
+          props.handleChange(Number(e.target.value))
+        }
+        }
         min={props.minVal}
         max={props.maxVal}
         step={props.stepSize}
         className={'w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700'}
-      />      <label htmlFor="default-range" className="block text-sm font-medium text-gray-900">
-      {props.fieldName}: {(sliderValue == props.maxVal && props.fieldName == "thickness") ? "Fullscreen" : sliderValue}{props.fieldName == "opacity" ? "%" : ""}
+      />{' '}
+      <label htmlFor="default-range" className="block text-sm font-medium text-gray-900">
+        {props.fieldName}: {props.startVal == props.maxVal && props.fieldName == 'thickness' ? 'Fullscreen' : props.startVal}
+        {props.fieldName == 'opacity' ? '%' : ''}
       </label>
     </div>
   );
