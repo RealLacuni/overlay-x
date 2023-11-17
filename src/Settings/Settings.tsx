@@ -8,6 +8,7 @@ import HotkeyInput from "../Overlay/HotkeyInput";
 import Alert from "../components/Alert";
 
 const Settings = () => {
+  //replace this entire thing with react-forms. 
   const { preferences, updatePreferences, saveToDisk } = useContext(PreferenceContext);
   const [successfulSave, setSuccessfulSave] = useState(false);
   const onSuccessfulSave = () => {
@@ -22,35 +23,9 @@ const Settings = () => {
   const [currentProfile, setCurrentProfile] = useState({ ...profiles[preferences.activeProfile] });
   const inputFields = currentProfile.shapeInputs;
 
-  const handleFieldChange = (fieldName: string, value: string | number | boolean) => {
-    /* handler function for when a field is changed,
-     *  updates the current profile with the new value and sets the current profile to the new profile
-     */
-    setCurrentProfile((prevProfile: Profile) => ({
-      ...prevProfile,
-      shapeInputs: {
-        ...prevProfile.shapeInputs,
-        [fieldName]: value
-      }
-    }));
-  };
 
-  const handleHotkeyUpdate = (identifier: string, hotkey: string) => {
-    const newPref = { ...preferences, shortcuts: { ...preferences.shortcuts, [identifier]: hotkey } };
-    window.Main.PrintInBackend(`\new hotkey pref: ${JSON.stringify(newPref)}\n`);
-    updatePreferences(newPref);
-  };
-
-  const savePreferences = () => {
-    const newProfiles = { ...profiles }; // Create a new copy of the profiles array
-    newProfiles[preferences.activeProfile] = { ...currentProfile }; // Overwrite current profile with the new current profile
-    const newPref = {
-      ...preferences,
-      profiles: newProfiles
-    };
-    window.Main.PrintInBackend(
-      `\nsaving preferences ... ${JSON.stringify(newPref)}\n`
-    );
+  const handleSettingSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     updatePreferences(newPref);
     const didSave = saveToDisk();
     if (didSave) {
@@ -61,6 +36,12 @@ const Settings = () => {
       updatePreferences(preferences);
       window.Main.PrintInBackend("failed to save preferences to disk");
     }
+  }
+
+  const handleHotkeyUpdate = (identifier: string, hotkey: string) => {
+    const newPref = { ...preferences, shortcuts: { ...preferences.shortcuts, [identifier]: hotkey } };
+    window.Main.PrintInBackend(`\new hotkey pref: ${JSON.stringify(newPref)}\n`);
+    updatePreferences(newPref);
   };
 
   const renderInputFields = () => {
@@ -69,12 +50,6 @@ const Settings = () => {
         key={index}
         fieldName={fieldName}
         startValue={currentProfile.shapeInputs[fieldName]}
-        handleChange={(value : string | number | boolean) => {
-          if (fieldName == "opacity") {
-            value = Number(value) / 100;
-          }
-          handleFieldChange(fieldName, value);
-        }}
       />
     ));
   };
@@ -86,10 +61,10 @@ const Settings = () => {
         {/* TODO:
         shape selection and display current using dropdown menu */}
         {renderInputFields()}
-        <HotkeyInput handleHotkeyUpdate={handleHotkeyUpdate} featureName={"toggleOverlay"} />
-        <HotkeyInput handleHotkeyUpdate={handleHotkeyUpdate} featureName={"openMenu"} />
+        <HotkeyInput handleHotkeyUpdate={handleHotkeyUpdate} featureName={"toggleOverlay"} startVal={preferences.shortcuts.toggleOverlay}/>
+        <HotkeyInput handleHotkeyUpdate={handleHotkeyUpdate} featureName={"openMenu"} startVal={preferences.shortcuts.openMenu} />
         <div className="flex flex-row gap-4">
-          <PrimaryButton className={"h-16 w-20 justify-center"} onClick={savePreferences}>
+          <PrimaryButton className={"h-16 w-20 justify-center"} submit={true}>
             Save
           </PrimaryButton>
           {successfulSave && <Alert type="success" />}

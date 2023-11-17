@@ -7,11 +7,13 @@ type HotkeyInputProps = {
   handleHotkeyUpdate: (identifier: string, hotkey: string) => void;
   className?: string | null;
   featureName: string;
+  startVal: string;
 };
 
-const HotkeyInput = ({ handleHotkeyUpdate, className, featureName }: HotkeyInputProps) => {
+const HotkeyInput = ({ handleHotkeyUpdate, className, featureName, startVal }: HotkeyInputProps) => {
   const [isListening, setIsListening] = useState(false);
   const [incorrectHotkey, setIncorrectHotkey] = useState(false);
+  const [newHotkey, setNewHotkey] = useState(startVal);
 
   const toggleAlert = () => {
     setTimeout(() => {
@@ -36,6 +38,7 @@ const HotkeyInput = ({ handleHotkeyUpdate, className, featureName }: HotkeyInput
 
         // save new hot key to preferences
         handleHotkeyUpdate(featureName, newHotkey);
+        setNewHotkey(newHotkey);
         setIsListening(false); // Stop capturing keys after setting the new hotkey
       }
     };
@@ -45,7 +48,7 @@ const HotkeyInput = ({ handleHotkeyUpdate, className, featureName }: HotkeyInput
     return () => {
       window.removeEventListener("keyup", handleKeyUp);
     };
-  }, [isListening, handleHotkeyUpdate]);
+  }, [isListening, handleHotkeyUpdate, featureName]);
 
   const handleCaptureKeys = () => {
     setIsListening(true); // Start capturing keys after the button click
@@ -62,6 +65,7 @@ const HotkeyInput = ({ handleHotkeyUpdate, className, featureName }: HotkeyInput
         incorrectHotkey &&
         <Alert type={"error"} message={"Invalid hotkey."}></Alert>
       }
+      <input type="text" name={featureName} className="hidden" value={newHotkey}/>
     </>
   );
 };
