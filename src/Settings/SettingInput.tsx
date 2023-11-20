@@ -1,13 +1,17 @@
 import React from 'react';
 import Slider from '../components/Slider';
 import Toggle from '../components/Toggle';
+import { Control, useFormContext } from 'react-hook-form';
 
 type InputProps = {
   fieldName: string;
   startValue: string | number | boolean;
+  control: Control;
 };
 
-const SettingInput = ({ fieldName, startValue }: InputProps) => {
+const SettingInput = ({ fieldName, startValue, control}: InputProps) => {
+  const formMethods = useFormContext();
+
   let inputComponent;
   if (typeof startValue === 'number') {
     // value is numeric, can safely render a slider along with the input
@@ -28,7 +32,7 @@ const SettingInput = ({ fieldName, startValue }: InputProps) => {
           <input
             type="color"
             defaultValue={startValue}
-            className={'w-6 h-6 bg-gray-200 rounded-md appearance-none cursor-pointer dark:bg-gray-700'}
+            className={'w-6 h-6 bg-gray-200 rounded-md appearance-none cursor-pointer dark:bg-gray-700'} {...formMethods.register}
           />{' '}
           {startValue}
         </div>
@@ -38,7 +42,7 @@ const SettingInput = ({ fieldName, startValue }: InputProps) => {
     inputComponent = (
       <div className="flex flex-col items-start">
         <span>Invert Overlay</span>
-        <Toggle checked={startValue} name="invert" />
+        <Toggle checked={startValue} name="invert" control={control} />
       </div>
     );
   }
