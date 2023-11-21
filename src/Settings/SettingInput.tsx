@@ -1,16 +1,15 @@
 import React from 'react';
 import Slider from '../components/Slider';
 import Toggle from '../components/Toggle';
-import { Control, useFormContext } from 'react-hook-form';
+import {useFormContext } from 'react-hook-form';
 
 type InputProps = {
   fieldName: string;
-  startValue: string | number | boolean;
-  control: Control;
 };
 
-const SettingInput = ({ fieldName, startValue, control}: InputProps) => {
+const SettingInput = ({ fieldName}: InputProps) => {
   const formMethods = useFormContext();
+  const startValue = formMethods.watch(fieldName);
 
   let inputComponent;
   if (typeof startValue === 'number') {
@@ -20,7 +19,7 @@ const SettingInput = ({ fieldName, startValue, control}: InputProps) => {
     const stepSize = 1;
     inputComponent = (
       <div className="w-72">
-        <Slider fieldName={fieldName} minVal={minVal} maxVal={maxVal} startVal={startValue} stepSize={stepSize} />
+        <Slider fieldName={fieldName} minVal={minVal} maxVal={maxVal} stepSize={stepSize} />
       </div>
     );
   } else if (typeof startValue === 'string') {
@@ -42,7 +41,7 @@ const SettingInput = ({ fieldName, startValue, control}: InputProps) => {
     inputComponent = (
       <div className="flex flex-col items-start">
         <span>Invert Overlay</span>
-        <Toggle checked={startValue} name="invert" control={control} />
+        <Toggle name="inverse" />
       </div>
     );
   }

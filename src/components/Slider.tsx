@@ -4,7 +4,6 @@ import { useFormContext } from 'react-hook-form';
 type SliderProps = {
   minVal: number;
   maxVal: number;
-  startVal: number;
   stepSize: number;
   fieldName: string;
 };
@@ -22,7 +21,6 @@ const Slider = (props: SliderProps) => {
         min={props.minVal}
         max={props.maxVal}
         step={props.stepSize}
-        {...props.register}
         className={'w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700'}
       />
       <label htmlFor="default-range" className="block text-sm font-medium text-gray-900">

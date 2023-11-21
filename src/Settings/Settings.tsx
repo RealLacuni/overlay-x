@@ -6,26 +6,31 @@ import { PreferenceContext } from '../util/PreferenceContext';
 import HotkeyInput from '../Overlay/HotkeyInput';
 import Alert from '../components/Alert';
 import { useForm, SubmitHandler, FormProvider } from 'react-hook-form';
+import { ShapeFields } from '../../shared/types';
+
+type FormSettingInputs = {
+  toggleOverlay: string,
+  openMenu: string,
+  inputFields: ShapeFields
+}
 
 const Settings = () => {
   //get the current profile from the preferences
   const nav = useNavigate();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { preferences, updatePreferences, saveToDisk } = useContext(PreferenceContext);
   const profiles = preferences.profiles;
   const [successfulSave, setSuccessfulSave] = useState(false); //state for displaying successful save alert
   const currentProfile = profiles[preferences.activeProfile];
   const inputFields = currentProfile.shapeInputs;
 
-  const {
-    register,
-    control,
-    watch,
-    handleSubmit,
-  } = useForm<typeof inputFields>({
-    defaultValues: inputFields
+  const methods = useForm<Partial<FormSettingInputs>>({
+    defaultValues: {
+      ...preferences.profiles[preferences.activeProfile].shapeInputs,
+      toggleOverlay: preferences.shortcuts.toggleOverlay,
+      openMenu: preferences.shortcuts.openMenu
+    }
   });
-
+  window.Main.PrintInBackend(JSON.stringify(methods.getValues()));
   const onSuccessfulSave = () => {
     setSuccessfulSave(true);
     setTimeout(() => {
@@ -45,8 +50,6 @@ const Settings = () => {
       <SettingInput
         key={index}
         fieldName={fieldName}
-        startValue={currentProfile.shapeInputs[fieldName]}
-        control={control}
       />
     ));
   };
@@ -57,8 +60,8 @@ const Settings = () => {
       {/* TODO:
         shape selection and display current profile using dropdown menu, 
          */}
-      <FormProvider {...{ register, control, watch }}>
-        <form onSubmit={handleSubmit(onSubmit)}>
+      <FormProvider {...methods}>
+        <form onSubmit={methods.handleSubmit(onSubmit)}>
           <div className="flex h-screen overflow-auto w-full flex-col gap-8 p-2 justify-start align pb-20">
             {renderInputFields()}
             <HotkeyInput featureName={'toggleOverlay'} startVal={preferences.shortcuts.toggleOverlay} />
