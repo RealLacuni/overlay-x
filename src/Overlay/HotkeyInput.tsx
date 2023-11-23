@@ -2,17 +2,17 @@ import { useEffect, useState } from 'react';
 import React from 'react';
 import Alert from '../components/Alert';
 import { SecondaryButton } from '../components/Buttons';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 
 type HotkeyInputProps = {
   // handleHotkeyUpdate: (identifier: string, hotkey: string) => void;
   className?: string | null;
-  featureName: string;
+  fieldName: string;
   startVal: string;
 };
 
-const HotkeyInput = ({ className, featureName }: HotkeyInputProps) => {
-  const {register, watch, setValue} = useFormContext();
+const HotkeyInput = ({ className, fieldName }: HotkeyInputProps) => {
+  const {register, setValue} = useFormContext();
   const [isListening, setIsListening] = useState(false);
   const [incorrectHotkey, setIncorrectHotkey] = useState(false);
   const [displaySelection, setDisplaySelection] = useState(false);
@@ -23,7 +23,10 @@ const HotkeyInput = ({ className, featureName }: HotkeyInputProps) => {
     }, 1000);
     setIncorrectHotkey(false);
   };
-  const val = watch(featureName);
+  const val = useWatch({
+    name: fieldName,
+    defaultValue: 0, // Provide a default value if necessary
+  });
 
   useEffect(() => {
     const handleKeyUp = (e: KeyboardEvent) => {
@@ -39,7 +42,7 @@ const HotkeyInput = ({ className, featureName }: HotkeyInputProps) => {
           altKey ? 'Alt+' : ''
         }${key.toUpperCase()}`;
 
-        setValue(featureName, newHotkey);
+        setValue(fieldName, newHotkey);
         setDisplaySelection(true);
         setTimeout(() => {
           setDisplaySelection(false);
@@ -54,7 +57,7 @@ const HotkeyInput = ({ className, featureName }: HotkeyInputProps) => {
     return () => {
       window.removeEventListener('keyup', handleKeyUp);
     };
-  }, [isListening, featureName, setValue]);
+  }, [isListening, fieldName, setValue]);
 
   const handleCaptureKeys = () => {
     setIsListening(true); // Start capturing keys after the button click
@@ -65,11 +68,11 @@ const HotkeyInput = ({ className, featureName }: HotkeyInputProps) => {
       <SecondaryButton className={`h-16 w-48 justify-center ${className} `} onClick={handleCaptureKeys}>
         {isListening
           ? 'Listening for key press...'
-          : `Set new hotkey for ${featureName === 'toggleOverlay' ? 'overlay' : 'menu'}`}
+          : `Set new hotkey for ${fieldName === 'toggleOverlay' ? 'overlay' : 'menu'}`}
       </SecondaryButton>
       {incorrectHotkey && <Alert type={'error'} message={'Invalid hotkey.'}></Alert>}
       {displaySelection && <p className="text-sm text-slate-800">Set new hotkey to <span className='text-sm text-slate-800 font-semibold'>{val}</span></p>}
-      <input value={val} {...register(featureName)} type="text" className="hidden"  />
+      <input value={val} {...register(fieldName)} type="text" className="hidden"  />
     </div>
   );
 };

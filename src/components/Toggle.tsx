@@ -1,14 +1,17 @@
 import React from 'react';
 import { Switch } from '@headlessui/react';
 import { classNames } from '../util/classNames';
-import { useFormContext, Controller } from 'react-hook-form';
+import { useFormContext, Controller, useWatch } from 'react-hook-form';
 
 type ToggleProps = {
   name: string;
 };
 const Toggle = ({ name }: ToggleProps) => {
-  const { control, watch } = useFormContext();
-  const toggleValue = watch(name);
+  const { control } = useFormContext();
+  const toggleValue = useWatch({
+    name: name,
+    defaultValue: false,
+  });
 
   return (
     <Controller

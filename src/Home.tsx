@@ -16,7 +16,6 @@ const Home = () => {
   const isDev : boolean = window.Main.IsDevMode();
 
   const redirectToSettings = () => {
-    console.log('redirecting to settings');
     nav('/settings');
   };
 

@@ -7,12 +7,18 @@ type InputProps = {
   fieldName: string;
 };
 
+enum SliderFields {
+  opacity = 'opacity',
+  thickness = 'thickness',
+  offset = 'offset'
+}
+
 const SettingInput = ({ fieldName}: InputProps) => {
   const formMethods = useFormContext();
   const startValue = formMethods.watch(fieldName);
 
   let inputComponent;
-  if (['opacity', 'thickness', 'offset'].includes(fieldName)) {
+  if (Object.values(SliderFields).includes(fieldName as SliderFields) ) {
     // value is numeric, can safely render a slider along with the input
     const minVal = 0;
     const maxVal = 100;

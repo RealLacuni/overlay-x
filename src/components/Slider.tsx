@@ -1,5 +1,5 @@
 import React from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, useWatch} from 'react-hook-form';
 
 type SliderProps = {
   minVal: number;
@@ -9,24 +9,21 @@ type SliderProps = {
 };
 
 const Slider = (props: SliderProps) => {
-  const {watch, register} = useFormContext();
-  const value = watch(props.fieldName);
-  console.log(props.fieldName);
+  const {register} = useFormContext();
+  const value = useWatch({
+    name: props.fieldName,
+    defaultValue: 0, // Provide a default value if necessary
+  });
   
   return (
     <div className={'flex flex-col items-start justify-start gap-1'}>
       <input
-      {...register(props.fieldName)}
         type="range"
-        value={value}
         min={props.minVal}
         max={props.maxVal}
         step={props.stepSize}
-        onChange = {(e) => {
-          window.Main.PrintInBackend(`changing slider value, ${e}`);
-          register(props.fieldName).onChange(e);
-        }}
         className={'w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700'}
+        {...register(props.fieldName)}
       />
       <label htmlFor="default-range" className="block text-sm font-medium text-gray-900">
         {props.fieldName}: {value == props.maxVal && props.fieldName == 'thickness' ? 'Fullscreen' : value}
