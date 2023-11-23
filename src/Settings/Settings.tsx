@@ -55,14 +55,14 @@ const Settings = () => {
   };
 
   return (
-    <>
+    <div className='h-screen overflow-auto pb-20'>
       <h1 className={'text-center text-4xl'}>Settings</h1>
       {/* TODO:
         shape selection and display current profile using dropdown menu, 
          */}
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onSubmit)}>
-          <div className="flex h-screen overflow-auto w-full flex-col gap-8 p-2 justify-start align pb-20">
+          <div className="flex h-screen w-full flex-col gap-8 p-2 justify-start align pb-20">
             {renderInputFields()}
             <HotkeyInput featureName={'toggleOverlay'} startVal={preferences.shortcuts.toggleOverlay} />
             <HotkeyInput featureName={'openMenu'} startVal={preferences.shortcuts.openMenu} />
@@ -83,7 +83,7 @@ const Settings = () => {
       >
         Back to Main Menu
       </PrimaryButton>
-    </>
+    </div>
   );
 };
 

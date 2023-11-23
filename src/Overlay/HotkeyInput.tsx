@@ -24,8 +24,6 @@ const HotkeyInput = ({ className, featureName }: HotkeyInputProps) => {
     setIncorrectHotkey(false);
   };
   const val = watch(featureName);
-  console.log("watching on ", featureName, "val is ", val);
-  
 
   useEffect(() => {
     const handleKeyUp = (e: KeyboardEvent) => {
@@ -71,7 +69,7 @@ const HotkeyInput = ({ className, featureName }: HotkeyInputProps) => {
       </SecondaryButton>
       {incorrectHotkey && <Alert type={'error'} message={'Invalid hotkey.'}></Alert>}
       {displaySelection && <p className="text-sm text-slate-800">Set new hotkey to <span className='text-sm text-slate-800 font-semibold'>{val}</span></p>}
-      <input value={val} {...register(featureName)} type="text" name={featureName} className="hidden"  />
+      <input value={val} {...register(featureName)} type="text" className="hidden"  />
     </div>
   );
 };

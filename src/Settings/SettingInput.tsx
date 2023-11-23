@@ -12,7 +12,7 @@ const SettingInput = ({ fieldName}: InputProps) => {
   const startValue = formMethods.watch(fieldName);
 
   let inputComponent;
-  if (typeof startValue === 'number') {
+  if (['opacity', 'thickness', 'offset'].includes(fieldName)) {
     // value is numeric, can safely render a slider along with the input
     const minVal = 0;
     const maxVal = 100;
@@ -30,6 +30,7 @@ const SettingInput = ({ fieldName}: InputProps) => {
           <span>Overlay Color: </span>
           <input
             type="color"
+            {...formMethods.register}
             defaultValue={startValue}
             className={'w-6 h-6 bg-gray-200 rounded-md appearance-none cursor-pointer dark:bg-gray-700'} {...formMethods.register}
           />{' '}

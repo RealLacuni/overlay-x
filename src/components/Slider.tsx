@@ -11,16 +11,21 @@ type SliderProps = {
 const Slider = (props: SliderProps) => {
   const {watch, register} = useFormContext();
   const value = watch(props.fieldName);
+  console.log(props.fieldName);
+  
   return (
     <div className={'flex flex-col items-start justify-start gap-1'}>
       <input
       {...register(props.fieldName)}
-        id="default-range"
         type="range"
         value={value}
         min={props.minVal}
         max={props.maxVal}
         step={props.stepSize}
+        onChange = {(e) => {
+          window.Main.PrintInBackend(`changing slider value, ${e}`);
+          register(props.fieldName).onChange(e);
+        }}
         className={'w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700'}
       />
       <label htmlFor="default-range" className="block text-sm font-medium text-gray-900">
