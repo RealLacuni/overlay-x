@@ -25,7 +25,6 @@ const HotkeyInput = ({ className, fieldName }: HotkeyInputProps) => {
   };
   const val = useWatch({
     name: fieldName,
-    defaultValue: 0, // Provide a default value if necessary
   });
 
   useEffect(() => {
