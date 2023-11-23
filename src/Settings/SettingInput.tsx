@@ -1,7 +1,7 @@
 import React from 'react';
 import Slider from '../components/Slider';
 import Toggle from '../components/Toggle';
-import {useFormContext } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 
 type InputProps = {
   fieldName: string;
@@ -13,12 +13,16 @@ enum SliderFields {
   offset = 'offset'
 }
 
-const SettingInput = ({ fieldName}: InputProps) => {
+const SettingInput = ({ fieldName }: InputProps) => {
   const formMethods = useFormContext();
-  const startValue = formMethods.watch(fieldName);
+  const startValue = useWatch({
+    name: fieldName,
+  });
+
+  console.log(`start value of ${fieldName}: ${startValue}`);
 
   let inputComponent;
-  if (Object.values(SliderFields).includes(fieldName as SliderFields) ) {
+  if (Object.values(SliderFields).includes(fieldName as SliderFields)) {
     // value is numeric, can safely render a slider along with the input
     const minVal = 0;
     const maxVal = 100;
@@ -28,7 +32,14 @@ const SettingInput = ({ fieldName}: InputProps) => {
         <Slider fieldName={fieldName} minVal={minVal} maxVal={maxVal} stepSize={stepSize} />
       </div>
     );
-  } else if (typeof startValue === 'string') {
+  } else if (fieldName == 'inverse') {
+    inputComponent = (
+      <div className="flex flex-col items-start">
+        <span>Invert Overlay</span>
+        <Toggle name="inverse" />
+      </div>
+    );
+  } else {
     // value is a string, probably as part of a dropdown
     if (fieldName === 'color') {
       inputComponent = (
@@ -38,19 +49,12 @@ const SettingInput = ({ fieldName}: InputProps) => {
             type="color"
             {...formMethods.register}
             defaultValue={startValue}
-            className={'w-6 h-6 bg-gray-200 rounded-md appearance-none cursor-pointer dark:bg-gray-700'} {...formMethods.register}
+            className={'w-6 h-6 bg-gray-200 rounded-md appearance-none cursor-pointer dark:bg-gray-700'}
           />{' '}
           {startValue}
         </div>
       );
     }
-  } else if (fieldName == 'inverse') {
-    inputComponent = (
-      <div className="flex flex-col items-start">
-        <span>Invert Overlay</span>
-        <Toggle name="inverse" />
-      </div>
-    );
   }
   return inputComponent;
 };

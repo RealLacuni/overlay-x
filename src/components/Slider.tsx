@@ -12,7 +12,6 @@ const Slider = (props: SliderProps) => {
   const {register} = useFormContext();
   const value = useWatch({
     name: props.fieldName,
-    defaultValue: 0, // Provide a default value if necessary
   });
   
   return (
