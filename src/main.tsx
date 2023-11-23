@@ -36,7 +36,7 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.render(
-  <>
+  <div className='flex flex-col h-screen'>
     {
       // if current route is not /overlay then load appBar
       window.location.pathname !== '/overlay' && <AppBar />
@@ -44,6 +44,6 @@ ReactDOM.render(
     <React.StrictMode>
       <RouterProvider router={router} />
     </React.StrictMode>
-  </>,
+  </div>,
   document.getElementById('root')
 );
