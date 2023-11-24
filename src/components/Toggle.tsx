@@ -4,24 +4,24 @@ import { classNames } from '../util/classNames';
 import { useFormContext, Controller, useWatch } from 'react-hook-form';
 
 type ToggleProps = {
-  name: string;
+  fieldName: string;
 };
-const Toggle = ({ name }: ToggleProps) => {
+const Toggle = ({ fieldName }: ToggleProps) => {
   const { control } = useFormContext();
+  const nestedInput = `shapeInputs.${fieldName}`;
   const toggleValue = useWatch({
-    name: name,
-    defaultValue: false,
+    name: nestedInput
   });
 
   return (
     <Controller
-      name={name}
+      name={nestedInput}
       control={control}
       render={({ field }) => (
         <Switch
           defaultChecked={toggleValue}
           onChange={field.onChange}
-          name={name}
+          name={nestedInput}
           className={`${
             toggleValue ? 'bg-blue-600' : 'bg-gray-200'
           } relative inline-flex h-6 w-11 items-center rounded-full`}
