@@ -1,4 +1,4 @@
-import { createContext, useCallback } from 'react';
+import { createContext, useCallback, useEffect } from 'react';
 import React from 'react';
 import { Preferences } from '../../shared/types';
 
@@ -20,7 +20,10 @@ function PreferenceProvider({ children }: { children: React.ReactNode }) {
     setPreferences(newPreferences);
   };
 
+  useEffect(() => {
+
   window.Overlay.onUpdatedPreferences(updateCB);
+  }, []);
 
   const updatePreferences = (newPreferences: Preferences) => {
     setPreferences(newPreferences);
