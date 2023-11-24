@@ -15,12 +15,11 @@ const calculateRadius = (thickness: number, offset: number) => {
 
 const Circle = ({ profile, cursorPosition }: CircleProps) => {
   const { color, offset, opacity } = profile;
-  const thickness = profile.thickness == 100 ? 2000 : profile.thickness;
-
+  const thickness = profile.thickness == 100 ? 2000 : profile.thickness;  
   const radius = calculateRadius(thickness, offset);
   return (
     <div className={`fixed bg-[${color}] top-0 left-0 w-full h-full pointer-events-none`}>
-      <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style={{ opacity: opacity }}>
+      <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style={{ opacity: opacity/100}}>
         <circle
           cx={cursorPosition.x}
           cy={cursorPosition.y}

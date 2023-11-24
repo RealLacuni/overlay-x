@@ -1,36 +1,32 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useFormContext, useWatch} from 'react-hook-form';
 
 type SliderProps = {
   minVal: number;
   maxVal: number;
-  startVal: number;
   stepSize: number;
   fieldName: string;
-  handleChange: (val: number) => void;
 };
 
 const Slider = (props: SliderProps) => {
-  const [sliderValue, setSliderValue] = useState(props.startVal);
-
-  const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = Number(e.target.value);
-    setSliderValue(newValue);
-    props.handleChange(newValue); // Call handleChange with the updated value directly here
-  };
-  
+  const {register} = useFormContext();
+  const nestedInput = `shapeInputs.${props.fieldName}`
+  const value = useWatch({
+    name: nestedInput,
+  });
   return (
     <div className={'flex flex-col items-start justify-start gap-1'}>
       <input
-        id="default-range"
         type="range"
-        value={sliderValue}
-        onChange={handleSliderChange}
         min={props.minVal}
         max={props.maxVal}
         step={props.stepSize}
         className={'w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700'}
-      />      <label htmlFor="default-range" className="block text-sm font-medium text-gray-900">
-      {props.fieldName}: {(sliderValue == props.maxVal && props.fieldName == "thickness") ? "Fullscreen" : sliderValue}{props.fieldName == "opacity" ? "%" : ""}
+        {...register(nestedInput, {valueAsNumber: true})}
+      />
+      <label htmlFor="default-range" className="block text-sm font-medium text-gray-900">
+        {props.fieldName}: {value == props.maxVal && props.fieldName == 'thickness' ? 'Fullscreen' : value}
+        {props.fieldName == 'opacity' ? '%' : ''}
       </label>
     </div>
   );

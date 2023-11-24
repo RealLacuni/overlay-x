@@ -13,9 +13,9 @@ const AppBar = () => {
   };
 
   return (
-    <div className="sticky top-0 w-full draggable select-none flex justify-between mx-1 border-b bg-gray-100 border-b-slate-300">
+    <div className="sticky draggable select-none flex justify-between border-b bg-gray-100 border-b-slate-300">
       <div className={'items-center flex'}>
-        <p className={'text-slate-700'}>OverlayX</p>
+        <p className={'text-slate-700 pl-1'}>OverlayX</p>
       </div>
       <div className="inline-flex mb-0.5">
         <button onClick={window.Main.Minimize} className="undraggable px-6 md:px-4 lg:px-3 pt-1 hover:bg-gray-300">
