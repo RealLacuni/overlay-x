@@ -16,10 +16,8 @@ enum SliderFields {
 const SettingInput = ({ fieldName }: InputProps) => {
   const formMethods = useFormContext();
   const startValue = useWatch({
-    name: fieldName,
+    name: `shapeInputs.${fieldName}`,
   });
-
-  console.log(`start value of ${fieldName}: ${startValue}`);
 
   let inputComponent;
   if (Object.values(SliderFields).includes(fieldName as SliderFields)) {
@@ -36,7 +34,7 @@ const SettingInput = ({ fieldName }: InputProps) => {
     inputComponent = (
       <div className="flex flex-col items-start">
         <span>Invert Overlay</span>
-        <Toggle name="inverse" />
+        <Toggle fieldName="inverse" />
       </div>
     );
   } else {
@@ -47,7 +45,7 @@ const SettingInput = ({ fieldName }: InputProps) => {
           <span>Overlay Color: </span>
           <input
             type="color"
-            {...formMethods.register}
+            {...formMethods.register(`shapeInputs.${fieldName}`)}
             defaultValue={startValue}
             className={'w-6 h-6 bg-gray-200 rounded-md appearance-none cursor-pointer dark:bg-gray-700'}
           />{' '}

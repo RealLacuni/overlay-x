@@ -24,14 +24,14 @@ const Alert = ({ message, type }: AlertProps) => {
       {show && (
         type === 'success' ?
         (
-        <div className="rounded-md absolute bg-green-50 px-4 py-2">
+        <div className="rounded-md bg-green-50 px-4 pt-1 pb-2">
           <div className="flex">
             <div className="flex-shrink-0">
               <CheckIcon className="h-5 w-5 text-green-400" aria-hidden="true" />
             </div>
             <div className="ml-3">
               <h3 className="text-sm font-medium text-green-800">Success</h3>
-              <div className="mt-2 text-sm text-green-700">
+              <div className=" text-sm text-green-700">
                 <p>
                   {message}
                 </p>

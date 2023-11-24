@@ -63,16 +63,16 @@ const HotkeyInput = ({ className, fieldName }: HotkeyInputProps) => {
   };
 
   return (
-    <div className="flex flex-row gap-2 items-center">
-      <SecondaryButton className={`h-16 w-48 justify-center ${className} `} onClick={handleCaptureKeys}>
+    <>
+      <SecondaryButton className={`h-16 w-40 justify-center ${className} `} onClick={handleCaptureKeys}>
         {isListening
           ? 'Listening for key press...'
-          : `Set new hotkey for ${fieldName === 'toggleOverlay' ? 'overlay' : 'menu'}`}
+          : `Update ${fieldName === 'toggleOverlay' ? 'overlay' : 'menu'} hotkey`}
       </SecondaryButton>
       {incorrectHotkey && <Alert type={'error'} message={'Invalid hotkey.'}></Alert>}
       {displaySelection && <p className="text-sm text-slate-800">Set new hotkey to <span className='text-sm text-slate-800 font-semibold'>{val}</span></p>}
       <input value={val} {...register(fieldName)} type="text" className="hidden"  />
-    </div>
+    </>
   );
 };
 

@@ -8,7 +8,7 @@ const appPath = app.getPath('userData');
 const preferencesPath = path.join(appPath, 'profiles', 'preferences.json');
 const dirPath = path.dirname(preferencesPath);
 
-function getPreferences() {
+function getPreferences() : Preferences {
   if (!fs.existsSync(dirPath)) {
     console.log("preference directory not found, creating in dir", dirPath);
     fs.mkdirSync(dirPath, { recursive: true });
@@ -36,7 +36,12 @@ function createPreferences(preferences: Preferences) {
   fs.writeFileSync(preferencesPath, JSON.stringify(preferences));
 }
 
-function updatePreferences(preferences: Preferences) {
+function updatePreferences(preferences: Preferences) : boolean {
+  const isValid = validatePreferences(preferences);
+  if (!isValid) {
+    console.log("preferences file is invalid, not updating");
+    return false;
+  }
   try {
     fs.writeFileSync(preferencesPath, JSON.stringify(preferences));
     return true;
@@ -57,7 +62,7 @@ const defaultPreferences: Preferences = {
         color: '#ffffff',
         thickness: 20,
         offset: 12,
-        opacity: 0.7,
+        opacity: 70,
         inverse: false
       }
     }

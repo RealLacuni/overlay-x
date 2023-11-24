@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import SettingInput from './SettingInput';
-import { PrimaryButton } from '../components/Buttons';
+import { PrimaryButton, RoundButton } from '../components/Buttons';
 import { useNavigate } from 'react-router-dom';
 import { PreferenceContext } from '../util/PreferenceContext';
 import HotkeyInput from '../Overlay/HotkeyInput';
@@ -9,15 +9,21 @@ import { useForm, SubmitHandler, FormProvider } from 'react-hook-form';
 import { ShapeFields } from '../../shared/types';
 
 type FormSettingInputs = {
-  toggleOverlay: string,
-  openMenu: string,
-  inputFields: ShapeFields
-}
+  toggleOverlay: string;
+  openMenu: string;
+  shapeInputs: ShapeFields;
+};
 
-const onSuccessfulSave = (fxn : React.Dispatch<React.SetStateAction<boolean>>) => {
-  fxn(true);
+const onSuccessfulSave = (fxn: React.Dispatch<React.SetStateAction<number>>) => {
+  fxn(1);
   setTimeout(() => {
-    fxn(false);
+    fxn(0);
+  }, 3000);
+};
+const onFailedSave = (fxn: React.Dispatch<React.SetStateAction<number>>) => {
+  fxn(-1);
+  setTimeout(() => {
+    fxn(0);
   }, 3000);
 };
 
@@ -25,62 +31,93 @@ const Settings = () => {
   //get the current profile from the preferences
   const nav = useNavigate();
   const { preferences, updatePreferences, saveToDisk } = useContext(PreferenceContext);
+  const [successfulSave, setSuccessfulSave] = useState(0); //state for displaying successful save alert
+  const [submitting, setSubmitting] = useState(false);
   const profiles = preferences.profiles;
-  const [successfulSave, setSuccessfulSave] = useState(false); //state for displaying successful save alert
   const currentProfile = profiles[preferences.activeProfile];
   const inputFields = currentProfile.shapeInputs;
   const methods = useForm<Partial<FormSettingInputs>>({
     defaultValues: {
-      ...preferences.profiles[preferences.activeProfile].shapeInputs,
+      shapeInputs: { ...preferences.profiles[preferences.activeProfile].shapeInputs },
       toggleOverlay: preferences.shortcuts.toggleOverlay,
-      openMenu: preferences.shortcuts.openMenu,
+      openMenu: preferences.shortcuts.openMenu
     }
   });
-  window.Main.PrintInBackend(`current values of form: , ${JSON.stringify(methods.getValues())}`);
 
-  const onSubmit: SubmitHandler<typeof inputFields> = (data) => {
-    window.Main.PrintInBackend(data);
+  const onSubmit: SubmitHandler<typeof inputFields> = async (data) => {
+    setSubmitting(true);
+    await new Promise((resolve) => setTimeout(resolve, 500)); //delay to show that the save is happening
+
+    window.Main.PrintInBackend(`submission data is: ${JSON.stringify(data)}`);
     //validate fields here.
     //if valid, update preferences and save to disk
-    onSuccessfulSave(setSuccessfulSave);
+
+    const newPreferences = { ...preferences };
+    newPreferences.profiles[preferences.activeProfile].shapeInputs = data.shapeInputs;
+    newPreferences.shortcuts.toggleOverlay = data.toggleOverlay;
+    newPreferences.shortcuts.openMenu = data.openMenu;
+
+    if (!saveToDisk(newPreferences)) {
+      window.Main.PrintInBackend('failed to save preferences to disk');
+      onFailedSave(setSuccessfulSave);
+    } else {
+      onSuccessfulSave(setSuccessfulSave);
+      window.Main.PrintInBackend('saveToDisk was successful');
+      updatePreferences(newPreferences);
+    }
+    setSubmitting(false);
   };
 
   const renderInputFields = React.useMemo(() => {
-    return Object.keys(inputFields).map((fieldName, index) => (
-      <SettingInput key={index} fieldName={fieldName} />
-    ));
-  }, [inputFields]);
+    if (!inputFields) {
+      window.Main.PrintInBackend(`inputFields is undefined, pref is  ${preferences}`);
+      return <p>Something went wrong! Try to restart the app.</p>;
+    }
+    return Object.keys(inputFields).map((fieldName, index) => <SettingInput key={index} fieldName={fieldName} />);
+  }, [inputFields, preferences]);
 
   return (
-    <div className='h-screen overflow-auto pb-20'>
+    <div className="flex flex-col h-screen overflow-auto pb-20">
       <h1 className={'text-center text-4xl'}>Settings</h1>
       {/* TODO:
         shape selection and display current profile using dropdown menu, 
          */}
-      {/* form provider currently bugged, causes full rerenders on every input change per github issue */}
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onSubmit)}>
-          <div className="flex h-screen w-full flex-col gap-8 p-2 justify-start align pb-20">
+          <div className="flex h-screen w-full flex-col gap-8 p-2 justify-center pb-20">
             {renderInputFields}
-            <HotkeyInput fieldName={'toggleOverlay'} startVal={preferences.shortcuts.toggleOverlay} />
-            <HotkeyInput fieldName={'openMenu'} startVal={preferences.shortcuts.openMenu} />
-            <div className="flex flex-row gap-4">
-              <PrimaryButton className={'h-16 w-20 justify-center'} submit={true}>
+            <div className="flex flex-row justify-start gap-2">
+              <HotkeyInput fieldName={'toggleOverlay'} startVal={preferences.shortcuts.toggleOverlay} />
+              <HotkeyInput fieldName={'openMenu'} startVal={preferences.shortcuts.openMenu} />
+            </div>
+            <div className="flex flex-row gap-4 self-end justify-between">
+              {submitting && (
+                <div
+                  className="self-start inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+                  role="status"
+                >
+                  <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
+                    Loading...
+                  </span>
+                </div>
+              )}
+              {successfulSave == -1 && <Alert type="error" message="Error saving new settings." />}
+              {successfulSave > 0 && <Alert type="success" message="Saved" />}
+              <PrimaryButton className={`h-16 w-20 justify-center rounded-small self-center`} disabled={submitting} submit={true}>
                 Save
               </PrimaryButton>
-              {successfulSave && <Alert type="success" />}
             </div>
           </div>
         </form>
       </FormProvider>
-      <PrimaryButton
-        className={'h-16 w-36 justify-center self-center'}
+      <RoundButton
+        className={'h-16 w-40 justify-center self-center'}
         onClick={() => {
           nav('/');
         }}
       >
         Back to Main Menu
-      </PrimaryButton>
+      </RoundButton>
     </div>
   );
 };
