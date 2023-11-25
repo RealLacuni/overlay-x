@@ -71,7 +71,7 @@ function isCircleFields(obj: any): obj is CircleFields {
     obj &&
     typeof obj === 'object' &&
     typeof obj.color === 'string' &&
-    typeof obj.thickness === 'number' &&
+    typeof obj.size === 'number' &&
     typeof obj.offset === 'number' &&
     typeof obj.opacity === 'number' &&
     typeof obj.inverse === 'boolean'

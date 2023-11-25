@@ -60,7 +60,7 @@ const defaultPreferences: Preferences = {
       shape: 'circle',
       shapeInputs: {
         color: '#ffffff',
-        thickness: 20,
+        size: 20,
         offset: 12,
         opacity: 70,
         inverse: false

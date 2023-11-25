@@ -51,7 +51,6 @@ const Settings = () => {
     window.Main.PrintInBackend(`submission data is: ${JSON.stringify(data)}`);
     //validate fields here.
     //if valid, update preferences and save to disk
-
     const newPreferences = { ...preferences };
     newPreferences.profiles[preferences.activeProfile].shapeInputs = data.shapeInputs;
     newPreferences.shortcuts.toggleOverlay = data.toggleOverlay;
@@ -77,7 +76,7 @@ const Settings = () => {
   }, [inputFields, preferences]);
 
   return (
-    <div className="flex flex-col h-screen overflow-auto pb-20">
+    <div className="flex flex-col h-screen overflow-auto pb-10">
       <h1 className={'text-center text-4xl'}>Settings</h1>
       {/* TODO:
         shape selection and display current profile using dropdown menu, 
@@ -111,12 +110,12 @@ const Settings = () => {
         </form>
       </FormProvider>
       <RoundButton
-        className={'h-16 w-40 justify-center self-center'}
+        className={'h-16 w-44 justify-center self-center'}
         onClick={() => {
           nav('/');
         }}
       >
-        Back to Main Menu
+       {"\u2190 Back to main menu"}
       </RoundButton>
     </div>
   );

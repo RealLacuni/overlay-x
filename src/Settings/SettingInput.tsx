@@ -9,7 +9,7 @@ type InputProps = {
 
 enum SliderFields {
   opacity = 'opacity',
-  thickness = 'thickness',
+  size = 'size',
   offset = 'offset'
 }
 
