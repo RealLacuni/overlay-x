@@ -20,7 +20,7 @@ type ShapeFields = CircleFields | SquareFields | EllipseFields; // Define shape 
 
 type CircleFields = {
   color: string;
-  thickness: number;
+  size: number;
   offset: number;
   opacity: number;
   inverse: boolean;

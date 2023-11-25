@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import React from 'react';
-import Alert from '../components/Alert';
 import { SecondaryButton } from '../components/Buttons';
 import { useFormContext, useWatch } from 'react-hook-form';
 
@@ -12,28 +11,29 @@ type HotkeyInputProps = {
 };
 
 const HotkeyInput = ({ className, fieldName }: HotkeyInputProps) => {
-  const {register, setValue} = useFormContext();
+  const { register, setValue } = useFormContext();
   const [isListening, setIsListening] = useState(false);
   const [incorrectHotkey, setIncorrectHotkey] = useState(false);
   const [displaySelection, setDisplaySelection] = useState(false);
 
-  const toggleAlert = () => {
+  const onAlert = (fxn: React.Dispatch<React.SetStateAction<boolean>>) => {
+    fxn(true);
     setTimeout(() => {
-      setIncorrectHotkey(true);
-    }, 1000);
-    setIncorrectHotkey(false);
+      fxn(false);
+    }, 3000);
   };
   const val = useWatch({
-    name: fieldName,
+    name: fieldName
   });
 
   useEffect(() => {
     const handleKeyUp = (e: KeyboardEvent) => {
       if (isListening) {
         const { key, ctrlKey, metaKey, shiftKey, altKey } = e;
-        if (key === 'Control' || key === 'Meta' || key === 'Shift' || key === 'Alt') {
+        if (key === 'Escape' || key === 'Control' || key === 'Meta' || key === 'Shift' || key === 'Alt') {
+          //Don't allow escape to be set, ensure a key is pressed
           // valid hotkey should have a key to press, can't be just modifiers
-          toggleAlert();
+          onAlert(setIncorrectHotkey);
           setIsListening(false);
           return;
         }
@@ -45,7 +45,7 @@ const HotkeyInput = ({ className, fieldName }: HotkeyInputProps) => {
         setDisplaySelection(true);
         setTimeout(() => {
           setDisplaySelection(false);
-        }, 1000);
+        }, 3000);
 
         setIsListening(false); // Stop capturing keys after setting the new hotkey
       }
@@ -63,16 +63,31 @@ const HotkeyInput = ({ className, fieldName }: HotkeyInputProps) => {
   };
 
   return (
-    <>
-      <SecondaryButton className={`h-16 w-40 justify-center ${className} `} onClick={handleCaptureKeys}>
+    <div className="relative">
+      <SecondaryButton
+        className={`h-16 w-40 justify-center ${className} ${
+          isListening && 'bg-slate-300 hover:bg-slate-300 text-slate-100'
+        }`}
+        onClick={handleCaptureKeys}
+        disabled={isListening}
+      >
         {isListening
           ? 'Listening for key press...'
           : `Update ${fieldName === 'toggleOverlay' ? 'overlay' : 'menu'} hotkey`}
       </SecondaryButton>
-      {incorrectHotkey && <Alert type={'error'} message={'Invalid hotkey.'}></Alert>}
-      {displaySelection && <p className="text-sm text-slate-800">Set new hotkey to <span className='text-sm text-slate-800 font-semibold'>{val}</span></p>}
-      <input value={val} {...register(fieldName)} type="text" className="hidden"  />
-    </>
+      {incorrectHotkey && (
+        <span className="text-sm text-black absolute top-8 left-2 border p-0.5 bg-red-100 border-red-400">
+          Error saving hotkey. Try a different key.
+        </span>
+      )}
+      {displaySelection && (
+        <span className="text-sm text-slate-800 absolute top-8 left-2 border p-0.5 bg-green-50 border-green-200">
+          Set new hotkey to <span className="text-sm text-slate-800 font-semibold">{val}</span>
+        </span>
+      )}
+
+      <input value={val} {...register(fieldName)} type="text" className="hidden" />
+    </div>
   );
 };
 
