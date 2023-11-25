@@ -27,6 +27,7 @@ const onFailedSave = (fxn: React.Dispatch<React.SetStateAction<number>>) => {
   }, 3000);
 };
 
+
 const Settings = () => {
   //get the current profile from the preferences
   const nav = useNavigate();
@@ -66,13 +67,12 @@ const Settings = () => {
     }
     setSubmitting(false);
   };
-
   const renderInputFields = React.useMemo(() => {
     if (!inputFields) {
       window.Main.PrintInBackend(`inputFields is undefined, pref is  ${preferences}`);
       return <p>Something went wrong! Try to restart the app.</p>;
     }
-    return Object.keys(inputFields).map((fieldName, index) => <SettingInput key={index} fieldName={fieldName} />);
+    return Object.keys(inputFields).map((fieldName, index) => <SettingInput key={index} fieldName={fieldName}/>);
   }, [inputFields, preferences]);
 
   return (
@@ -102,7 +102,11 @@ const Settings = () => {
               )}
               {successfulSave == -1 && <Alert type="error" message="Error saving new settings." />}
               {successfulSave > 0 && <Alert type="success" message="Saved" />}
-              <PrimaryButton className={`h-16 w-20 justify-center rounded-small self-center`} disabled={submitting} submit={true}>
+              <PrimaryButton
+                className={`h-16 w-20 justify-center rounded-small self-center`}
+                disabled={submitting}
+                submit={true}
+              >
                 Save
               </PrimaryButton>
             </div>
@@ -115,7 +119,7 @@ const Settings = () => {
           nav('/');
         }}
       >
-       {"\u2190 Back to main menu"}
+        {'\u2190 Back to main menu'}
       </RoundButton>
     </div>
   );

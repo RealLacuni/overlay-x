@@ -10,12 +10,13 @@ type CircleProps = {
 };
 
 const calculateRadius = (size: number, offset: number) => {
-  return (size + offset);
+  return size + offset;
 };
 
 const Circle = ({ profile, cursorPosition }: CircleProps) => {
-  const { color, offset = profile.offset*3, opacity } = profile;
-  const size = profile.size == 100 ? 2000 : 5*profile.size;
+  const { color, opacity } = profile;
+  const offset = profile.offset*5;
+  const size = profile.size == 100 ? 2000 : 5 * profile.size;
   const radius = calculateRadius(size, offset);
   return (
     <div className={`fixed bg-[${color}] top-0 left-0 w-full h-full pointer-events-none`}>
@@ -24,9 +25,9 @@ const Circle = ({ profile, cursorPosition }: CircleProps) => {
           <circle
             cx={cursorPosition.x}
             cy={cursorPosition.y}
-            r={radius + size / 2} // size / 2 just to try to keep the size relatively consistent with the inverse circle.
+            r={radius}
             stroke={color} // Ring color
-            strokeWidth={size} // Ring size.
+            strokeWidth={2*size} // Ring size.
             fill="transparent"
           />
         ) : (

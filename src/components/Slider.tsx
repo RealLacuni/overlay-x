@@ -14,6 +14,7 @@ const Slider = (props: SliderProps) => {
   const value = useWatch({
     name: nestedInput,
   });
+
   return (
     <div className={'flex flex-col items-start justify-start gap-1'}>
       <input
