@@ -9,7 +9,7 @@ const Overlay = () => {
 
   return (
     <>
-      <Shape shape={currentProfile.shape} shapeInputs={currentProfile.shapeInputs} />
+      <Shape shape={'rectangle'} shapeInputs={currentProfile.shapeInputs} />
     </>
   );
 };

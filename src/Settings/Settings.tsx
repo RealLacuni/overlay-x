@@ -6,7 +6,8 @@ import HotkeyInput from '../Overlay/HotkeyInput';
 import Alert from '../components/Alert';
 import { useForm, SubmitHandler, FormProvider } from 'react-hook-form';
 import { ShapeFields } from '../../shared/types';
-import CircleSettings from './CircleSettings';
+// import CircleSettings from './CircleSettings';
+import RectangleSettings from './RectangleSettings';
 
 type FormSettingInputs = {
   toggleOverlay: string;
@@ -71,7 +72,7 @@ const Settings = () => {
   let settingComponent;
   switch (currentProfile.shape) {
     case 'circle':
-      settingComponent = (<CircleSettings fields = {inputFields} preferences = {preferences} />)
+      settingComponent = (<RectangleSettings fields = {inputFields} preferences = {preferences} />)
       break;
     case 'rectangle':
       settingComponent = (

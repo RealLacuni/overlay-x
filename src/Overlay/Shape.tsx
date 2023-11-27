@@ -1,24 +1,26 @@
 import { useEffect, useState } from 'react';
-import { CircleFields, EllipseFields, SquareFields } from '../../shared/types';
+import { CircleFields, EllipseFields, RectangleFields } from '../../shared/types';
 import Circle from './Circle';
 import React from 'react';
+import Rectangle from './Rectangle';
 
 type ShapeProps = {
   shape: string;
-  shapeInputs: CircleFields | SquareFields | EllipseFields;
+  shapeInputs: CircleFields | RectangleFields | EllipseFields;
 };
 
 const Shape = ({ shape, shapeInputs }: ShapeProps) => {
     const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
   
     //depending on the shape of the profile track and render different input fields
-    let shapeInputComponent;
+    let shapeInputComponent;    
     switch (shape) {
       case 'circle':
         shapeInputComponent = <Circle profile={shapeInputs as CircleFields} cursorPosition={cursorPosition} />;
         break;
-      case 'square':
+      case 'rectangle':
         // Set shapeInputComponent to the SquareInput component
+        shapeInputComponent = <Rectangle profile={shapeInputs as RectangleFields} cursorPosition={cursorPosition} />;
         break;
       case 'ellipse':
         // Set shapeInputComponent to the EllipseInput component

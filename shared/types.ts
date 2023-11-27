@@ -15,8 +15,8 @@ type Profile = {
   shapeInputs: ShapeFields;
 }
 
-type ShapeType = 'circle' | 'square' | 'ellipse'; // Define shape types
-type ShapeFields = CircleFields | SquareFields | EllipseFields; // Define shape fields
+type ShapeType = 'circle' | 'rectangle' | 'ellipse'; // Define shape types
+type ShapeFields = CircleFields | RectangleFields | EllipseFields; // Define shape fields
 
 type CircleFields = {
   color: string;
@@ -27,11 +27,13 @@ type CircleFields = {
 }
 
 // example shapes to be implemented later
-type SquareFields = {
+type RectangleFields = {
   color: string;
   width: number;
   height: number;
+  offset: number;
   opacity: number;
+  inverse: boolean;
 }
 
 type EllipseFields = {
@@ -42,4 +44,4 @@ type EllipseFields = {
 }
 
 
-export type { Preferences, Profile, ShapeType, ShapeFields, CircleFields, SquareFields, EllipseFields, Shortcuts };
+export type { Preferences, Profile, ShapeType, ShapeFields, CircleFields, RectangleFields, EllipseFields, Shortcuts };

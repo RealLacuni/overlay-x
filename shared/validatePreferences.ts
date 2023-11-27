@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { CircleFields, EllipseFields, Preferences, Profile, Shortcuts, SquareFields } from "./types";
+import { CircleFields, EllipseFields, Preferences, Profile, Shortcuts, RectangleFields } from "./types";
 
 function validatePreferences(obj: any): obj is Preferences {
   try {
@@ -50,7 +50,7 @@ function isProfile(obj: any): obj is Profile {
   );
 }
 
-function isShapeFields(obj: any, shape: string): obj is CircleFields | SquareFields | EllipseFields {
+function isShapeFields(obj: any, shape: string): obj is CircleFields | RectangleFields | EllipseFields {
   if (obj && typeof obj === 'object') {
     switch (shape) {
       case 'circle':
@@ -78,7 +78,7 @@ function isCircleFields(obj: any): obj is CircleFields {
   );
 }
 
-function isSquareFields(obj: any): obj is SquareFields {
+function isSquareFields(obj: any): obj is RectangleFields {
   return (
     obj &&
     typeof obj === 'object' &&
