@@ -18,12 +18,6 @@ const SettingInput = ({ fieldName }: InputProps) => {
   const startValue = useWatch({
     name: `shapeInputs.${fieldName}`,
   });
-  const isInverted = useWatch({
-    name: `shapeInputs.inverse`,
-  });
-  if (!isInverted && fieldName == 'offset') {
-    return null;
-  }
   let inputComponent;
   if (Object.values(SliderFields).includes(fieldName as SliderFields)) {
     // value is numeric, can safely render a slider along with the input

@@ -1,5 +1,4 @@
 import React, { useContext, useState } from 'react';
-import SettingInput from './SettingInput';
 import { PrimaryButton, RoundButton } from '../components/Buttons';
 import { useNavigate } from 'react-router-dom';
 import { PreferenceContext } from '../util/PreferenceContext';
@@ -7,6 +6,7 @@ import HotkeyInput from '../Overlay/HotkeyInput';
 import Alert from '../components/Alert';
 import { useForm, SubmitHandler, FormProvider } from 'react-hook-form';
 import { ShapeFields } from '../../shared/types';
+import CircleSettings from './CircleSettings';
 
 type FormSettingInputs = {
   toggleOverlay: string;
@@ -27,9 +27,10 @@ const onFailedSave = (fxn: React.Dispatch<React.SetStateAction<number>>) => {
   }, 3000);
 };
 
-
+let renderCount = 0;
 const Settings = () => {
   //get the current profile from the preferences
+  renderCount++;
   const nav = useNavigate();
   const { preferences, updatePreferences, saveToDisk } = useContext(PreferenceContext);
   const [successfulSave, setSuccessfulSave] = useState(0); //state for displaying successful save alert
@@ -67,24 +68,32 @@ const Settings = () => {
     }
     setSubmitting(false);
   };
-  const renderInputFields = React.useMemo(() => {
-    if (!inputFields) {
-      window.Main.PrintInBackend(`inputFields is undefined, pref is  ${preferences}`);
-      return <p>Something went wrong! Try to restart the app.</p>;
-    }
-    return Object.keys(inputFields).map((fieldName, index) => <SettingInput key={index} fieldName={fieldName}/>);
-  }, [inputFields, preferences]);
-
+  let settingComponent;
+  switch (currentProfile.shape) {
+    case 'circle':
+      settingComponent = (<CircleSettings fields = {inputFields} preferences = {preferences} />)
+      break;
+    case 'rectangle':
+      settingComponent = (
+        <div>
+          rectangle settings go here.
+        </div>
+      );
+      break;
+    default:
+      settingComponent = <div>error</div>;
+  }
   return (
     <div className="flex flex-col h-screen overflow-auto pb-10">
       <h1 className={'text-center text-4xl'}>Settings</h1>
       {/* TODO:
         shape selection and display current profile using dropdown menu, 
          */}
+         <p>{renderCount}</p>
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onSubmit)}>
           <div className="flex h-screen w-full flex-col gap-8 p-2 justify-center pb-20">
-            {renderInputFields}
+            {settingComponent}
             <div className="flex flex-row justify-start gap-2">
               <HotkeyInput fieldName={'toggleOverlay'} startVal={preferences.shortcuts.toggleOverlay} />
               <HotkeyInput fieldName={'openMenu'} startVal={preferences.shortcuts.openMenu} />
