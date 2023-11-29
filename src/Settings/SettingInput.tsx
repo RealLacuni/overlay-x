@@ -53,7 +53,7 @@ const SettingInput = ({ fieldName }: InputProps) => {
             />{' '}
             {startValue}
           </div>
-          <span className="text-gray-500 text-sm self-end">Color of the overlay </span>
+          <span className="text-gray-500 text-sm self-end select-none">Color of the overlay </span>
         </div>
       );
     }

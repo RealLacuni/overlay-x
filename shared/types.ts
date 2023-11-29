@@ -11,8 +11,8 @@ type Shortcuts = {
 }
 
 type Profile = {
-  shape: ShapeType;
-  shapeInputs: ShapeFields;
+  currentShape: ShapeType;
+  shapes: Record<ShapeType, ShapeFields>;
 }
 
 type ShapeType = 'circle' | 'rectangle' | 'ellipse'; // Define shape types

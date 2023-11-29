@@ -13,6 +13,7 @@ const CircleSettings = (props: InputProps) => {
   const isInverted = useWatch({
     name: `shapeInputs.inverse`
   });
+  
   if (!isInverted) {
     //filter out the offset field from fields
     fields = { ...fields };
