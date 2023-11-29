@@ -22,7 +22,7 @@ const Slider = (props: SliderProps) => {
         min={props.minVal}
         max={props.maxVal}
         step={props.stepSize}
-        className={'w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700'}
+        className={'w-full h-2 bg-gray-400 rounded-lg cursor-pointer accent-indigo-600'}
         {...register(nestedInput, {valueAsNumber: true})}
       />
       <label htmlFor="default-range" className="self-end">
