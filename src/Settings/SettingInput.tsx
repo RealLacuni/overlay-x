@@ -34,7 +34,7 @@ const SettingInput = ({ fieldName }: InputProps) => {
       <div className="flex flex-row justify-start w-full">
         <span>Invert Overlay</span>
         <Toggle fieldName="inverse" />
-        <p className='justify-self-end'>ohuouh</p>
+        <p className='justify-self-end'>lorem ipsum</p>
       </div>
     );
   } else {

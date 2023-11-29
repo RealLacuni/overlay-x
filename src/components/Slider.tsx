@@ -16,7 +16,7 @@ const Slider = (props: SliderProps) => {
   });
 
   return (
-    <div className={'flex flex-col items-start justify-start gap-1 border-2 px-1.5 pt-5 rounded-lg rounded-br'}>
+    <div className={'flex flex-col items-start justify-start gap-1 border-2 px-1.5 pt-5 rounded-lg bg-gray-100'}>
       <input
         type="range"
         min={props.minVal}
