@@ -16,7 +16,7 @@ const Slider = (props: SliderProps) => {
   });
 
   return (
-    <div className={'flex flex-col items-start justify-start gap-1'}>
+    <div className={'flex flex-col items-start justify-start gap-1 border-2 px-1.5 pt-5 rounded-lg rounded-br'}>
       <input
         type="range"
         min={props.minVal}
@@ -25,7 +25,7 @@ const Slider = (props: SliderProps) => {
         className={'w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700'}
         {...register(nestedInput, {valueAsNumber: true})}
       />
-      <label htmlFor="default-range" className="block text-sm font-medium text-gray-900">
+      <label htmlFor="default-range" className="self-end">
         {props.fieldName}: {value == props.maxVal && props.fieldName == 'thickness' ? 'Fullscreen' : value}
         {props.fieldName == 'opacity' ? '%' : ''}
       </label>

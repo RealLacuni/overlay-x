@@ -31,9 +31,10 @@ const SettingInput = ({ fieldName }: InputProps) => {
     );
   } else if (fieldName == 'inverse') {
     inputComponent = (
-      <div className="flex flex-col items-start">
+      <div className="flex flex-row justify-start w-full">
         <span>Invert Overlay</span>
         <Toggle fieldName="inverse" />
+        <p className='justify-self-end'>ohuouh</p>
       </div>
     );
   } else {

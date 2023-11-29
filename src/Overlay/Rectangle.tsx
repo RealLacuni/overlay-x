@@ -19,8 +19,8 @@ const Rectangle = ({ profile, cursorPosition }: RectangleProps) => {
           <rect x={cursorPosition.x - profile.width / 2} y={cursorPosition.y - profile.height / 2} width={profile.width} height={profile.height} fill={color} />
         ) : (
           <rect
-            x={cursorPosition.x - profile.width / 2}
-            y={cursorPosition.y - profile.height / 2}
+            x={cursorPosition.x - profile.width / 2 - profile.offset / 2}
+            y={cursorPosition.y - profile.height / 2- profile.offset / 2}
             width={profile.width + profile.offset}
             height={profile.height + profile.offset}
             fill="transparent"

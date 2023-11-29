@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import React from 'react';
-import { SecondaryButton } from '../components/Buttons';
+import { PrimaryButton } from '../components/Buttons';
 import { useFormContext, useWatch } from 'react-hook-form';
 
 type HotkeyInputProps = {
@@ -64,8 +64,8 @@ const HotkeyInput = ({ className, fieldName }: HotkeyInputProps) => {
 
   return (
     <div className="relative">
-      <SecondaryButton
-        className={`h-16 w-40 justify-center ${className} ${
+      <PrimaryButton
+        className={`text-sm justify-center ${className} ${
           isListening && 'bg-slate-300 hover:bg-slate-300 text-slate-100'
         }`}
         onClick={handleCaptureKeys}
@@ -74,7 +74,7 @@ const HotkeyInput = ({ className, fieldName }: HotkeyInputProps) => {
         {isListening
           ? 'Listening for key press...'
           : `Update ${fieldName === 'toggleOverlay' ? 'overlay' : 'menu'} hotkey`}
-      </SecondaryButton>
+      </PrimaryButton>
       {incorrectHotkey && (
         <span className="text-sm text-black absolute top-8 left-2 border p-0.5 bg-red-100 border-red-400">
           Error saving hotkey. Try a different key.

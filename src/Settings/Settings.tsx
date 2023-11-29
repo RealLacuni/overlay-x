@@ -8,10 +8,12 @@ import { useForm, SubmitHandler, FormProvider } from 'react-hook-form';
 import { ShapeFields } from '../../shared/types';
 // import CircleSettings from './CircleSettings';
 import RectangleSettings from './RectangleSettings';
+import ShapeDropdown from '../components/ShapeDropdown';
 
 type FormSettingInputs = {
   toggleOverlay: string;
   openMenu: string;
+  shape: string;
   shapeInputs: ShapeFields;
 };
 
@@ -42,10 +44,12 @@ const Settings = () => {
   const methods = useForm<Partial<FormSettingInputs>>({
     defaultValues: {
       shapeInputs: { ...preferences.profiles[preferences.activeProfile].shapeInputs },
+      shape: preferences.profiles[preferences.activeProfile].shape,
       toggleOverlay: preferences.shortcuts.toggleOverlay,
       openMenu: preferences.shortcuts.openMenu
     }
   });
+  console.log(methods.getValues());
 
   const onSubmit: SubmitHandler<typeof inputFields> = async (data) => {
     setSubmitting(true);
@@ -72,28 +76,29 @@ const Settings = () => {
   let settingComponent;
   switch (currentProfile.shape) {
     case 'circle':
-      settingComponent = (<RectangleSettings fields = {inputFields} preferences = {preferences} />)
+      settingComponent = <RectangleSettings fields={inputFields} preferences={preferences} />;
       break;
     case 'rectangle':
-      settingComponent = (
-        <div>
-          rectangle settings go here.
-        </div>
-      );
+      settingComponent = <div>rectangle settings go here.</div>;
       break;
     default:
       settingComponent = <div>error</div>;
   }
   return (
-    <div className="flex flex-col h-screen overflow-auto pb-10">
+    <div className="flex flex-col h-screen overflow-auto pb-10 bg-slate-50">
       <h1 className={'text-center text-4xl'}>Settings</h1>
       {/* TODO:
         shape selection and display current profile using dropdown menu, 
          */}
-         <p>{renderCount}</p>
+      <p>{renderCount}</p>
+
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onSubmit)}>
           <div className="flex h-screen w-full flex-col gap-8 p-2 justify-center pb-20">
+            <div className="border-b-2 border-gray-300 flex flex-row justify-between items-end pb-2">
+              <ShapeDropdown />
+              <p className="text-gray-500">Shape Selection</p>
+            </div>
             {settingComponent}
             <div className="flex flex-row justify-start gap-2">
               <HotkeyInput fieldName={'toggleOverlay'} startVal={preferences.shortcuts.toggleOverlay} />
@@ -113,7 +118,7 @@ const Settings = () => {
               {successfulSave == -1 && <Alert type="error" message="Error saving new settings." />}
               {successfulSave > 0 && <Alert type="success" message="Saved" />}
               <PrimaryButton
-                className={`h-16 w-20 justify-center rounded-small self-center`}
+                className={`text-base p-4 justify-center rounded-small self-center`}
                 disabled={submitting}
                 submit={true}
               >
