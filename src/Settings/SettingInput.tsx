@@ -16,7 +16,7 @@ enum SliderFields {
 const SettingInput = ({ fieldName }: InputProps) => {
   const formMethods = useFormContext();
   const startValue = useWatch({
-    name: `shapeInputs.${fieldName}`,
+    name: `shapeInputs.${fieldName}`
   });
   let inputComponent;
   if (Object.values(SliderFields).includes(fieldName as SliderFields)) {
@@ -31,25 +31,29 @@ const SettingInput = ({ fieldName }: InputProps) => {
     );
   } else if (fieldName == 'inverse') {
     inputComponent = (
-      <div className="flex flex-row justify-start w-full">
-        <span>Invert Overlay</span>
-        <Toggle fieldName="inverse" />
-        <p className='justify-self-end'>lorem ipsum</p>
+      <div className="flex flex-row justify-between w-full align-middle pb-1 border-b-2">
+        <div className=" flex gap-1 justify-center align-middle">
+          <span>Invert Overlay</span>
+          <Toggle fieldName="inverse" />
+        </div>
+        <p className="text-gray-500 text-sm self-end">Toggle to control empty space around the cursor</p>
       </div>
     );
   } else {
     // value is a string, probably as part of a dropdown
     if (fieldName === 'color') {
       inputComponent = (
-        <div className="flex flex-row gap-1">
-          <span>Overlay Color: </span>
-          <input
-            type="color"
-            {...formMethods.register(`shapeInputs.${fieldName}`)}
-            defaultValue={startValue}
-            className={'w-6 h-6 bg-gray-200 rounded-md appearance-none cursor-pointer dark:bg-gray-700'}
-          />{' '}
-          {startValue}
+        <div className="flex flex-row gap-1 border-b-2 justify-between">
+          <div>
+            <input
+              type="color"
+              {...formMethods.register(`shapeInputs.${fieldName}`)}
+              defaultValue={startValue}
+              className={'w-12 h-4 bg-gray-200 rounded-md appearance-none cursor-pointer dark:bg-gray-700'}
+            />{' '}
+            {startValue}
+          </div>
+          <span className="text-gray-500 text-sm self-end">Color of the overlay </span>
         </div>
       );
     }

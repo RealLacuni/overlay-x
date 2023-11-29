@@ -95,9 +95,9 @@ const Settings = () => {
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onSubmit)}>
           <div className="flex h-screen w-full flex-col gap-8 p-2 justify-center pb-20">
-            <div className="border-b-2 border-gray-300 flex flex-row justify-between items-end pb-2">
+            <div className="border-b-2 border-gray-300 flex flex-row justify-between align-middle items-end pb-1">
               <ShapeDropdown />
-              <p className="text-gray-500">Shape Selection</p>
+              <p className="text-gray-500 self-end">Shape Selection</p>
             </div>
             {settingComponent}
             <div className="flex flex-row justify-start gap-2">

@@ -27,17 +27,16 @@ const ShapeDropdown = () => {
       >
         <Menu.Items className="origin-top-right absolute mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none">
           <Menu.Item>
-            <div className="flex flex-row py-1 align-middle gap-1.5" onClick={() => setValue('shape', 'circle')}>
-              Circle
+            <div className="cursor-pointer flex flex-row py-1 align-middle gap-1.5" onClick={() => setValue('shape', 'circle')}>
+              <span className='select-none'>Circle</span>
               <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 8" fill="currentColor">
                 <circle cx="4" cy="4" r="3" fill={"transparent"} strokeWidth={"1"} stroke='#434242'/>
               </svg>
             </div>
           </Menu.Item>
           <Menu.Item>
-            <div className="py-1 flex flex-row align-middle gap-1.5" onClick={() => setValue('shape', 'rectangle')}>
-              Rectangle
-              <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="-1 0 12 8" fill="currentColor">
+            <div className="cursor-pointer py-1 flex flex-row align-middle gap-1.5" onClick={() => setValue('shape', 'rectangle')}>
+            <span className='select-none'>Rectangle</span>              <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="-1 0 12 8" fill="currentColor">
                 <rect x="0" y="0" width="8" height="8" fill={"transparent"} strokeWidth={"1"} stroke='#434242'
                 />
               </svg>
