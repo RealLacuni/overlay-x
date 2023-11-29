@@ -57,13 +57,31 @@ const defaultPreferences: Preferences = {
   activeProfile: 'default',
   profiles: {
     'default': {
-      shape: 'circle',
-      shapeInputs: {
-        color: '#ffffff',
-        size: 20,
-        offset: 12,
-        opacity: 70,
-        inverse: false
+      currentShape: 'circle',
+      shapes: {
+        'circle': {
+          color: '#ffffff',
+          size: 30,
+          offset: 20,
+          opacity: 85,
+          inverse: false
+        },
+        'rectangle': {
+          color: '#ffffff',
+          width: 50,
+          height: 20,
+          opacity: 85,
+          offset: 20,
+          inverse: false
+        },
+        'ellipse': {
+          color: '#ffffff',
+          width: 50,
+          height: 20,
+          opacity: 85,
+          offset: 20,
+          inverse: false
+        }
       }
     }
   },

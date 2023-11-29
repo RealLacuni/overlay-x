@@ -45,9 +45,22 @@ function isProfile(obj: any): obj is Profile {
   return (
     obj &&
     typeof obj === 'object' &&
-    typeof obj.shape === 'string' &&
-    isShapeFields(obj.shapeInputs, obj.shape)
+    typeof obj.currentShape === 'string' &&
+    isShapes(obj.shapes)
   );
+}
+
+function isShapes(obj: any): boolean {
+  if (obj && typeof obj === 'object') {
+    for (const key in obj) {
+      if (!isShapeFields(obj[key], key)) {
+        console.log("invalid shape fields for", key);  
+        return false;
+      }
+    }
+    return true;
+  }
+  return false;
 }
 
 function isShapeFields(obj: any, shape: string): obj is CircleFields | RectangleFields | EllipseFields {
@@ -55,8 +68,8 @@ function isShapeFields(obj: any, shape: string): obj is CircleFields | Rectangle
     switch (shape) {
       case 'circle':
         return isCircleFields(obj);
-      case 'square':
-        return isSquareFields(obj);
+      case 'rectangle':
+        return isRectangleFields(obj);
       case 'ellipse':
         return isEllipseFields(obj);
       default:
@@ -78,14 +91,16 @@ function isCircleFields(obj: any): obj is CircleFields {
   );
 }
 
-function isSquareFields(obj: any): obj is RectangleFields {
+function isRectangleFields(obj: any): obj is RectangleFields {
   return (
     obj &&
     typeof obj === 'object' &&
     typeof obj.color === 'string' &&
     typeof obj.width === 'number' &&
     typeof obj.height === 'number' &&
-    typeof obj.opacity === 'number'
+    typeof obj.opacity === 'number' &&
+    typeof obj.offset === 'number' &&
+    typeof obj.inverse === 'boolean'
   );
 }
 

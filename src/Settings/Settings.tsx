@@ -6,7 +6,7 @@ import HotkeyInput from '../Overlay/HotkeyInput';
 import Alert from '../components/Alert';
 import { useForm, SubmitHandler, FormProvider } from 'react-hook-form';
 import { ShapeFields } from '../../shared/types';
-// import CircleSettings from './CircleSettings';
+import CircleSettings from './CircleSettings';
 import RectangleSettings from './RectangleSettings';
 import ShapeDropdown from '../components/ShapeDropdown';
 
@@ -40,16 +40,18 @@ const Settings = () => {
   const [submitting, setSubmitting] = useState(false);
   const profiles = preferences.profiles;
   const currentProfile = profiles[preferences.activeProfile];
-  const inputFields = currentProfile.shapeInputs;
+  const inputFields = currentProfile.shapes[currentProfile.currentShape];
+
   const methods = useForm<Partial<FormSettingInputs>>({
     defaultValues: {
-      shapeInputs: { ...preferences.profiles[preferences.activeProfile].shapeInputs },
-      shape: preferences.profiles[preferences.activeProfile].shape,
+      shape: preferences.profiles[preferences.activeProfile].currentShape,
+      shapeInputs: { ...preferences.profiles[preferences.activeProfile].shapes[preferences.profiles[preferences.activeProfile].currentShape] },
       toggleOverlay: preferences.shortcuts.toggleOverlay,
       openMenu: preferences.shortcuts.openMenu
     }
   });
-  console.log(methods.getValues());
+
+  const shape = methods.watch('shape');
 
   const onSubmit: SubmitHandler<typeof inputFields> = async (data) => {
     setSubmitting(true);
@@ -59,7 +61,8 @@ const Settings = () => {
     //validate fields here.
     //if valid, update preferences and save to disk
     const newPreferences = { ...preferences };
-    newPreferences.profiles[preferences.activeProfile].shapeInputs = data.shapeInputs;
+    newPreferences.profiles[preferences.activeProfile].currentShape = data.shape;
+    newPreferences.profiles[preferences.activeProfile].shapes[data.shape] = data.shapeInputs;
     newPreferences.shortcuts.toggleOverlay = data.toggleOverlay;
     newPreferences.shortcuts.openMenu = data.openMenu;
 
@@ -74,19 +77,19 @@ const Settings = () => {
     setSubmitting(false);
   };
   let settingComponent;
-  switch (currentProfile.shape) {
+  switch (shape) {
     case 'circle':
-      settingComponent = <RectangleSettings fields={inputFields} preferences={preferences} />;
+      settingComponent = <CircleSettings fields={inputFields} preferences={preferences} />;
       break;
     case 'rectangle':
-      settingComponent = <div>rectangle settings go here.</div>;
+      settingComponent = <RectangleSettings fields={inputFields} preferences={preferences} />;
       break;
     default:
       settingComponent = <div>error</div>;
   }
   return (
     <div className="flex flex-col h-screen overflow-auto pb-10 bg-slate-50">
-      <h1 className={'text-center text-4xl'}>Settings</h1>
+      <h1 className={'text-center text-4xl pb-10'}>Settings</h1>
       {/* TODO:
         shape selection and display current profile using dropdown menu, 
          */}
@@ -94,10 +97,10 @@ const Settings = () => {
 
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onSubmit)}>
-          <div className="flex h-screen w-full flex-col gap-8 p-2 justify-center pb-20">
+          <div className="flex h-screen w-full flex-col gap-12 p-2 justify-center pb-20">
             <div className="border-b-2 border-gray-300 flex flex-row justify-between align-middle items-end pb-1">
               <ShapeDropdown />
-              <p className="text-gray-500 self-end">Shape Selection</p>
+              <p className="text-gray-500 text-sm self-end">Overlay shape selection</p>
             </div>
             {settingComponent}
             <div className="flex flex-row justify-start gap-2">
