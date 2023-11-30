@@ -38,9 +38,6 @@ const Settings = () => {
   const { preferences, updatePreferences, saveToDisk } = useContext(PreferenceContext);
   const [successfulSave, setSuccessfulSave] = useState(0); //state for displaying successful save alert
   const [submitting, setSubmitting] = useState(false);
-  const profiles = preferences.profiles;
-  const currentProfile = profiles[preferences.activeProfile];
-  const inputFields = currentProfile.shapes[currentProfile.currentShape];
 
   const methods = useForm<Partial<FormSettingInputs>>({
     defaultValues: {
@@ -50,8 +47,16 @@ const Settings = () => {
       openMenu: preferences.shortcuts.openMenu
     }
   });
-
   const shape = methods.watch('shape');
+  if (!shape) {
+    window.Main.PrintInBackend(`shape is undefined, pref is ${preferences}`);
+    return <p>Something went wrong! Try to restart the app.</p>;
+  }
+  const profiles = preferences.profiles;
+  const currentProfile = profiles[preferences.activeProfile];
+  const inputFields = currentProfile.shapes[shape];
+  console.log(`shape is ${shape}`);
+  
 
   const onSubmit: SubmitHandler<typeof inputFields> = async (data) => {
     setSubmitting(true);
@@ -97,7 +102,7 @@ const Settings = () => {
 
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onSubmit)}>
-          <div className="flex h-screen w-full flex-col gap-12 p-2 justify-center pb-20">
+          <div className="flex w-full flex-col gap-12 p-2 justify-center pb-20">
             <div className="border-b-2 border-gray-300 flex flex-row justify-between align-middle items-end pb-1">
               <ShapeDropdown />
               <p className="text-gray-500 text-sm self-end">Overlay shape selection</p>

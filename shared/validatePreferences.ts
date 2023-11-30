@@ -80,6 +80,7 @@ function isShapeFields(obj: any, shape: string): obj is CircleFields | Rectangle
 }
 
 function isCircleFields(obj: any): obj is CircleFields {
+  const keys: Array<keyof CircleFields> = ['color', 'size', 'offset', 'opacity', 'inverse'];
   return (
     obj &&
     typeof obj === 'object' &&
@@ -87,11 +88,14 @@ function isCircleFields(obj: any): obj is CircleFields {
     typeof obj.size === 'number' &&
     typeof obj.offset === 'number' &&
     typeof obj.opacity === 'number' &&
-    typeof obj.inverse === 'boolean'
+    typeof obj.inverse === 'boolean' &&
+    keys.every((key) => Object.prototype.hasOwnProperty.call(obj, key))
+
   );
 }
 
 function isRectangleFields(obj: any): obj is RectangleFields {
+  const keys: Array<keyof RectangleFields> = ['color', 'width', 'height', 'offset', 'opacity', 'inverse'];
   return (
     obj &&
     typeof obj === 'object' &&
@@ -100,7 +104,8 @@ function isRectangleFields(obj: any): obj is RectangleFields {
     typeof obj.height === 'number' &&
     typeof obj.opacity === 'number' &&
     typeof obj.offset === 'number' &&
-    typeof obj.inverse === 'boolean'
+    typeof obj.inverse === 'boolean' &&
+    keys.every((key) => Object.prototype.hasOwnProperty.call(obj, key))
   );
 }
 

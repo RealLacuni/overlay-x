@@ -1,27 +1,26 @@
 import { useWatch } from 'react-hook-form';
-import { CircleFields, Preferences, ShapeFields } from '../../shared/types';
-import useRenderInputFields from '../util/renderInputFields';
 import React from 'react';
+import SettingInput from './SettingInput';
 
-type InputProps = {
-  fields: ShapeFields;
-  preferences: Preferences;
-};
-
-const CircleSettings = (props: InputProps) => {
-  let fields = props.fields as Partial<CircleFields>;
+const CircleSettings = () => {
   const isInverted = useWatch({
     name: `shapeInputs.inverse`
   });
-  
+  const sliders = ['size', 'opacity'];
+
   if (!isInverted) {
     //filter out the offset field from fields
-    fields = { ...fields };
-    delete fields.offset;
+    sliders.push('offset');
   }
 
-  const inputFields = useRenderInputFields(fields, props.preferences);
-  return <>{inputFields}</>;
+  return (
+    <>
+      {' '}
+      <SettingInput fieldName="color" inputType="color" />
+      <SettingInput fieldName={sliders} inputType="slider" />
+      <SettingInput fieldName="inverse" inputType="toggle" />
+    </>
+  );
 };
 
 export default CircleSettings;

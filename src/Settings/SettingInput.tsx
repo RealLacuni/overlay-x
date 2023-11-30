@@ -4,30 +4,28 @@ import Toggle from '../components/Toggle';
 import { useFormContext, useWatch } from 'react-hook-form';
 
 type InputProps = {
-  fieldName: string;
+  fieldName: string | string[];
+  inputType?: string;
 };
 
-enum SliderFields {
-  opacity = 'opacity',
-  size = 'size',
-  offset = 'offset'
-}
-
-const SettingInput = ({ fieldName }: InputProps) => {
+const SettingInput = ({ fieldName, inputType }: InputProps) => {
   const formMethods = useFormContext();
   const startValue = useWatch({
     name: `shapeInputs.${fieldName}`
   });
   let inputComponent;
-  if (Object.values(SliderFields).includes(fieldName as SliderFields)) {
+  if (inputType == 'slider' && typeof fieldName != 'string') {
     // value is numeric, can safely render a slider along with the input
     const minVal = 0;
     const maxVal = 100;
     const stepSize = 1;
-    inputComponent = (
-      <div className="w-72">
-        <Slider fieldName={fieldName} minVal={minVal} maxVal={maxVal} stepSize={stepSize} />
+    const sliderComponents = fieldName.map((field: string) => (
+      <div key={field} className="">
+        <Slider fieldName={field} minVal={minVal} maxVal={maxVal} stepSize={stepSize} />
       </div>
+    ));
+    inputComponent = (
+        <div className="grid grid-cols-3 w-full align-middle pb-2 gap-2 border-b-2">{sliderComponents}</div>
     );
   } else if (fieldName == 'inverse') {
     inputComponent = (

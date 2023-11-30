@@ -1,26 +1,24 @@
 import { useWatch } from 'react-hook-form';
-import { RectangleFields, Preferences, ShapeFields } from '../../shared/types';
-import useRenderInputFields from '../util/renderInputFields';
 import React from 'react';
+import SettingInput from './SettingInput';
 
-type InputProps = {
-  fields: ShapeFields;
-  preferences: Preferences;
-};
 
-const RectangleSettings = (props: InputProps) => {
-  let fields = props.fields as Partial<RectangleFields>;
+const RectangleSettings = () => {
   const isInverted = useWatch({
     name: `shapeInputs.inverse`
   });
-  if (!isInverted) {
+  const sliders = ["width", "height", "opacity"];
+
+  if (isInverted) {
     //filter out the offset field from fields
-    fields = { ...fields };
-    delete fields.width;
+    sliders.push('offset');
   }
 
-  const inputFields = useRenderInputFields(fields, props.preferences);
-  return <>{inputFields}</>;
+  return <>
+  <SettingInput fieldName="color" inputType="color" />
+  <SettingInput fieldName={sliders} inputType="slider" />
+  <SettingInput fieldName="inverse" inputType="toggle" />
+  </>;
 };
 
 export default RectangleSettings;
