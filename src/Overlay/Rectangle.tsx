@@ -24,7 +24,7 @@ const Rectangle = ({ profile, cursorPosition }: RectangleProps) => {
             width={profile.width + profile.offset}
             height={profile.height + profile.offset}
             fill="transparent"
-            stroke={'red'}
+            stroke={color}
             strokeWidth={profile.height}
           />
         )}

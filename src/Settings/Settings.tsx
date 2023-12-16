@@ -30,10 +30,8 @@ const onFailedSave = (fxn: React.Dispatch<React.SetStateAction<number>>) => {
   }, 3000);
 };
 
-let renderCount = 0;
 const Settings = () => {
   //get the current profile from the preferences
-  renderCount++;
   const nav = useNavigate();
   const { preferences, updatePreferences, saveToDisk } = useContext(PreferenceContext);
   const [successfulSave, setSuccessfulSave] = useState(0); //state for displaying successful save alert
@@ -84,10 +82,10 @@ const Settings = () => {
   let settingComponent;
   switch (shape) {
     case 'circle':
-      settingComponent = <CircleSettings fields={inputFields} preferences={preferences} />;
+      settingComponent = <CircleSettings/>;
       break;
     case 'rectangle':
-      settingComponent = <RectangleSettings fields={inputFields} preferences={preferences} />;
+      settingComponent = <RectangleSettings/>;
       break;
     default:
       settingComponent = <div>error</div>;
@@ -98,11 +96,9 @@ const Settings = () => {
       {/* TODO:
         shape selection and display current profile using dropdown menu, 
          */}
-      <p>{renderCount}</p>
-
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onSubmit)}>
-          <div className="flex w-full flex-col gap-12 p-2 justify-center pb-20">
+          <div className="flex w-full flex-col gap-20 p-12 justify-center pb-20">
             <div className="border-b-2 border-gray-300 flex flex-row justify-between align-middle items-end pb-1">
               <ShapeDropdown />
               <p className="text-gray-500 text-sm self-end">Overlay shape selection</p>
