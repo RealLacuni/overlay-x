@@ -9,6 +9,7 @@ import { ShapeFields } from '../../shared/types';
 import CircleSettings from './CircleSettings';
 import RectangleSettings from './RectangleSettings';
 import ShapeDropdown from '../components/ShapeDropdown';
+import SettingDescription from '../components/SettingDescription';
 
 type FormSettingInputs = {
   toggleOverlay: string;
@@ -40,7 +41,11 @@ const Settings = () => {
   const methods = useForm<Partial<FormSettingInputs>>({
     defaultValues: {
       shape: preferences.profiles[preferences.activeProfile].currentShape,
-      shapeInputs: { ...preferences.profiles[preferences.activeProfile].shapes[preferences.profiles[preferences.activeProfile].currentShape] },
+      shapeInputs: {
+        ...preferences.profiles[preferences.activeProfile].shapes[
+          preferences.profiles[preferences.activeProfile].currentShape
+        ]
+      },
       toggleOverlay: preferences.shortcuts.toggleOverlay,
       openMenu: preferences.shortcuts.openMenu
     }
@@ -54,7 +59,6 @@ const Settings = () => {
   const currentProfile = profiles[preferences.activeProfile];
   const inputFields = currentProfile.shapes[shape];
   console.log(`shape is ${shape}`);
-  
 
   const onSubmit: SubmitHandler<typeof inputFields> = async (data) => {
     setSubmitting(true);
@@ -82,10 +86,10 @@ const Settings = () => {
   let settingComponent;
   switch (shape) {
     case 'circle':
-      settingComponent = <CircleSettings/>;
+      settingComponent = <CircleSettings />;
       break;
     case 'rectangle':
-      settingComponent = <RectangleSettings/>;
+      settingComponent = <RectangleSettings />;
       break;
     default:
       settingComponent = <div>error</div>;
@@ -98,11 +102,10 @@ const Settings = () => {
          */}
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onSubmit)}>
-          <div className="flex w-full flex-col gap-20 p-12 justify-center pb-20">
-            <div className="border-b-2 border-gray-300 flex flex-row justify-between align-middle items-end pb-1">
+          <div className="flex w-full flex-col gap-16 p-12 justify-center pb-20">
+            <SettingDescription description="Overlay shape selection" className='gap-2'>
               <ShapeDropdown />
-              <p className="text-gray-500 text-sm self-end">Overlay shape selection</p>
-            </div>
+            </SettingDescription>
             {settingComponent}
             <div className="flex flex-row justify-start gap-2">
               <HotkeyInput fieldName={'toggleOverlay'} startVal={preferences.shortcuts.toggleOverlay} />

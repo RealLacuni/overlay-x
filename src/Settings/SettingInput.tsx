@@ -2,6 +2,7 @@ import React from 'react';
 import Slider from '../components/Slider';
 import Toggle from '../components/Toggle';
 import { useFormContext, useWatch } from 'react-hook-form';
+import SettingDescription from '../components/SettingDescription';
 
 type InputProps = {
   fieldName: string | string[];
@@ -9,12 +10,13 @@ type InputProps = {
 };
 
 const SettingInput = ({ fieldName, inputType }: InputProps) => {
+  const isString = typeof fieldName === typeof 'string';
   const formMethods = useFormContext();
   const startValue = useWatch({
     name: `shapeInputs.${fieldName}`
   });
   let inputComponent;
-  if (inputType == 'slider' && typeof fieldName != 'string') {
+  if (inputType == 'slider' && typeof fieldName !== 'string') {
     // value is numeric, can safely render a slider along with the input
     const minVal = 0;
     const maxVal = 100;
@@ -24,39 +26,42 @@ const SettingInput = ({ fieldName, inputType }: InputProps) => {
         <Slider fieldName={field} minVal={minVal} maxVal={maxVal} stepSize={stepSize} />
       </div>
     ));
-    inputComponent = (
-        <div className="grid grid-cols-3 w-full align-middle pb-2 gap-2 border-b-2">{sliderComponents}</div>
-    );
+    inputComponent = <div className="grid grid-cols-3 w-full align-middle pb-2 gap-2">{sliderComponents}</div>;
   } else if (fieldName == 'inverse') {
     inputComponent = (
-      <div className="flex flex-row justify-between w-full align-middle pb-1 border-b-2">
-        <div className=" flex gap-1 justify-center align-middle">
+      <SettingDescription description="Toggle to control empty space around the cursor">
+        <div>
           <span>Invert Overlay</span>
           <Toggle fieldName="inverse" />
         </div>
-        <p className="text-gray-500 text-sm self-end">Toggle to control empty space around the cursor</p>
-      </div>
+      </SettingDescription>
     );
   } else {
     // value is a string, probably as part of a dropdown
     if (fieldName === 'color') {
       inputComponent = (
-        <div className="flex flex-row gap-1 border-b-2 justify-between">
-          <div>
+        <SettingDescription description="Color of the overlay" className="">
+          <div className="flex flex-col items-center">
             <input
               type="color"
               {...formMethods.register(`shapeInputs.${fieldName}`)}
               defaultValue={startValue}
-              className={'w-12 h-4 bg-gray-200 rounded-md appearance-none cursor-pointer dark:bg-gray-700'}
-            />{' '}
-            {startValue}
+              className={'w-10 h-6 bg-transparent appearance-none cursor-pointer'}
+            />
+            <p className="text-sm">{startValue}</p>
           </div>
-          <span className="text-gray-500 text-sm self-end select-none">Color of the overlay </span>
-        </div>
+        </SettingDescription>
       );
     }
   }
-  return inputComponent;
+  if (isString) return inputComponent;
+  else
+    return (
+      <div className="flex flex-col items-center">
+        {inputComponent}
+        <p className="w-full border-b-2 text-end text-sm text-gray-500 select-none">Slider values</p>
+      </div>
+    );
 };
 
 export default SettingInput;

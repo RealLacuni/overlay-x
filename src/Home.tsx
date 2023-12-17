@@ -10,8 +10,6 @@ const sendLoadOverlay = (useDev = false) => {
 const Home = () => {
   const {preferences} = useContext(PreferenceContext);
   
-  //open dev tools
-  window.Main.OpenDevTools();
   const nav = useNavigate();
   const isDev : boolean = window.Main.IsDevMode();
 
