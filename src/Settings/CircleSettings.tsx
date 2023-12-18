@@ -15,7 +15,6 @@ const CircleSettings = () => {
 
   return (
     <>
-      {' '}
       <SettingInput fieldName="color" inputType="color" />
       <SettingInput fieldName={sliders} inputType="slider" />
       <SettingInput fieldName="inverse" inputType="toggle" />

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { PrimaryButton, RoundButton } from '../components/Buttons';
 import { useNavigate } from 'react-router-dom';
 import { PreferenceContext } from '../util/PreferenceContext';
@@ -30,7 +30,6 @@ const onFailedSave = (fxn: React.Dispatch<React.SetStateAction<number>>) => {
     fxn(0);
   }, 3000);
 };
-
 const Settings = () => {
   //get the current profile from the preferences
   const nav = useNavigate();
@@ -51,14 +50,27 @@ const Settings = () => {
     }
   });
   const shape = methods.watch('shape');
+
+  useEffect(() => {
+    // Reset the form when the 'shape' field changes
+    if (shape) {
+      methods.reset({
+        shape,
+        shapeInputs: {
+          ...preferences.profiles[preferences.activeProfile].shapes[shape]
+        }
+      });
+    }
+  }, [shape, preferences.profiles, preferences.activeProfile, methods]);
+
   if (!shape) {
     window.Main.PrintInBackend(`shape is undefined, pref is ${preferences}`);
     return <p>Something went wrong! Try to restart the app.</p>;
   }
+
   const profiles = preferences.profiles;
   const currentProfile = profiles[preferences.activeProfile];
   const inputFields = currentProfile.shapes[shape];
-  console.log(`shape is ${shape}`);
 
   const onSubmit: SubmitHandler<typeof inputFields> = async (data) => {
     setSubmitting(true);
@@ -83,6 +95,7 @@ const Settings = () => {
     }
     setSubmitting(false);
   };
+
   let settingComponent;
   switch (shape) {
     case 'circle':
@@ -103,7 +116,7 @@ const Settings = () => {
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onSubmit)}>
           <div className="flex w-full flex-col gap-16 p-12 justify-center pb-20">
-            <SettingDescription description="Overlay shape selection" className='gap-2'>
+            <SettingDescription description="Overlay shape selection" className="gap-2">
               <ShapeDropdown />
             </SettingDescription>
             {settingComponent}

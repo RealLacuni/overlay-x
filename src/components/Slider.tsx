@@ -7,14 +7,13 @@ type SliderProps = {
   stepSize: number;
   fieldName: string;
 };
-
 const Slider = (props: SliderProps) => {
   const {register} = useFormContext();
   const nestedInput = `shapeInputs.${props.fieldName}`
   const value = useWatch({
-    name: nestedInput,
+    name: nestedInput
   });
-
+  
   return (
     <div className={'flex flex-col items-start justify-start gap-1 border-2 px-1.5 pt-5 rounded-lg bg-gray-100'}>
       <input
@@ -22,6 +21,7 @@ const Slider = (props: SliderProps) => {
         min={props.minVal}
         max={props.maxVal}
         step={props.stepSize}
+        defaultValue={value}
         className={'w-full h-2 bg-gray-400 rounded-lg cursor-pointer accent-indigo-600'}
         {...register(nestedInput, {valueAsNumber: true})}
       />

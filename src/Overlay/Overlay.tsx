@@ -6,8 +6,6 @@ import { Profile } from '../../shared/types';
 const Overlay = () => {
   const { preferences } = useContext(PreferenceContext); //can also grab updatePreferences from provider here
   //get active profile
-  window.Main.PrintInBackend(`Overlay.tsx: ${preferences}`);
-  window.Main.PrintInBackend(`Overlay.tsx: ${preferences.profiles}`);
   const currentProfile = preferences.profiles[preferences.activeProfile] as Profile;
   const currentShape = currentProfile.currentShape
   return (
