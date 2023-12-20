@@ -15,6 +15,7 @@ const Rectangle = ({ profile, cursorPosition, renderMiniature }: RectangleProps)
   let offset = profile.offset;
   let width = profile.width;
   let height = profile.height;
+
   const scale = 0.5;
   if (renderMiniature) {
     offset *= scale;
@@ -26,7 +27,7 @@ const Rectangle = ({ profile, cursorPosition, renderMiniature }: RectangleProps)
     <div
       className={`${
         renderMiniature
-          ? 'absolute bottom-0 right-0 w-36 h-32 bg-gray-200 rounded-lg'
+          ? 'absolute bottom-0 right-0 w-36 h-36 bg-gray-200 rounded-lg'
           : 'fixed top-0 left-0 w-full h-full'
       } bg-[${color}] pointer-events-none`}
     >
@@ -34,21 +35,21 @@ const Rectangle = ({ profile, cursorPosition, renderMiniature }: RectangleProps)
       <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style={{ opacity: opacity / 100 }}>
         {!profile.inverse ? (
           <rect
-            x={renderMiniature ? `${50 - width / 2.5}%` : cursorPosition.x - width / 2}
-            y={renderMiniature ? `${50 - height / 3}%` : cursorPosition.y - height / 2}
+            x={renderMiniature ? `${50 - width / 2}%` : cursorPosition.x - width / 2}
+            y={renderMiniature ? `${50 - height / 2}%` : cursorPosition.y - height / 2}
             width={width}
             height={height}
             fill={color}
           />
         ) : (
           <rect
-            x={renderMiniature ? `${50 - width/2}%` : cursorPosition.x - width / 2 - offset / 2}
-            y={renderMiniature ? `${50 - height/2 - offset/2}%` : cursorPosition.y - height / 2 - offset / 2}
+            x={renderMiniature ? `${50 - width / 2 - offset/3}%` : cursorPosition.x - width / 2 - offset / 2}
+            y={renderMiniature ? `${50 - height / 2 - offset/3}%` : cursorPosition.y - height / 2 - offset / 2}
             width={width + offset}
             height={height + offset}
             fill="transparent"
             stroke={color}
-            strokeWidth={height}
+            strokeWidth={offset}
           />
         )}
       </svg>

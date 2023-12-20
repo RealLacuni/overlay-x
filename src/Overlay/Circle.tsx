@@ -21,7 +21,7 @@ const Circle = ({ profile, cursorPosition, renderMiniature }: CircleProps) => {
   const scale = 0.02;
   if (renderMiniature) {
     size *= scale;
-    offset *= scale;
+    offset *= 5*scale;
   }
   const radius = calculateRadius(size, offset);
   return (
@@ -39,7 +39,7 @@ const Circle = ({ profile, cursorPosition, renderMiniature }: CircleProps) => {
             cy={renderMiniature ? '50%' : cursorPosition.y}
             r={radius}
             stroke={color} // Ring color
-            strokeWidth={2 * size} // Ring size.
+            strokeWidth={size} // Ring size.
             fill="transparent"
           />
         ) : (

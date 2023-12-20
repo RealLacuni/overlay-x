@@ -21,8 +21,8 @@ const ShapePreview = () => {
   }
   return (
     <>
-      <div className="absolute bottom-0 right-0 w-36 h-32 bg-gray-200 rounded-lg">{shapeInputComponent}</div>
-      <div className="absolute bottom-0 right-0 w-36 h-32 rounded-lg">
+      <div className="absolute bottom-0 right-4 w-36 h-36 bg-gray-200 rounded-lg">{shapeInputComponent}</div>
+      <div className="absolute bottom-0 right-4 w-36 h-36 rounded-lg">
         <div
           className="absolute bg-transparent"
           style={{ left: '51%', top: '51%', transform: 'translate(-50%, -50%)' }}
