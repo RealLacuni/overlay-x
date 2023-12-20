@@ -8,7 +8,7 @@ const CircleSettings = () => {
   });
   const sliders = ['size', 'opacity'];
 
-  if (!isInverted) {
+  if (isInverted) {
     //filter out the offset field from fields
     sliders.push('offset');
   }

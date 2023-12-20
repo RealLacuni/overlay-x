@@ -5,11 +5,12 @@ import { PreferenceContext } from '../util/PreferenceContext';
 import HotkeyInput from '../Overlay/HotkeyInput';
 import Alert from '../components/Alert';
 import { useForm, SubmitHandler, FormProvider } from 'react-hook-form';
-import { ShapeFields } from '../../shared/types';
+import { Profile, ShapeFields } from '../../shared/types';
 import CircleSettings from './CircleSettings';
 import RectangleSettings from './RectangleSettings';
 import ShapeDropdown from '../components/ShapeDropdown';
 import SettingDescription from '../components/SettingDescription';
+import ShapePreview from '../components/ShapePreview';
 
 type FormSettingInputs = {
   toggleOverlay: string;
@@ -50,7 +51,6 @@ const Settings = () => {
     }
   });
   const shape = methods.watch('shape');
-
   useEffect(() => {
     // Reset the form when the 'shape' field changes
     if (shape) {
@@ -68,11 +68,10 @@ const Settings = () => {
     return <p>Something went wrong! Try to restart the app.</p>;
   }
 
-  const profiles = preferences.profiles;
+  const profiles = preferences.profiles as Profile[];
   const currentProfile = profiles[preferences.activeProfile];
-  const inputFields = currentProfile.shapes[shape];
 
-  const onSubmit: SubmitHandler<typeof inputFields> = async (data) => {
+  const onSubmit: SubmitHandler<Partial<FormSettingInputs>> = async (data) => {
     setSubmitting(true);
     await new Promise((resolve) => setTimeout(resolve, 500)); //delay to show that the save is happening
 
@@ -80,6 +79,10 @@ const Settings = () => {
     //validate fields here.
     //if valid, update preferences and save to disk
     const newPreferences = { ...preferences };
+    if (!data.shape) {
+      window.Main.PrintInBackend('shape is undefined');
+      return;
+    }
     newPreferences.profiles[preferences.activeProfile].currentShape = data.shape;
     newPreferences.profiles[preferences.activeProfile].shapes[data.shape] = data.shapeInputs;
     newPreferences.shortcuts.toggleOverlay = data.toggleOverlay;
@@ -147,6 +150,7 @@ const Settings = () => {
             </div>
           </div>
         </form>
+        <ShapePreview />
       </FormProvider>
       <RoundButton
         className={'h-16 w-44 justify-center self-center'}
@@ -156,6 +160,7 @@ const Settings = () => {
       >
         {'\u2190 Back to main menu'}
       </RoundButton>
+      
     </div>
   );
 };
