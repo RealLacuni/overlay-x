@@ -5,7 +5,7 @@ import { PreferenceContext } from '../util/PreferenceContext';
 import HotkeyInput from '../Overlay/HotkeyInput';
 import Alert from '../components/Alert';
 import { useForm, SubmitHandler, FormProvider } from 'react-hook-form';
-import { Profile, ShapeFields } from '../../shared/types';
+import { ShapeFields } from '../../shared/types';
 import CircleSettings from './CircleSettings';
 import RectangleSettings from './RectangleSettings';
 import ShapeDropdown from '../components/ShapeDropdown';
@@ -67,9 +67,6 @@ const Settings = () => {
     window.Main.PrintInBackend(`shape is undefined, pref is ${preferences}`);
     return <p>Something went wrong! Try to restart the app.</p>;
   }
-
-  const profiles = preferences.profiles as Profile[];
-  const currentProfile = profiles[preferences.activeProfile];
 
   const onSubmit: SubmitHandler<Partial<FormSettingInputs>> = async (data) => {
     setSubmitting(true);
@@ -160,7 +157,6 @@ const Settings = () => {
       >
         {'\u2190 Back to main menu'}
       </RoundButton>
-      
     </div>
   );
 };

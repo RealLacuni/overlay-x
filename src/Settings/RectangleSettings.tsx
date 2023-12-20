@@ -8,7 +8,7 @@ const RectangleSettings = () => {
   });
   const sliders = ['width', 'height', 'opacity'];
 
-  if (!isInverted) {
+  if (isInverted) {
     //filter out the offset field from fields
     sliders.push('offset');
   }

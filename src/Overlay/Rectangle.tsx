@@ -7,25 +7,48 @@ type RectangleProps = {
     x: number;
     y: number;
   };
+  renderMiniature?: boolean;
 };
 
-const Rectangle = ({ profile, cursorPosition }: RectangleProps) => {
+const Rectangle = ({ profile, cursorPosition, renderMiniature }: RectangleProps) => {
   const { color, opacity } = profile;
-  profile = { width: 200, height: 200, offset: 100, opacity: 80, inverse: true, color: '#000000' };
+  let offset = profile.offset;
+  let width = profile.width;
+  let height = profile.height;
+  const scale = 0.5;
+  if (renderMiniature) {
+    offset *= scale;
+    width *= scale;
+    height *= scale;
+  }
+
   return (
-    <div className={`fixed bg-[${color}] top-0 left-0 w-full h-full pointer-events-none`}>
+    <div
+      className={`${
+        renderMiniature
+          ? 'absolute bottom-0 right-0 w-36 h-32 bg-gray-200 rounded-lg'
+          : 'fixed top-0 left-0 w-full h-full'
+      } bg-[${color}] pointer-events-none`}
+    >
+      {' '}
       <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style={{ opacity: opacity / 100 }}>
         {!profile.inverse ? (
-          <rect x={cursorPosition.x - profile.width / 2} y={cursorPosition.y - profile.height / 2} width={profile.width} height={profile.height} fill={color} />
+          <rect
+            x={renderMiniature ? `${50 - width / 2.5}%` : cursorPosition.x - width / 2}
+            y={renderMiniature ? `${50 - height / 3}%` : cursorPosition.y - height / 2}
+            width={width}
+            height={height}
+            fill={color}
+          />
         ) : (
           <rect
-            x={cursorPosition.x - profile.width / 2 - profile.offset / 2}
-            y={cursorPosition.y - profile.height / 2- profile.offset / 2}
-            width={profile.width + profile.offset}
-            height={profile.height + profile.offset}
+            x={renderMiniature ? `${50 - width/2}%` : cursorPosition.x - width / 2 - offset / 2}
+            y={renderMiniature ? `${50 - height/2 - offset/2}%` : cursorPosition.y - height / 2 - offset / 2}
+            width={width + offset}
+            height={height + offset}
             fill="transparent"
             stroke={color}
-            strokeWidth={profile.height}
+            strokeWidth={height}
           />
         )}
       </svg>
