@@ -123,7 +123,7 @@ const Settings = () => {
         <ShapePreview />
       </FormProvider>
       <PrimaryButton
-        className={'h-16 w-80 justify-center self-center align-middle'}
+        className={'h-16 w-80 justify-center self-center align-middle bg-indigo-800'}
         onClick={() => {
           nav('/');
         }}
