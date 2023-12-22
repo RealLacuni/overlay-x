@@ -5,7 +5,8 @@ import { useForm, SubmitHandler, FormProvider } from 'react-hook-form';
 import ShapePreview from '../components/ShapePreview';
 import { FormSettingInputs } from '../types';
 import SettingsForm from './SettingsForm';
-import { RoundButton } from '../components/Buttons';
+import { PrimaryButton } from '../components/Buttons';
+import SettingDescription from '../components/SettingDescription';
 
 const onSuccessfulSave = (fxn: React.Dispatch<React.SetStateAction<number>>) => {
   fxn(1);
@@ -25,6 +26,7 @@ const Settings = () => {
   const { preferences, updatePreferences, saveToDisk } = useContext(PreferenceContext);
   const [successfulSave, setSuccessfulSave] = useState(0); //state for displaying successful save alert
   const [submitting, setSubmitting] = useState(false);
+  const [currentProfile, setCurrentProfile] = useState(preferences.activeProfile);
 
   const methods = useForm<Partial<FormSettingInputs>>({
     defaultValues: {
@@ -91,6 +93,26 @@ const Settings = () => {
         shape selection and display current profile using dropdown menu, 
          */}
       <FormProvider {...methods}>
+        <SettingDescription description="Current Profile" className="p-4">
+          <div className='p-1'>
+            <select
+              className="rounded-md p-1 font-medium text-gray-700 bg-white text-sm border shadow-sm px-2 py-1"
+              value={currentProfile}
+              onChange={(e) => {
+                setCurrentProfile(e.target.value);
+              }}
+            >
+              {Object.keys(preferences.profiles).map((profile) => {
+                return (
+                  <option key={profile} value={profile}>
+                    {profile}
+                  </option>
+                );
+              })}
+            </select>{' '}
+          </div>
+        </SettingDescription>
+
         <SettingsForm
           onSubmit={onSubmit}
           methods={methods}
@@ -100,14 +122,14 @@ const Settings = () => {
         />
         <ShapePreview />
       </FormProvider>
-      <RoundButton
-        className={'h-16 w-44 justify-center self-center'}
+      <PrimaryButton
+        className={'h-16 w-80 justify-center self-center align-middle'}
         onClick={() => {
           nav('/');
         }}
       >
         {'\u2190 Back to main menu'}
-      </RoundButton>
+      </PrimaryButton>
     </div>
   );
 };

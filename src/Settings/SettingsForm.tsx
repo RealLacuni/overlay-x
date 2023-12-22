@@ -32,8 +32,8 @@ const SettingsForm = ({ onSubmit, methods, preferences, submitting, successfulSa
       settingComponent = <div>error</div>;
   }
   return (
-    <form onSubmit={methods.handleSubmit(onSubmit)}>
-    <div className="flex w-full flex-col gap-16 p-12 justify-center pb-20">
+    <form onSubmit={methods.handleSubmit(onSubmit)} className='p-6'>
+    <div className="flex w-full flex-col gap-16 justify-center outline outline-1 p-2 outline-gray-400 bg-slate-100">
       <SettingDescription description="Overlay shape selection" className="gap-2">
         <ShapeDropdown />
       </SettingDescription>

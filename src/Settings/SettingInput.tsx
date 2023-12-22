@@ -30,9 +30,9 @@ const SettingInput = ({ fieldName, inputType }: InputProps) => {
   } else if (fieldName == 'inverse') {
     inputComponent = (
       <SettingDescription description="Toggle to control empty space around the cursor">
-        <div>
-          <span>Invert Overlay</span>
+        <div className='flex flex-col items-center align-middle pr-2'>
           <Toggle fieldName="inverse" />
+          <p className='whitespace-nowrap'>Invert Overlay</p>
         </div>
       </SettingDescription>
     );
