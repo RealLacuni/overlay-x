@@ -1,23 +1,11 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { PrimaryButton, RoundButton } from '../components/Buttons';
 import { useNavigate } from 'react-router-dom';
 import { PreferenceContext } from '../util/PreferenceContext';
-import HotkeyInput from '../Overlay/HotkeyInput';
-import Alert from '../components/Alert';
 import { useForm, SubmitHandler, FormProvider } from 'react-hook-form';
-import { ShapeFields } from '../../shared/types';
-import CircleSettings from './CircleSettings';
-import RectangleSettings from './RectangleSettings';
-import ShapeDropdown from '../components/ShapeDropdown';
-import SettingDescription from '../components/SettingDescription';
 import ShapePreview from '../components/ShapePreview';
-
-type FormSettingInputs = {
-  toggleOverlay: string;
-  openMenu: string;
-  shape: string;
-  shapeInputs: ShapeFields;
-};
+import { FormSettingInputs } from '../types';
+import SettingsForm from './SettingsForm';
+import { RoundButton } from '../components/Buttons';
 
 const onSuccessfulSave = (fxn: React.Dispatch<React.SetStateAction<number>>) => {
   fxn(1);
@@ -96,17 +84,6 @@ const Settings = () => {
     setSubmitting(false);
   };
 
-  let settingComponent;
-  switch (shape) {
-    case 'circle':
-      settingComponent = <CircleSettings />;
-      break;
-    case 'rectangle':
-      settingComponent = <RectangleSettings />;
-      break;
-    default:
-      settingComponent = <div>error</div>;
-  }
   return (
     <div className="flex flex-col h-screen overflow-auto pb-10 bg-slate-50">
       <h1 className={'text-center text-4xl pb-10'}>Settings</h1>
@@ -114,39 +91,13 @@ const Settings = () => {
         shape selection and display current profile using dropdown menu, 
          */}
       <FormProvider {...methods}>
-        <form onSubmit={methods.handleSubmit(onSubmit)}>
-          <div className="flex w-full flex-col gap-16 p-12 justify-center pb-20">
-            <SettingDescription description="Overlay shape selection" className="gap-2">
-              <ShapeDropdown />
-            </SettingDescription>
-            {settingComponent}
-            <div className="flex flex-row justify-start gap-2">
-              <HotkeyInput fieldName={'toggleOverlay'} startVal={preferences.shortcuts.toggleOverlay} />
-              <HotkeyInput fieldName={'openMenu'} startVal={preferences.shortcuts.openMenu} />
-            </div>
-            <div className="flex flex-row gap-4 self-end justify-between">
-              {submitting && (
-                <div
-                  className="self-start inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
-                  role="status"
-                >
-                  <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
-                    Loading...
-                  </span>
-                </div>
-              )}
-              {successfulSave == -1 && <Alert type="error" message="Error saving new settings." />}
-              {successfulSave > 0 && <Alert type="success" message="Saved" />}
-              <PrimaryButton
-                className={`text-base p-4 justify-center rounded-small self-center`}
-                disabled={submitting}
-                submit={true}
-              >
-                Save
-              </PrimaryButton>
-            </div>
-          </div>
-        </form>
+        <SettingsForm
+          onSubmit={onSubmit}
+          methods={methods}
+          preferences={preferences}
+          submitting={submitting}
+          successfulSave={successfulSave}
+        />
         <ShapePreview />
       </FormProvider>
       <RoundButton

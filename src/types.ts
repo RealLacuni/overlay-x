@@ -1,4 +1,5 @@
 import * as React from "react";
+import { ShapeFields } from "../shared/types";
 
 declare const HomeIcon: React.ForwardRefExoticComponent<React.PropsWithoutRef<React.SVGProps<SVGSVGElement>> & { title?: string, titleId?: string } & React.RefAttributes<SVGSVGElement>>;
 
@@ -11,4 +12,11 @@ type NavItem = {
   current: boolean;
 }
 
-export type { ClassNameProps, NavItem };
+type FormSettingInputs = {
+  toggleOverlay: string;
+  openMenu: string;
+  shape: string;
+  shapeInputs: ShapeFields;
+};
+
+export type { ClassNameProps, NavItem, FormSettingInputs };
