@@ -26,14 +26,14 @@ const Settings = () => {
   const { preferences, updatePreferences, saveToDisk } = useContext(PreferenceContext);
   const [successfulSave, setSuccessfulSave] = useState(0); //state for displaying successful save alert
   const [submitting, setSubmitting] = useState(false);
+  const [currentProfile, setCurrentProfile] = useState(preferences.activeProfile);
 
   const methods = useForm<Partial<FormSettingInputs>>({
     defaultValues: {
-      currentProfile: preferences.activeProfile,
-      shape: preferences.profiles[preferences.activeProfile].currentShape,
+      shape: preferences.profiles[currentProfile].currentShape,
       shapeInputs: {
-        ...preferences.profiles[preferences.activeProfile].shapes[
-          preferences.profiles[preferences.activeProfile].currentShape
+        ...preferences.profiles[currentProfile].shapes[
+          preferences.profiles[currentProfile].currentShape
         ]
       },
       toggleOverlay: preferences.shortcuts.toggleOverlay,
@@ -41,19 +41,19 @@ const Settings = () => {
     }
   });
   const shape = methods.watch('shape');
-  const currentProfile = methods.watch('currentProfile');
-
+  
   useEffect(() => {
-    // Reset the form when the current profile, or shape of current profile changes
+    // Reset the form when the current profile, or shape of current profile changes    
     if (shape) {
       methods.reset({
-        shape,
+        shape: preferences.profiles[currentProfile].currentShape,
         shapeInputs: {
-          ...preferences.profiles[preferences.activeProfile].shapes[shape]
+          ...preferences.profiles[currentProfile].shapes[preferences.profiles[currentProfile].currentShape
+        ]
         }
       });
     }
-  }, [shape, currentProfile, preferences.profiles, preferences.activeProfile, methods]);
+  }, [shape, preferences.profiles, currentProfile, methods]);
 
   if (!shape) {
     window.Main.PrintInBackend(`shape is undefined, pref is ${preferences}`);
@@ -91,9 +91,9 @@ const Settings = () => {
   return (
     <div className="flex flex-col h-screen overflow-auto pb-80 bg-slate-50">
       <FormProvider {...methods}>
-        <header className='relative flex flex-row justify-center gap-20'>
-        <h1 className={'text-center text-4xl pb-10'}>Settings</h1>
-        <ProfileDropdown />
+        <header className="relative flex flex-row justify-center gap-20">
+          <h1 className={'text-center text-4xl pb-10'}>Settings</h1>
+          <ProfileDropdown currentProfile={currentProfile} setCurrentProfile={setCurrentProfile}/>
         </header>
 
         <SettingsForm

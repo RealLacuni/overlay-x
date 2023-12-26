@@ -18,7 +18,7 @@ const Circle = ({ profile, cursorPosition, renderMiniature }: CircleProps) => {
   const { color, opacity } = profile;
   let offset = profile.offset * 5;
   let size = profile.size == 100 ? 2000 : 5 * profile.size;
-  const scale = 0.02;
+  const scale = 0.15;
   if (renderMiniature) {
     size *= scale;
     offset *= 5*scale;
@@ -28,7 +28,7 @@ const Circle = ({ profile, cursorPosition, renderMiniature }: CircleProps) => {
     <div
       className={`${
         renderMiniature
-          ? 'absolute bottom-0 right-0 w-36 h-32 bg-gray-200 rounded-lg'
+          ? 'absolute bottom-0 right-0 w-36 h-36 bg-gray-200 rounded-lg'
           : 'fixed top-0 left-0 w-full h-full'
       } bg-[${color}] pointer-events-none`}
     >
