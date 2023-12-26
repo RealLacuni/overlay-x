@@ -24,7 +24,6 @@ function createWindow(): Array<BrowserWindow | null> {
     const window = new BrowserWindow({
         width,
         height,
-        //  change to false to use AppBar
         frame: true,
         show: false,
         resizable: true,

@@ -67,6 +67,10 @@ export function setupIPCListeners(mainWindow: BrowserWindow, overlayWindow: Brow
 
     ipcMain.on('hotkey::changeToggle', (event, newKey) => {
         console.log('changing toggle hotkey to ', newKey);
+        if (!newKey || newKey.length == 0) {
+            event.returnValue = false;
+            return;
+        }
         globalShortcut.unregister(preferences.shortcuts.toggleOverlay);
         preferences.shortcuts.toggleOverlay = newKey;
         updatePreferences(preferences);
@@ -78,6 +82,10 @@ export function setupIPCListeners(mainWindow: BrowserWindow, overlayWindow: Brow
 
     ipcMain.on('hotkey::changeMenu', (event, newKey) => {
         console.log('changing menu hotkey to ', newKey);
+        if (!newKey || newKey.length == 0) {
+            event.returnValue = false;
+            return;
+        }
         globalShortcut.unregister(preferences.shortcuts.openMenu);
         preferences.shortcuts.openMenu = newKey;
         updatePreferences(preferences);
