@@ -3,6 +3,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 /* For AppBar */
 .draggable {
     -webkit-user-select: none;
@@ -12,3 +13,4 @@
 .undraggable {
     -webkit-app-region: no-drag;
   }
+

@@ -10,8 +10,6 @@ const sendLoadOverlay = (useDev = false) => {
 const Home = () => {
   const {preferences} = useContext(PreferenceContext);
   
-  //open dev tools
-  window.Main.OpenDevTools();
   const nav = useNavigate();
   const isDev : boolean = window.Main.IsDevMode();
 
@@ -21,7 +19,7 @@ const Home = () => {
 
   return (
     <>
-      <div className={'flex flex-col h-screen justify-center bg-blue-300 items-center gap-12'}>
+      <div className={'flex flex-col h-screen justify-center bg-slate-50 items-center gap-12 text-blue-900'}>
         <SecondaryButton className={' hover:text-black'} onClick={() => sendLoadOverlay(false)}>
           Launch Overlay
         </SecondaryButton>
@@ -37,7 +35,7 @@ const Home = () => {
         </SecondaryButton>
 
         <p>
-          press <span className={'text-blue-900'}>{preferences.shortcuts.toggleOverlay}</span> at any time to toggle the overlay.
+          Press <span className={'text-black'}>{preferences.shortcuts.toggleOverlay}</span> at any time to toggle the overlay.
         </p>
       </div>
     </>

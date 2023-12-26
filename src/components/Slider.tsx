@@ -1,5 +1,5 @@
 import React from 'react';
-import { useFormContext, useWatch} from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 
 type SliderProps = {
   minVal: number;
@@ -7,27 +7,35 @@ type SliderProps = {
   stepSize: number;
   fieldName: string;
 };
-
 const Slider = (props: SliderProps) => {
-  const {register} = useFormContext();
-  const nestedInput = `shapeInputs.${props.fieldName}`
+  const { register } = useFormContext();
+  const nestedInput = `shapeInputs.${props.fieldName}`;
   const value = useWatch({
-    name: nestedInput,
+    name: nestedInput
+  });
+  const shape = useWatch({
+    name: 'shape'
   });
 
+  let displayedName;
+  props.fieldName == 'offset' && shape == 'rectangle'
+    ? (displayedName = `Thickness`)
+    : (displayedName = props.fieldName.charAt(0).toUpperCase() + props.fieldName.slice(1))
+
   return (
-    <div className={'flex flex-col items-start justify-start gap-1'}>
+    <div className={'flex flex-col items-start justify-start gap-1 border-2 px-1.5 pt-5 rounded-lg bg-gray-100'}>
       <input
         type="range"
         min={props.minVal}
         max={props.maxVal}
         step={props.stepSize}
-        className={'w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700'}
-        {...register(nestedInput, {valueAsNumber: true})}
+        defaultValue={value}
+        className={'w-full h-2 bg-gray-400 rounded-lg cursor-pointer accent-indigo-600'}
+        {...register(nestedInput, { valueAsNumber: true })}
       />
-      <label htmlFor="default-range" className="block text-sm font-medium text-gray-900">
-        {props.fieldName}: {value == props.maxVal && props.fieldName == 'thickness' ? 'Fullscreen' : value}
-        {props.fieldName == 'opacity' ? '%' : ''}
+      <label htmlFor="default-range" className="self-end">
+        {displayedName}: { ("Thickness, Size, Width, Height".includes(displayedName) && value == 100) ? "Fullscreen": value}
+        {props.fieldName == 'opacity' && '%'}
       </label>
     </div>
   );

@@ -2,14 +2,19 @@ import { useWatch } from 'react-hook-form';
 import React from 'react';
 import SettingInput from './SettingInput';
 
-const CircleSettings = () => {
+const RectangleSettings = () => {
   const isInverted = useWatch({
     name: `shapeInputs.inverse`
   });
-  const sliders = ['size', 'opacity'];
+  const sliders = ['width', 'height', 'opacity'];
 
   if (isInverted) {
     //filter out the offset field from fields
+    // sliders.findIndex((field, index) => {
+    //   if (field == 'width') {
+    //     sliders.splice(index, 1);
+    //   }
+    // });
     sliders.push('offset');
   }
 
@@ -22,4 +27,4 @@ const CircleSettings = () => {
   );
 };
 
-export default CircleSettings;
+export default RectangleSettings;

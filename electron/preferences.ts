@@ -8,7 +8,7 @@ const appPath = app.getPath('userData');
 const preferencesPath = path.join(appPath, 'profiles', 'preferences.json');
 const dirPath = path.dirname(preferencesPath);
 
-function getPreferences() : Preferences {
+function getPreferences(): Preferences {
   if (!fs.existsSync(dirPath)) {
     console.log("preference directory not found, creating in dir", dirPath);
     fs.mkdirSync(dirPath, { recursive: true });
@@ -19,7 +19,7 @@ function getPreferences() : Preferences {
     createPreferences(defaultPreferences);
     return defaultPreferences;
   }
-  
+
   const file = fs.readFileSync(preferencesPath, 'utf8');
   const pref = JSON.parse(file);
   if (validatePreferences(pref)) {
@@ -36,7 +36,7 @@ function createPreferences(preferences: Preferences) {
   fs.writeFileSync(preferencesPath, JSON.stringify(preferences));
 }
 
-function updatePreferences(preferences: Preferences) : boolean {
+function updatePreferences(preferences: Preferences): boolean {
   const isValid = validatePreferences(preferences);
   if (!isValid) {
     console.log("preferences file is invalid, not updating");
@@ -57,15 +57,117 @@ const defaultPreferences: Preferences = {
   activeProfile: 'default',
   profiles: {
     'default': {
-      shape: 'circle',
-      shapeInputs: {
-        color: '#ffffff',
-        size: 20,
-        offset: 12,
-        opacity: 70,
-        inverse: false
+      currentShape: 'circle',
+      shapes: {
+        'circle': {
+          color: '#ffffff',
+          size: 30,
+          offset: 20,
+          opacity: 85,
+          inverse: false
+        },
+        'rectangle': {
+          color: '#ffffff',
+          width: 50,
+          height: 20,
+          opacity: 85,
+          offset: 20,
+          inverse: false
+        },
+        'ellipse': {
+          color: '#ffffff',
+          width: 50,
+          height: 20,
+          opacity: 85,
+          offset: 20,
+          inverse: false
+        }
       }
-    }
+    },
+    'profile 1': {
+      currentShape: 'circle',
+      shapes: {
+        'circle': {
+          color: '#ffffff',
+          size: 30,
+          offset: 20,
+          opacity: 85,
+          inverse: false
+        },
+        'rectangle': {
+          color: '#ffffff',
+          width: 50,
+          height: 20,
+          opacity: 85,
+          offset: 20,
+          inverse: false
+        },
+        'ellipse': {
+          color: '#ffffff',
+          width: 50,
+          height: 20,
+          opacity: 85,
+          offset: 20,
+          inverse: false
+        }
+      }
+    },
+    'profile 2': {
+      currentShape: 'circle',
+      shapes: {
+        'circle': {
+          color: '#ffffff',
+          size: 30,
+          offset: 20,
+          opacity: 85,
+          inverse: false
+        },
+        'rectangle': {
+          color: '#ffffff',
+          width: 50,
+          height: 20,
+          opacity: 85,
+          offset: 20,
+          inverse: false
+        },
+        'ellipse': {
+          color: '#ffffff',
+          width: 50,
+          height: 20,
+          opacity: 85,
+          offset: 20,
+          inverse: false
+        }
+      }
+    },
+    'profile 3': {
+      currentShape: 'circle',
+      shapes: {
+        'circle': {
+          color: '#ffffff',
+          size: 30,
+          offset: 20,
+          opacity: 85,
+          inverse: false
+        },
+        'rectangle': {
+          color: '#ffffff',
+          width: 50,
+          height: 20,
+          opacity: 85,
+          offset: 20,
+          inverse: false
+        },
+        'ellipse': {
+          color: '#ffffff',
+          width: 50,
+          height: 20,
+          opacity: 85,
+          offset: 20,
+          inverse: false
+        }
+      }
+    },
   },
   shortcuts: {
     toggleOverlay: 'Control+Alt+A',

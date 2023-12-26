@@ -7,33 +7,45 @@ type CircleProps = {
     x: number;
     y: number;
   };
+  renderMiniature?: boolean;
 };
 
 const calculateRadius = (size: number, offset: number) => {
   return size + offset;
 };
 
-const Circle = ({ profile, cursorPosition }: CircleProps) => {
+const Circle = ({ profile, cursorPosition, renderMiniature }: CircleProps) => {
   const { color, opacity } = profile;
-  const offset = profile.offset*5;
-  const size = profile.size == 100 ? 2000 : 5 * profile.size;
+  let offset = profile.offset * 5;
+  let size = profile.size == 100 ? 2000 : 5 * profile.size;
+  const scale = 0.02;
+  if (renderMiniature) {
+    size *= scale;
+    offset *= 5*scale;
+  }
   const radius = calculateRadius(size, offset);
   return (
-    <div className={`fixed bg-[${color}] top-0 left-0 w-full h-full pointer-events-none`}>
+    <div
+      className={`${
+        renderMiniature
+          ? 'absolute bottom-0 right-0 w-36 h-32 bg-gray-200 rounded-lg'
+          : 'fixed top-0 left-0 w-full h-full'
+      } bg-[${color}] pointer-events-none`}
+    >
       <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style={{ opacity: opacity / 100 }}>
         {profile.inverse ? (
           <circle
-            cx={cursorPosition.x}
-            cy={cursorPosition.y}
+            cx={renderMiniature ? '50%' : cursorPosition.x}
+            cy={renderMiniature ? '50%' : cursorPosition.y}
             r={radius}
             stroke={color} // Ring color
-            strokeWidth={2*size} // Ring size.
+            strokeWidth={size} // Ring size.
             fill="transparent"
           />
         ) : (
           <circle
-            cx={cursorPosition.x}
-            cy={cursorPosition.y}
+            cx={renderMiniature ? '50%' : cursorPosition.x}
+            cy={renderMiniature ? '50%' : cursorPosition.y}
             r={size} // radius of center of element, control how much empty space can be available
             fill={color}
           />
