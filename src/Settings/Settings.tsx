@@ -5,8 +5,7 @@ import { useForm, SubmitHandler, FormProvider } from 'react-hook-form';
 import ShapePreview from '../components/ShapePreview';
 import { FormSettingInputs } from '../types';
 import SettingsForm from './SettingsForm';
-import { PrimaryButton } from '../components/Buttons';
-import SettingDescription from '../components/SettingDescription';
+import { SecondaryButton } from '../components/Buttons';
 import ProfileDropdown from '../components/ProfileDropdown';
 
 const onSuccessfulSave = (fxn: React.Dispatch<React.SetStateAction<number>>) => {
@@ -42,9 +41,10 @@ const Settings = () => {
     }
   });
   const shape = methods.watch('shape');
+  const currentProfile = methods.watch('currentProfile');
 
   useEffect(() => {
-    // Reset the form when the 'shape' field changes
+    // Reset the form when the current profile, or shape of current profile changes
     if (shape) {
       methods.reset({
         shape,
@@ -53,7 +53,7 @@ const Settings = () => {
         }
       });
     }
-  }, [shape, preferences.profiles, preferences.activeProfile, methods]);
+  }, [shape, currentProfile, preferences.profiles, preferences.activeProfile, methods]);
 
   if (!shape) {
     window.Main.PrintInBackend(`shape is undefined, pref is ${preferences}`);
@@ -89,14 +89,11 @@ const Settings = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen overflow-auto pb-10 bg-slate-50">
-      {/* TODO:
-        shape selection and display current profile using dropdown menu, 
-      */}
+    <div className="flex flex-col h-screen overflow-auto pb-80 bg-slate-50">
       <FormProvider {...methods}>
-        <header className='flex flex-row justify-center gap-20'>
+        <header className='relative flex flex-row justify-center gap-20'>
         <h1 className={'text-center text-4xl pb-10'}>Settings</h1>
-          <ProfileDropdown />
+        <ProfileDropdown />
         </header>
 
         <SettingsForm
@@ -108,14 +105,14 @@ const Settings = () => {
         />
         <ShapePreview />
       </FormProvider>
-      <PrimaryButton
-        className={'h-16 w-80 justify-center self-center align-middle bg-indigo-800'}
+      <SecondaryButton
+        className={'h-16 w-80'}
         onClick={() => {
           nav('/');
         }}
       >
         {'\u2190 Back to main menu'}
-      </PrimaryButton>
+      </SecondaryButton>
     </div>
   );
 };

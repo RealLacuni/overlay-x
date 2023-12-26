@@ -64,7 +64,7 @@ const SettingsForm = ({ onSubmit, methods, preferences, submitting, successfulSa
           {successfulSave == -1 && <Alert type="error" message="Error saving new settings." />}
           {successfulSave > 0 && <Alert type="success" message="Saved" />}
           <PrimaryButton
-            className={`text-base p-4 justify-center rounded-small self-center`}
+            className={`text-base p-4 w-24 justify-center rounded-small self-center`}
             disabled={submitting}
             submit={true}
           >
