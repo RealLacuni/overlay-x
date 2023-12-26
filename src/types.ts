@@ -17,6 +17,7 @@ type FormSettingInputs = {
   openMenu: string;
   shape: string;
   shapeInputs: ShapeFields;
+  currentProfile: string;
 };
 
 export type { ClassNameProps, NavItem, FormSettingInputs };

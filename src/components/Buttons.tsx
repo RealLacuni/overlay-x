@@ -32,9 +32,9 @@ const PrimaryButton = ({ submit = false, className, onClick, children, disabled 
       type={submit ? 'submit' : 'button'}
       className={
         `${className}` +
+        `${disabled ? ' bg-gray-300 text-gray-400' : ' bg-indigo-600 hover:bg-indigo-700'}` +
         'undraggable inline-flex items-center px-2.5 py-1.5 border border-transparent text-sm font-medium rounded shadow-sm text-white \
-        focus:outline-none' +
-        `${disabled ? ' bg-gray-300 text-gray-400' : ' bg-indigo-600 hover:bg-indigo-700'}`
+        focus:outline-none'
       }
       {...(disabled ? { disabled: true } : {})}
       onClick={submit ? undefined : onClick}

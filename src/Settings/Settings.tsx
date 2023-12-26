@@ -7,6 +7,7 @@ import { FormSettingInputs } from '../types';
 import SettingsForm from './SettingsForm';
 import { PrimaryButton } from '../components/Buttons';
 import SettingDescription from '../components/SettingDescription';
+import ProfileDropdown from '../components/ProfileDropdown';
 
 const onSuccessfulSave = (fxn: React.Dispatch<React.SetStateAction<number>>) => {
   fxn(1);
@@ -26,10 +27,10 @@ const Settings = () => {
   const { preferences, updatePreferences, saveToDisk } = useContext(PreferenceContext);
   const [successfulSave, setSuccessfulSave] = useState(0); //state for displaying successful save alert
   const [submitting, setSubmitting] = useState(false);
-  const [currentProfile, setCurrentProfile] = useState(preferences.activeProfile);
 
   const methods = useForm<Partial<FormSettingInputs>>({
     defaultValues: {
+      currentProfile: preferences.activeProfile,
       shape: preferences.profiles[preferences.activeProfile].currentShape,
       shapeInputs: {
         ...preferences.profiles[preferences.activeProfile].shapes[
@@ -41,6 +42,7 @@ const Settings = () => {
     }
   });
   const shape = methods.watch('shape');
+
   useEffect(() => {
     // Reset the form when the 'shape' field changes
     if (shape) {
@@ -88,30 +90,14 @@ const Settings = () => {
 
   return (
     <div className="flex flex-col h-screen overflow-auto pb-10 bg-slate-50">
-      <h1 className={'text-center text-4xl pb-10'}>Settings</h1>
       {/* TODO:
         shape selection and display current profile using dropdown menu, 
-         */}
+      */}
       <FormProvider {...methods}>
-        <SettingDescription description="Current Profile" className="p-4">
-          <div className='p-1'>
-            <select
-              className="rounded-md p-1 font-medium text-gray-700 bg-white text-sm border shadow-sm px-2 py-1"
-              value={currentProfile}
-              onChange={(e) => {
-                setCurrentProfile(e.target.value);
-              }}
-            >
-              {Object.keys(preferences.profiles).map((profile) => {
-                return (
-                  <option key={profile} value={profile}>
-                    {profile}
-                  </option>
-                );
-              })}
-            </select>{' '}
-          </div>
-        </SettingDescription>
+        <header className='flex flex-row justify-center gap-20'>
+        <h1 className={'text-center text-4xl pb-10'}>Settings</h1>
+          <ProfileDropdown />
+        </header>
 
         <SettingsForm
           onSubmit={onSubmit}
@@ -123,7 +109,7 @@ const Settings = () => {
         <ShapePreview />
       </FormProvider>
       <PrimaryButton
-        className={'h-16 w-80 justify-center self-center align-middle'}
+        className={'h-16 w-80 justify-center self-center align-middle bg-indigo-800'}
         onClick={() => {
           nav('/');
         }}
