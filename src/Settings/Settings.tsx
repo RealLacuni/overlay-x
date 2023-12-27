@@ -72,8 +72,9 @@ const Settings = () => {
       window.Main.PrintInBackend('shape is undefined');
       return;
     }
-    newPreferences.profiles[preferences.activeProfile].currentShape = data.shape;
-    newPreferences.profiles[preferences.activeProfile].shapes[data.shape] = data.shapeInputs;
+    newPreferences.activeProfile = currentProfile;
+    newPreferences.profiles[currentProfile].currentShape = data.shape;
+    newPreferences.profiles[currentProfile].shapes[data.shape] = data.shapeInputs;
     newPreferences.shortcuts.toggleOverlay = data.toggleOverlay;
     newPreferences.shortcuts.openMenu = data.openMenu;
 
@@ -89,7 +90,7 @@ const Settings = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen overflow-auto pb-80 bg-slate-50">
+    <div className="flex flex-col h-screen overflow-auto p-2 pb-80 bg-slate-50">
       <FormProvider {...methods}>
         <header className="relative flex flex-row justify-center gap-20">
           <h1 className={'text-center text-4xl pb-10'}>Settings</h1>
