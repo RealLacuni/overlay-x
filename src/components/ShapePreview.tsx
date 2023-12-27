@@ -8,8 +8,6 @@ const ShapePreview = () => {
   const { watch } = useFormContext();
   const fields = watch('shapeInputs');
   const shape = watch('shape') as string;
-  console.log(fields);
-  // console.log(shape);
 
   let shapeInputComponent;
   switch (shape) {
