@@ -37,7 +37,6 @@ export function setupIPCListeners(mainWindow: BrowserWindow, overlayWindow: Brow
             devWindow.show();
         }
         else {
-            console.log('loading prod overlay');
             overlayWindow.show();
         }
         mainWindow.hide();
@@ -147,7 +146,6 @@ function toggleCallback(overlayWindow: BrowserWindow) {
 
 function menuCallback(mainWindow: BrowserWindow, overlayWindow: BrowserWindow) {
     // opens the menu AND toggles the overlay off.
-    console.log('opening prod menu');
     overlayWindow.hide();
     mainWindow.show();
 }
