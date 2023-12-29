@@ -7,10 +7,10 @@ type HotkeyInputProps = {
   // handleHotkeyUpdate: (identifier: string, hotkey: string) => void;
   className?: string | null;
   fieldName: string;
-  startVal: string;
+  startVal: string; //used for initial render
 };
 
-const HotkeyInput = ({ className, fieldName }: HotkeyInputProps) => {
+const HotkeyInput = ({ className, fieldName, startVal }: HotkeyInputProps) => {
   const { register, setValue } = useFormContext();
   const [isListening, setIsListening] = useState(false);
   const [incorrectHotkey, setIncorrectHotkey] = useState(false);
@@ -86,7 +86,10 @@ const HotkeyInput = ({ className, fieldName }: HotkeyInputProps) => {
         </span>
       )}
 
-      <input value={val} {...register(fieldName)} type="text" className="hidden" />
+      {/* for some reason, using the value from useWatch throws a react error for changing an uncontrolled input, 
+      because val is returning undefined before rerendering. 
+      So we pass in the actual default value through the props as a fallback */}
+      <input value={val ? val : startVal} {...register(fieldName)} type="text" className='hidden' />
     </div>
   );
 };

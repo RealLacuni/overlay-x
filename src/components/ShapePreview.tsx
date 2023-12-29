@@ -1,13 +1,17 @@
 import React from 'react';
-import { useFormContext } from 'react-hook-form';
 import Circle from '../Overlay/Circle';
-import { CircleFields, RectangleFields } from '../../shared/types';
+import { CircleFields, RectangleFields, ShapeFields } from '../../shared/types';
 import Rectangle from '../Overlay/Rectangle';
 
-const ShapePreview = () => {
-  const { watch } = useFormContext();
-  const fields = watch('shapeInputs');
-  const shape = watch('shape') as string;
+type ShapePreviewProps = {
+  shape: string;
+  fields: ShapeFields | undefined;
+};
+
+
+const ShapePreview = ({shape, fields} : ShapePreviewProps) => {
+  if (!fields) return <></>;
+
   let shapeInputComponent;
   switch (shape) {
     case 'circle':

@@ -15,6 +15,7 @@ const SettingInput = ({ fieldName, inputType }: InputProps) => {
   const startValue = useWatch({
     name: `shapeInputs.${fieldName}`
   });
+  
   let inputComponent;
   if (inputType == 'slider' && typeof fieldName !== 'string') {
     // value is numeric, can safely render a slider along with the input

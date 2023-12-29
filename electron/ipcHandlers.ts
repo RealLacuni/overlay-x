@@ -37,36 +37,42 @@ export function setupIPCListeners(mainWindow: BrowserWindow, overlayWindow: Brow
             devWindow.show();
         }
         else {
-            console.log('loading prod overlay');
             overlayWindow.show();
         }
         mainWindow.hide();
     });
 
     //registers keybind for toggling the overlay
-    const toggleReg = globalShortcut.register(preferences.shortcuts.toggleOverlay, () => {
-        toggleCallback(overlayWindow);
-    });
-
-    if (!toggleReg) {
-        console.log('toggle shortcut registration failed');
+    if (preferences.shortcuts.toggleOverlay) {
+        const toggleReg = globalShortcut.register(preferences.shortcuts.toggleOverlay, () => {
+            toggleCallback(overlayWindow);
+            if (!toggleReg) {
+                console.log('toggle shortcut registration failed');
+            }
+        });
     }
 
-    const menuReg = globalShortcut.register(preferences.shortcuts.openMenu, () => {
-        menuCallback(mainWindow, overlayWindow);
-    });
+    if (preferences.shortcuts.openMenu) {
+        const menuReg = globalShortcut.register(preferences.shortcuts.openMenu, () => {
+            menuCallback(mainWindow, overlayWindow);
+        });
 
-    if (!menuReg) {
-        console.log('menu shortcut registration failed');
+        if (!menuReg) {
+            console.log('menu shortcut registration failed');
+        }
     }
 
     if (isDev) {
-        console.log(globalShortcut.isRegistered(preferences.shortcuts.toggleOverlay))
-        console.log(globalShortcut.isRegistered(preferences.shortcuts.openMenu))
+        console.log("toggle registered: ", globalShortcut.isRegistered(preferences.shortcuts.toggleOverlay))
+        console.log("open menu registered: ", globalShortcut.isRegistered(preferences.shortcuts.openMenu))
     }
 
     ipcMain.on('hotkey::changeToggle', (event, newKey) => {
         console.log('changing toggle hotkey to ', newKey);
+        if (!newKey || newKey.length == 0) {
+            event.returnValue = false;
+            return;
+        }
         globalShortcut.unregister(preferences.shortcuts.toggleOverlay);
         preferences.shortcuts.toggleOverlay = newKey;
         updatePreferences(preferences);
@@ -78,6 +84,10 @@ export function setupIPCListeners(mainWindow: BrowserWindow, overlayWindow: Brow
 
     ipcMain.on('hotkey::changeMenu', (event, newKey) => {
         console.log('changing menu hotkey to ', newKey);
+        if (!newKey || newKey.length == 0) {
+            event.returnValue = false;
+            return;
+        }
         globalShortcut.unregister(preferences.shortcuts.openMenu);
         preferences.shortcuts.openMenu = newKey;
         updatePreferences(preferences);
@@ -136,7 +146,6 @@ function toggleCallback(overlayWindow: BrowserWindow) {
 
 function menuCallback(mainWindow: BrowserWindow, overlayWindow: BrowserWindow) {
     // opens the menu AND toggles the overlay off.
-    console.log('opening prod menu');
     overlayWindow.hide();
     mainWindow.show();
 }

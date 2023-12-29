@@ -10,25 +10,27 @@ type CircleProps = {
   renderMiniature?: boolean;
 };
 
-const calculateRadius = (size: number, offset: number) => {
-  return size + offset;
-};
-
 const Circle = ({ profile, cursorPosition, renderMiniature }: CircleProps) => {
   const { color, opacity } = profile;
-  let offset = profile.offset * 5;
-  let size = profile.size == 100 ? 2000 : 5 * profile.size;
-  const scale = 0.02;
+  let offset = 4 * profile.offset;
+  let size = 5 * profile.size;
+  if (!renderMiniature && profile.size == 100) {
+    size = 2000;
+  }
+  if (profile.offset == 100) {
+    offset = 2000;
+  }
+
+  const scale = 0.15;
   if (renderMiniature) {
     size *= scale;
-    offset *= 5*scale;
+    offset *= scale;
   }
-  const radius = calculateRadius(size, offset);
   return (
     <div
       className={`${
         renderMiniature
-          ? 'absolute bottom-0 right-0 w-36 h-32 bg-gray-200 rounded-lg'
+          ? 'absolute bottom-0 right-0 w-36 h-36 bg-gray-200 rounded-lg'
           : 'fixed top-0 left-0 w-full h-full'
       } bg-[${color}] pointer-events-none`}
     >
@@ -37,9 +39,9 @@ const Circle = ({ profile, cursorPosition, renderMiniature }: CircleProps) => {
           <circle
             cx={renderMiniature ? '50%' : cursorPosition.x}
             cy={renderMiniature ? '50%' : cursorPosition.y}
-            r={radius}
+            r={size + offset / 2}
             stroke={color} // Ring color
-            strokeWidth={size} // Ring size.
+            strokeWidth={offset} // Ring size.
             fill="transparent"
           />
         ) : (

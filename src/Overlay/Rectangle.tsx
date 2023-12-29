@@ -11,6 +11,7 @@ type RectangleProps = {
 };
 
 const Rectangle = ({ profile, cursorPosition, renderMiniature }: RectangleProps) => {
+
   const { color, opacity } = profile;
   let offset = profile.offset;
   let width = profile.width == 100 ? 2000 : 8*profile.width;

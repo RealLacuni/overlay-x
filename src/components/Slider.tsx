@@ -34,7 +34,7 @@ const Slider = (props: SliderProps) => {
         {...register(nestedInput, { valueAsNumber: true })}
       />
       <label htmlFor="default-range" className="self-end">
-        {displayedName}: { ("Thickness, Size, Width, Height".includes(displayedName) && value == 100) ? "Fullscreen": value}
+        {displayedName}: { ("Thickness, Size, Width, Height, Offset".includes(displayedName) && value == 100) ? "Fullscreen": value}
         {props.fieldName == 'opacity' && '%'}
       </label>
     </div>

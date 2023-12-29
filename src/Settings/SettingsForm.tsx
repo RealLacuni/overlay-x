@@ -33,7 +33,7 @@ const SettingsForm = ({ onSubmit, methods, preferences, submitting, successfulSa
   }
   return (
     <form onSubmit={methods.handleSubmit(onSubmit)} className="p-6">
-      <div className="flex w-full flex-col gap-16 justify-center outline outline-1 p-2 outline-gray-400 bg-slate-100">
+      <div className="flex w-full flex-col gap-12 justify-center outline outline-1 px-2 py-4 outline-gray-400 bg-slate-100">
         <SettingDescription description="Overlay shape selection" className="gap-2">
           <ShapeDropdown />
         </SettingDescription>
@@ -64,7 +64,7 @@ const SettingsForm = ({ onSubmit, methods, preferences, submitting, successfulSa
           {successfulSave == -1 && <Alert type="error" message="Error saving new settings." />}
           {successfulSave > 0 && <Alert type="success" message="Saved" />}
           <PrimaryButton
-            className={`text-base p-4 justify-center rounded-small self-center`}
+            className={`text-base p-4 w-24 justify-center rounded-small self-center`}
             disabled={submitting}
             submit={true}
           >

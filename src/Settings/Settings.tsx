@@ -5,8 +5,7 @@ import { useForm, SubmitHandler, FormProvider } from 'react-hook-form';
 import ShapePreview from '../components/ShapePreview';
 import { FormSettingInputs } from '../types';
 import SettingsForm from './SettingsForm';
-import { PrimaryButton } from '../components/Buttons';
-import SettingDescription from '../components/SettingDescription';
+import { SecondaryButton } from '../components/Buttons';
 import ProfileDropdown from '../components/ProfileDropdown';
 
 const onSuccessfulSave = (fxn: React.Dispatch<React.SetStateAction<number>>) => {
@@ -27,15 +26,13 @@ const Settings = () => {
   const { preferences, updatePreferences, saveToDisk } = useContext(PreferenceContext);
   const [successfulSave, setSuccessfulSave] = useState(0); //state for displaying successful save alert
   const [submitting, setSubmitting] = useState(false);
+  const [currentProfile, setCurrentProfile] = useState(preferences.activeProfile);
 
   const methods = useForm<Partial<FormSettingInputs>>({
     defaultValues: {
-      currentProfile: preferences.activeProfile,
-      shape: preferences.profiles[preferences.activeProfile].currentShape,
+      shape: preferences.profiles[currentProfile].currentShape,
       shapeInputs: {
-        ...preferences.profiles[preferences.activeProfile].shapes[
-          preferences.profiles[preferences.activeProfile].currentShape
-        ]
+        ...preferences.profiles[currentProfile].shapes[preferences.profiles[currentProfile].currentShape]
       },
       toggleOverlay: preferences.shortcuts.toggleOverlay,
       openMenu: preferences.shortcuts.openMenu
@@ -44,16 +41,22 @@ const Settings = () => {
   const shape = methods.watch('shape');
 
   useEffect(() => {
-    // Reset the form when the 'shape' field changes
-    if (shape) {
-      methods.reset({
-        shape,
-        shapeInputs: {
-          ...preferences.profiles[preferences.activeProfile].shapes[shape]
-        }
-      });
-    }
-  }, [shape, preferences.profiles, preferences.activeProfile, methods]);
+    // Reset the form when the current profile, or shape of current profile changes
+    if (!shape) return;
+
+    window.Main.PrintInBackend(
+      `shape is ${shape}, resetting form with inputs: ${JSON.stringify(
+        preferences.profiles[currentProfile].shapes[shape]
+      )}`
+    );
+
+    methods.reset({
+      shape,
+      shapeInputs: {
+        ...preferences.profiles[currentProfile].shapes[shape]
+      }
+    });
+  }, [shape, preferences.profiles, currentProfile, methods]);
 
   if (!shape) {
     window.Main.PrintInBackend(`shape is undefined, pref is ${preferences}`);
@@ -72,8 +75,9 @@ const Settings = () => {
       window.Main.PrintInBackend('shape is undefined');
       return;
     }
-    newPreferences.profiles[preferences.activeProfile].currentShape = data.shape;
-    newPreferences.profiles[preferences.activeProfile].shapes[data.shape] = data.shapeInputs;
+    newPreferences.activeProfile = currentProfile;
+    newPreferences.profiles[currentProfile].currentShape = data.shape;
+    newPreferences.profiles[currentProfile].shapes[data.shape] = data.shapeInputs;
     newPreferences.shortcuts.toggleOverlay = data.toggleOverlay;
     newPreferences.shortcuts.openMenu = data.openMenu;
 
@@ -89,14 +93,11 @@ const Settings = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen overflow-auto pb-10 bg-slate-50">
-      {/* TODO:
-        shape selection and display current profile using dropdown menu, 
-      */}
+    <div className="flex flex-col h-screen overflow-auto p-2 pb-80 bg-slate-50">
       <FormProvider {...methods}>
-        <header className='flex flex-row justify-center gap-20'>
-        <h1 className={'text-center text-4xl pb-10'}>Settings</h1>
-          <ProfileDropdown />
+        <header className="relative flex flex-row justify-between gap-20">
+          <h1 className={'text-center text-2xl pb-10'}>Overlay Settings</h1>
+          <ProfileDropdown currentProfile={currentProfile} setCurrentProfile={setCurrentProfile} />
         </header>
 
         <SettingsForm
@@ -106,16 +107,16 @@ const Settings = () => {
           submitting={submitting}
           successfulSave={successfulSave}
         />
-        <ShapePreview />
+        <ShapePreview shape={shape} fields={preferences.profiles[currentProfile].shapes[shape]} />
       </FormProvider>
-      <PrimaryButton
-        className={'h-16 w-80 justify-center self-center align-middle bg-indigo-800'}
+      <SecondaryButton
+        className={'h-16 w-80'}
         onClick={() => {
           nav('/');
         }}
       >
         {'\u2190 Back to main menu'}
-      </PrimaryButton>
+      </SecondaryButton>
     </div>
   );
 };
