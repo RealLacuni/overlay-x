@@ -4,7 +4,7 @@ import path from 'path';
 import url from 'url';
 
 // Packages
-import { BrowserWindow, app, screen } from 'electron';
+import { BrowserWindow, app, screen, Menu, Tray } from 'electron';
 import isDev from 'electron-is-dev';
 
 import { setupIPCListeners } from './ipcHandlers';
@@ -36,22 +36,22 @@ function createWindow(): Array<BrowserWindow | null> {
         window.show();
     });
 
-  const { width: screenWidth, height: screenHeight } = screen.getPrimaryDisplay().workAreaSize;
-  const overlayWindow = new BrowserWindow({
-    width: screenWidth,
-    height: screenHeight,
-    hasShadow: false,
-    frame: false,
-    show: false,
-    transparent: true,
-    fullscreenable: true,
-    webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
-    }
-  });
+    const { width: screenWidth, height: screenHeight } = screen.getPrimaryDisplay().workAreaSize;
+    const overlayWindow = new BrowserWindow({
+        width: screenWidth,
+        height: screenHeight,
+        hasShadow: false,
+        frame: false,
+        show: false,
+        transparent: true,
+        fullscreenable: true,
+        webPreferences: {
+            preload: path.join(__dirname, 'preload.js')
+        }
+    });
 
-  overlayWindow.setAlwaysOnTop(true);
-  overlayWindow.setIgnoreMouseEvents(true, { forward: true });
+    overlayWindow.setAlwaysOnTop(true);
+    overlayWindow.setIgnoreMouseEvents(true, { forward: true });
 
     let devWindow: BrowserWindow | null = null;
     if (isDev) {
@@ -87,20 +87,45 @@ function createWindow(): Array<BrowserWindow | null> {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
+let tray = null as Tray | null;
 app.whenReady().then(() => {
     const [mainWindow, overlayWindow, devWindow] = createWindow();
-    
+    tray = new Tray('./src/assets/icons/Icon-Electron.png') //placeholder
+    if (process.platform === 'darwin') {
+        tray.setPressedImage('./src/assets/icons/Icon-Electron.png')
+    }
+
+    const contextMenu = Menu.buildFromTemplate([
+        { label: 'Open Main Menu', type: 'radio' },
+        { label: 'Open Settings', type: 'radio' },
+        {type: 'separator'},
+        { label: 'Toggle Overlay', type: 'radio', checked: true },
+        {type: 'separator'},
+        { label: 'Close', type: 'radio' }
+    ])
+    tray.setToolTip('This is my application.')
+    tray.setContextMenu(contextMenu)
+
+    app.on('before-quit', () => {
+        if (tray !== null) {
+            tray.destroy();
+        }
+    });
+
     if (mainWindow == null || overlayWindow == null) {
         console.log('window is null');
         return;
     }
     setupIPCListeners(mainWindow, overlayWindow, devWindow);
 
+
     app.on('activate', () => {
         // On macOS it's common to re-create a window in the app when the
         // dock icon is clicked and there are no other windows open.
         if (BrowserWindow.getAllWindows().length === 0) createWindow();
     });
+
+
 });
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits

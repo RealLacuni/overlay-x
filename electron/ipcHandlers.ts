@@ -7,19 +7,12 @@ import isDev from 'electron-is-dev';
 // Export the function that sets up IPC handlers
 export function setupIPCListeners(mainWindow: BrowserWindow, overlayWindow: BrowserWindow, devWindow: BrowserWindow | null) {
     const preferences = getPreferences();
-    // For AppBar
-    ipcMain.on('minimize', () => {
-        mainWindow.isMinimized() ? mainWindow.restore() : mainWindow.minimize();
-        // or alternatively: win.isVisible() ? win.hide() : win.show()
-    });
-    ipcMain.on('maximize', () => {
-        // eslint-disable-next-line no-unused-expressions
-        mainWindow.isMaximized() ? mainWindow.restore() : mainWindow.maximize();
+    //hide window when minimized, show through clicking on tray or through hotkey
+    mainWindow.on('minimize', (event : Event) => {
+        event.preventDefault();
+        mainWindow.hide();
     });
 
-    ipcMain.on('close', () => {
-        mainWindow.close();
-    });
 
     ipcMain.on('isDevWindow', (event: IpcMainEvent) => {
         if (devWindow) {
