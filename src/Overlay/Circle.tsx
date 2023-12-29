@@ -12,10 +12,13 @@ type CircleProps = {
 
 const Circle = ({ profile, cursorPosition, renderMiniature }: CircleProps) => {
   const { color, opacity } = profile;
-  let offset = profile.offset;
+  let offset = 4 * profile.offset;
   let size = 5 * profile.size;
   if (!renderMiniature && profile.size == 100) {
     size = 2000;
+  }
+  if (profile.offset == 100) {
+    offset = 2000;
   }
 
   const scale = 0.15;
@@ -36,7 +39,7 @@ const Circle = ({ profile, cursorPosition, renderMiniature }: CircleProps) => {
           <circle
             cx={renderMiniature ? '50%' : cursorPosition.x}
             cy={renderMiniature ? '50%' : cursorPosition.y}
-            r={size + offset/2}
+            r={size + offset / 2}
             stroke={color} // Ring color
             strokeWidth={offset} // Ring size.
             fill="transparent"

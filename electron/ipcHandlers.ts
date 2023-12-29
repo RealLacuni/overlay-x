@@ -44,25 +44,28 @@ export function setupIPCListeners(mainWindow: BrowserWindow, overlayWindow: Brow
     });
 
     //registers keybind for toggling the overlay
-    const toggleReg = globalShortcut.register(preferences.shortcuts.toggleOverlay, () => {
-        toggleCallback(overlayWindow);
-    });
-
-    if (!toggleReg) {
-        console.log('toggle shortcut registration failed');
+    if (preferences.shortcuts.toggleOverlay) {
+        const toggleReg = globalShortcut.register(preferences.shortcuts.toggleOverlay, () => {
+            toggleCallback(overlayWindow);
+            if (!toggleReg) {
+                console.log('toggle shortcut registration failed');
+            }
+        });
     }
 
-    const menuReg = globalShortcut.register(preferences.shortcuts.openMenu, () => {
-        menuCallback(mainWindow, overlayWindow);
-    });
+    if (preferences.shortcuts.openMenu) {
+        const menuReg = globalShortcut.register(preferences.shortcuts.openMenu, () => {
+            menuCallback(mainWindow, overlayWindow);
+        });
 
-    if (!menuReg) {
-        console.log('menu shortcut registration failed');
+        if (!menuReg) {
+            console.log('menu shortcut registration failed');
+        }
     }
 
     if (isDev) {
-        console.log(globalShortcut.isRegistered(preferences.shortcuts.toggleOverlay))
-        console.log(globalShortcut.isRegistered(preferences.shortcuts.openMenu))
+        console.log("toggle registered: ", globalShortcut.isRegistered(preferences.shortcuts.toggleOverlay))
+        console.log("open menu registered: ", globalShortcut.isRegistered(preferences.shortcuts.openMenu))
     }
 
     ipcMain.on('hotkey::changeToggle', (event, newKey) => {

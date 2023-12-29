@@ -32,27 +32,30 @@ const Settings = () => {
     defaultValues: {
       shape: preferences.profiles[currentProfile].currentShape,
       shapeInputs: {
-        ...preferences.profiles[currentProfile].shapes[
-          preferences.profiles[currentProfile].currentShape
-        ]
+        ...preferences.profiles[currentProfile].shapes[preferences.profiles[currentProfile].currentShape]
       },
       toggleOverlay: preferences.shortcuts.toggleOverlay,
       openMenu: preferences.shortcuts.openMenu
     }
   });
   const shape = methods.watch('shape');
-  
+
   useEffect(() => {
-    // Reset the form when the current profile, or shape of current profile changes    
-    if (shape) {
-      methods.reset({
-        shape: preferences.profiles[currentProfile].currentShape,
-        shapeInputs: {
-          ...preferences.profiles[currentProfile].shapes[preferences.profiles[currentProfile].currentShape
-        ]
-        }
-      });
-    }
+    // Reset the form when the current profile, or shape of current profile changes
+    if (!shape) return;
+
+    window.Main.PrintInBackend(
+      `shape is ${shape}, resetting form with inputs: ${JSON.stringify(
+        preferences.profiles[currentProfile].shapes[shape]
+      )}`
+    );
+
+    methods.reset({
+      shape,
+      shapeInputs: {
+        ...preferences.profiles[currentProfile].shapes[shape]
+      }
+    });
   }, [shape, preferences.profiles, currentProfile, methods]);
 
   if (!shape) {
@@ -92,9 +95,9 @@ const Settings = () => {
   return (
     <div className="flex flex-col h-screen overflow-auto p-2 pb-80 bg-slate-50">
       <FormProvider {...methods}>
-        <header className="relative flex flex-row justify-center gap-20">
-          <h1 className={'text-center text-4xl pb-10'}>Settings</h1>
-          <ProfileDropdown currentProfile={currentProfile} setCurrentProfile={setCurrentProfile}/>
+        <header className="relative flex flex-row justify-between gap-20">
+          <h1 className={'text-center text-2xl pb-10'}>Overlay Settings</h1>
+          <ProfileDropdown currentProfile={currentProfile} setCurrentProfile={setCurrentProfile} />
         </header>
 
         <SettingsForm
@@ -104,7 +107,7 @@ const Settings = () => {
           submitting={submitting}
           successfulSave={successfulSave}
         />
-        <ShapePreview />
+        <ShapePreview shape={shape} fields={preferences.profiles[currentProfile].shapes[shape]} />
       </FormProvider>
       <SecondaryButton
         className={'h-16 w-80'}
