@@ -52,6 +52,9 @@ const mainAPI = {
   Close: () => {
     ipcRenderer.send('close');
   },
+  GetVersion: () => {
+    return ipcRenderer.sendSync('appVersion');
+  },
   /**
    * Provide an easier way to listen to events
    */

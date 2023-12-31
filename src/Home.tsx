@@ -10,7 +10,7 @@ const sendLoadOverlay = (useDev = false) => {
 const Home = () => {
   const { preferences } = useContext(PreferenceContext);
   const nav = useNavigate();
-
+  
 
   return (
     <>
@@ -38,6 +38,13 @@ const Home = () => {
           overlay.
         </p>
       </div>
+      {/* absolute div containing the current version */}
+      <div className={'absolute bottom-0 right-0 p-2 text-xs text-gray-500'}>
+        <div className={'flex flex-row'}>
+        {window.Main.GetVersion()}
+        </div>
+        </div>
+
     </>
   );
 };
