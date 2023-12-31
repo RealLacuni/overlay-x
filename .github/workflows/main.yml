@@ -25,10 +25,10 @@ jobs:
       - name: Build App
         run: npm run build
 
-      # - name: Dist App
-      #   env:
-      #     GH_TOKEN: ${{ secrets.GH_TOKEN }} # Use the secret here
-      #   run: npm run dist
+      - name: Dist App
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }} 
+        run: npm run dist
 
       - name: Run Semantic Release
         env:
@@ -40,4 +40,4 @@ jobs:
       - name: Create Release
         if: startsWith(github.ref, 'refs/tags/v')
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }} # Use the secret here
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
