@@ -39,8 +39,12 @@ const Home = () => {
         </p>
       </div>
       {/* absolute div containing the current version */}
-      <div className={'absolute bottom-0 right-0 p-2 text-xs text-gray-500'}>
-        <div className={'flex flex-row'}>
+      <div className={'absolute bottom-0 right-0 p-1 text-xs text-gray-500'}>
+        <div className={'flex flex-row align-text-bottom gap-1 items-end'}>
+          <div className = {'hover:cursor-pointer'}onClick={() => window.Main.OpenLink('https://github.com/RealLacuni/overlay-x')}>
+
+          <img src='assets/icons/github-mark.svg' className={'w-6 h-6 mr-1'} alt='github link' />
+          </div>
         {window.Main.GetVersion()}
         </div>
         </div>
