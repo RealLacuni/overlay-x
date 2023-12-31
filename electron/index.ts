@@ -88,6 +88,11 @@ function createWindow(): Array<BrowserWindow | null> {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 let tray = null as Tray | null;
+app.on('before-quit', () => {
+    if (tray !== null) {
+        tray.destroy();
+    }
+});
 app.whenReady().then(() => {
     const [mainWindow, overlayWindow, devWindow] = createWindow();
     tray = new Tray('./src/assets/icons/Icon-Electron.png') //placeholder
@@ -96,20 +101,28 @@ app.whenReady().then(() => {
     }
 
     const contextMenu = Menu.buildFromTemplate([
-        { label: 'Open Main Menu', type: 'radio' },
-        { label: 'Open Settings', type: 'radio' },
-        {type: 'separator'},
-        { label: 'Toggle Overlay', type: 'radio', checked: true },
-        {type: 'separator'},
-        { label: 'Close', type: 'radio' }
+        { label: 'Open Main Menu', type: 'normal', click: () => { mainWindow?.show(); } },
+        {
+            label: 'Open Settings', type: 'normal', click: () => {
+                mainWindow?.webContents.send('open-settings');
+                mainWindow?.show();
+                tray?.closeContextMenu();
+            }
+        },
+        { type: 'separator' },
+        { label: 'Toggle Overlay', type: 'normal', click: () => { overlayWindow?.isVisible ? overlayWindow.hide() : overlayWindow?.show() } },
+        { type: 'separator' },
+        { label: 'Shut down', type: 'normal', click: () => { app.quit(); } },
     ])
     tray.setToolTip('This is my application.')
     tray.setContextMenu(contextMenu)
 
-    app.on('before-quit', () => {
-        if (tray !== null) {
-            tray.destroy();
-        }
+    tray.on('click', () => {
+        mainWindow?.show();
+    })
+
+    tray.on('right-click', () => {
+        tray?.popUpContextMenu();
     });
 
     if (mainWindow == null || overlayWindow == null) {

@@ -34,6 +34,13 @@ const router = createBrowserRouter([
   }
 ]);
 
+const settingsCB = () => {
+  //navigate to /settings page
+  router.navigate('/settings');
+}
+
+window.Main.OpenSettings(settingsCB);
+
 ReactDOM.render(
   <div className='flex flex-col h-screen'>
     {
