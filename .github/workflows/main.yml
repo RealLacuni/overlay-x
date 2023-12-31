@@ -22,25 +22,21 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: Build Electron App
-        run: npm run dist
+      - name: Build App
+        run: npm run build
+
+      # - name: Dist App
+      #   env:
+      #     GH_TOKEN: ${{ secrets.GH_TOKEN }} # Use the secret here
+      #   run: npm run dist
+
+      - name: Run Semantic Release
+        run: npx semantic-release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
 
       - name: Create Release
         if: startsWith(github.ref, 'refs/tags/v')
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git tag -a ${{ github.ref }} -m "Release ${{ github.ref }}"
-          git push origin ${{ github.ref }}
-
-          # Create GitHub release
-          RELEASE_ID=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-                       -d '{"tag_name": "${{ github.ref }}", "name": "${{ github.ref }}", "draft": false}' \
-                       "https://api.github.com/repos/${{ github.repository }}/releases" \
-                       | jq -r '.id')
-
-          # Upload assets
-          curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-               -H "Content-Type: application/zip" \
-               --data-binary @dist/* \
-               "https://uploads.github.com/repos/${{ github.repository }}/releases/${RELEASE_ID}/assets?name=$(basename dist/*)"
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }} # Use the secret here
