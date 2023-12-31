@@ -30,6 +30,10 @@ export function setupIPCListeners(mainWindow: BrowserWindow, overlayWindow: Brow
         shell.openExternal(url);
     });
 
+    ipcMain.on('close', () => {
+        app.quit();
+    });
+
     //loads the overlay and hides the main app mainWindow
     ipcMain.on('loadOverlay', (_event, useDev) => {
         if (useDev && devWindow != null) {
