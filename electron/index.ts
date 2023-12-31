@@ -90,6 +90,8 @@ function createWindow(): Array<BrowserWindow | null> {
 let tray = null as Tray | null;
 app.on('before-quit', () => {
     if (tray !== null) {
+        console.log('destroying tray');
+        
         tray.destroy();
     }
 });
@@ -110,7 +112,11 @@ app.whenReady().then(() => {
             }
         },
         { type: 'separator' },
-        { label: 'Toggle Overlay', type: 'normal', click: () => { overlayWindow?.isVisible ? overlayWindow.hide() : overlayWindow?.show() } },
+        {
+            label: 'Toggle Overlay', type: 'normal', click: () => {
+                overlayWindow?.isVisible() ? overlayWindow.hide() : overlayWindow?.show();
+            }
+        },
         { type: 'separator' },
         { label: 'Shut down', type: 'normal', click: () => { app.quit(); } },
     ])

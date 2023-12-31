@@ -8,34 +8,34 @@ const sendLoadOverlay = (useDev = false) => {
 };
 
 const Home = () => {
-  const {preferences} = useContext(PreferenceContext);
-  
+  const { preferences } = useContext(PreferenceContext);
   const nav = useNavigate();
-  const isDev : boolean = window.Main.IsDevMode();
 
-  const redirectToSettings = () => {
-    nav('/settings');
-  };
 
   return (
     <>
-      <div className={'flex flex-col h-screen justify-center bg-slate-50 items-center gap-12 text-blue-900'}>
+      <div className={'flex flex-col h-screen justify-start pt-20 bg-slate-50 items-center gap-12 text-blue-900'}>
         <SecondaryButton className={' hover:text-black'} onClick={() => sendLoadOverlay(false)}>
           Launch Overlay
         </SecondaryButton>
-        {
-          isDev && (
-            <SecondaryButton className={' hover:text-black'} onClick={() => sendLoadOverlay(true)}>
-              Launch Overlay (Dev)
-            </SecondaryButton>
-          )
-        }
-        <SecondaryButton className={' hover:text-black'} onClick={redirectToSettings}>
+        <SecondaryButton className={' hover:text-black'} onClick={() => {nav('/settings')}}>
           Settings
+        </SecondaryButton>
+        <SecondaryButton
+          className={' hover:text-black'}
+          onClick={() => {
+            nav('/about');
+          }}
+        >
+          About
+        </SecondaryButton>
+        <SecondaryButton className={' hover:text-black bg-indigo-600 text-indigo-50 mt-10'} onClick={window.Main.Close}>
+          Close
         </SecondaryButton>
 
         <p>
-          Press <span className={'text-black'}>{preferences.shortcuts.toggleOverlay}</span> at any time to toggle the overlay.
+          Press <span className={'text-black'}>{preferences.shortcuts.toggleOverlay}</span> at any time to toggle the
+          overlay.
         </p>
       </div>
     </>
