@@ -1,5 +1,4 @@
 //renderer refers to the front-end portion of the app
-
 export interface IElectronAPI {
   loadPreferences: () => Promise<void>,
 }

@@ -6,6 +6,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import Overlay from './Overlay/Overlay';
 import Settings from './Settings/Settings';
 import { PreferenceProvider } from './util/PreferenceContext';
+import AboutPage from './About/AboutPage';
 
 const router = createBrowserRouter([
   {
@@ -31,8 +32,19 @@ const router = createBrowserRouter([
         <Settings />
       </PreferenceProvider>
     )
-  }
+  },
+  {
+    path: '/about',
+    element: (<AboutPage />
+    )}
 ]);
+
+const settingsCB = () => {
+  //navigate to /settings page
+  router.navigate('/settings');
+}
+
+window.Main.OpenSettings(settingsCB);
 
 ReactDOM.render(
   <div className='flex flex-col h-screen'>

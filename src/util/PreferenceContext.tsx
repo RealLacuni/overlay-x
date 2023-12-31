@@ -21,7 +21,6 @@ function PreferenceProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
-
   window.Overlay.onUpdatedPreferences(updateCB);
   }, []);
 

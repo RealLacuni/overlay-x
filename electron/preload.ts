@@ -58,6 +58,9 @@ const mainAPI = {
   // on: (channel: string, callback: (data: any) => void) => {
   //   ipcRenderer.on(channel, (_, data) => callback(data));
   // }
+  OpenSettings: (callback: () => void) => {
+    ipcRenderer.on('open-settings', callback);
+    },
 };
 
 const overlayAPI = {
