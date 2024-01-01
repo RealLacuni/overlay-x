@@ -6,6 +6,10 @@ import url from 'url';
 // Packages
 import { BrowserWindow, app, screen, Menu, Tray } from 'electron';
 import isDev from 'electron-is-dev';
+import {updateElectronApp} from 'update-electron-app';
+
+updateElectronApp({updateInterval: '1 hour'});
+
 
 import { setupIPCListeners } from './ipcHandlers';
 
