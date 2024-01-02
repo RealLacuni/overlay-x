@@ -15,7 +15,7 @@ const SecondaryButton = ({ submit = false, className, onClick, children, disable
       className={
         `${className}` +
         `${disabled ? ' bg-gray-300 text-gray-400' : ' bg-indigo-100 hover:bg-indigo-200 text-indigo-700'}` +
-        'undraggable inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs leading-4 font-medium rounded justify-center self-center align-middle  \
+        'select-none undraggable inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs leading-4 font-medium rounded justify-center self-center align-middle  \
         focus:outline-none'
       }
       onClick={submit ? undefined : onClick}

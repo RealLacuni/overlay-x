@@ -107,7 +107,7 @@ const Settings = () => {
           submitting={submitting}
           successfulSave={successfulSave}
         />
-        <ShapePreview shape={shape} fields={preferences.profiles[currentProfile].shapes[shape]} />
+        <ShapePreview shape={shape} />
       </FormProvider>
       <SecondaryButton
         className={'h-16 w-80'}

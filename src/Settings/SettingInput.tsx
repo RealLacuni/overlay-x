@@ -15,7 +15,10 @@ const SettingInput = ({ fieldName, inputType }: InputProps) => {
   const startValue = useWatch({
     name: `shapeInputs.${fieldName}`
   });
-  
+  const shape = useWatch({
+    name: 'shape'
+  });
+
   let inputComponent;
   if (inputType == 'slider' && typeof fieldName !== 'string') {
     // value is numeric, can safely render a slider along with the input
@@ -31,9 +34,14 @@ const SettingInput = ({ fieldName, inputType }: InputProps) => {
   } else if (fieldName == 'inverse') {
     inputComponent = (
       <SettingDescription description="Toggle to control empty space around the cursor">
-        <div className='flex flex-col items-center align-middle pr-2'>
+        <div className="relative flex flex-col items-center align-middle pr-2">
           <Toggle fieldName="inverse" />
-          <p className='whitespace-nowrap'>Invert Overlay</p>
+          <p className="whitespace-nowrap">Invert Overlay</p>
+          {(startValue && shape == 'circle') && (
+            <p className="absolute w-96 left-0 top-12 text-xs text-gray-500">
+              Use the offset field to control the thickness of the overlay, and size to control the empty space.
+            </p>
+          )}
         </div>
       </SettingDescription>
     );
@@ -42,7 +50,7 @@ const SettingInput = ({ fieldName, inputType }: InputProps) => {
     if (fieldName === 'color') {
       inputComponent = (
         <SettingDescription description="Color of the overlay" className="">
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center select-all">
             <input
               type="color"
               {...formMethods.register(`shapeInputs.${fieldName}`)}
