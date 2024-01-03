@@ -76,18 +76,20 @@
     "typescript": "^5.1.6"
   },
   "build": {
-    "asar": true,
-    "files": [
-      "main",
-      "src/out"
-    ],
-    "directories": {
-      "buildResources": "resources"
-    },
-    "release": {
-      "branches": [
-        "main"
+    "appId": "com.lacuni.overlay-x",
+    "mac": 
+    {
+      "category": "public.app-category.developer-tools",
+      "icon": "build/icon.png",
+      "target": [
+        "dmg",
+        "zip"
       ]
+    },
+    "win": {
+      "icon": "build/icon.png",
+      "title": "overlay-x",
+      "msi": true
     }
-  }
+}
 }
