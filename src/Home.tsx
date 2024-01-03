@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { SecondaryButton } from './components/Buttons';
 import { useNavigate } from 'react-router-dom';
 import { PreferenceContext } from './util/PreferenceContext';
+import Sidebar from './components/Sidebar';
 
 const sendLoadOverlay = (useDev = false) => {
   window.Main.LoadOverlay(useDev);
@@ -12,8 +13,9 @@ const Home = () => {
   const nav = useNavigate();
 
   return (
-    <>
-      <div className={'flex flex-col h-screen justify-center gap-12 bg-slate-50 items-center text-blue-900'}>
+    <div className='flex flex-row'>
+      <Sidebar></Sidebar>
+      <div className={'w-full flex flex-col h-screen justify-center gap-12 bg-slate-50 items-center text-blue-900'}>
         <div className='flex flex-row gap-4'>
         <SecondaryButton className={' hover:text-black w-28'} onClick={() => sendLoadOverlay(false)}>
           Launch Overlay
@@ -54,7 +56,7 @@ const Home = () => {
       <div className={'absolute bottom-0 right-0 p-1 text-xs text-gray-500'}>
         <div className={'flex flex-row align-text-bottom gap-1 items-end'}>{window.Main.GetVersion()}</div>
       </div>
-    </>
+    </div>
   );
 };
 

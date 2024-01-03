@@ -20,7 +20,7 @@ if (isDev) {
 console.log('dir name', __dirname);
 
 const height = 600;
-const width = 800;
+const width = 960;
 
 function createWindow(): Array<BrowserWindow | null> {
     // Create the browser window.

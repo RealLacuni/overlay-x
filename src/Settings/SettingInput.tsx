@@ -30,10 +30,10 @@ const SettingInput = ({ fieldName, inputType }: InputProps) => {
         <Slider fieldName={field} minVal={minVal} maxVal={maxVal} stepSize={stepSize} />
       </div>
     ));
-    inputComponent = <div className="grid grid-cols-3 w-full align-middle pb-2 gap-2">{sliderComponents}</div>;
+    inputComponent = <div className="grid grid-cols-3 w-full align-middle gap-2">{sliderComponents}</div>;
   } else if (fieldName == 'inverse') {
     inputComponent = (
-      <SettingDescription description="Toggle to control empty space around the cursor">
+      <SettingDescription description="Toggle to control empty space around the cursor" className='pt-4'>
         <div className="relative flex flex-col items-center align-middle pr-2 pb-5">
           <Toggle fieldName="inverse" />
           <p className="whitespace-nowrap">Invert Overlay</p>

@@ -6,7 +6,8 @@ import ShapePreview from '../components/ShapePreview';
 import { FormSettingInputs } from '../types';
 import SettingsForm from './SettingsForm';
 import { SecondaryButton } from '../components/Buttons';
-import ProfileDropdown from '../components/ProfileDropdown';
+import Sidebar from '../components/Sidebar';
+import ProfileSelection from './ProfileSelection';
 
 const onSuccessfulSave = (fxn: React.Dispatch<React.SetStateAction<number>>) => {
   fxn(1);
@@ -27,10 +28,11 @@ const Settings = () => {
   const [successfulSave, setSuccessfulSave] = useState(0); //state for displaying successful save alert
   const [submitting, setSubmitting] = useState(false);
   const [currentProfile, setCurrentProfile] = useState(preferences.activeProfile);
+  console.log('currnet profile is ' + currentProfile);
 
   const methods = useForm<Partial<FormSettingInputs>>({
     defaultValues: {
-      shape: preferences.profiles[currentProfile].currentShape,
+      shape: preferences.profiles['profile 1'].currentShape,
       shapeInputs: {
         ...preferences.profiles[currentProfile].shapes[preferences.profiles[currentProfile].currentShape]
       },
@@ -42,8 +44,7 @@ const Settings = () => {
 
   useEffect(() => {
     // Reset the form when the current profile, or shape of current profile changes
-    if (!shape) return;
-
+    if (!shape) return;    
     methods.reset({
       shape,
       shapeInputs: {
@@ -88,12 +89,25 @@ const Settings = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen overflow-auto p-2 pb-80 bg-slate-50">
+    <div className="flex flex-row">
+      <Sidebar>
+        <div className={'flex flex-col justify-between h-full items-center gap-4 py-4'}>
+          <h1 className={'text-2xl text-white pt-2 font-semibold'}>Overlay Settings</h1>
+          <div className='flex flex-col gap-8'>
+          <ProfileSelection currentProfile={currentProfile} setCurrentProfile={setCurrentProfile} />
+          </div>
+          <SecondaryButton
+        className={'h-12'}
+        onClick={() => {
+          nav('/');
+        }}
+      >
+        {'\u2190 Back to main menu'}
+      </SecondaryButton>
+        </div>
+      </Sidebar>
+    <div className="flex flex-col w-full h-screen overflow-auto p-2 pb-80 bg-slate-50">
       <FormProvider {...methods}>
-        <header className="relative flex flex-row justify-between border-b items-end pb-6">
-          <h1 className={'text-2xl'}>Overlay Settings</h1>
-          <ProfileDropdown currentProfile={currentProfile} setCurrentProfile={setCurrentProfile} />
-        </header>
 
         <SettingsForm
           onSubmit={onSubmit}
@@ -104,15 +118,7 @@ const Settings = () => {
         />
         <ShapePreview shape={shape} />
       </FormProvider>
-      <SecondaryButton
-        className={'h-16 w-80'}
-        onClick={() => {
-          nav('/');
-        }}
-      >
-        {'\u2190 Back to main menu'}
-      </SecondaryButton>
-    </div>
+    </div>    </div>
   );
 };
 
