@@ -77,6 +77,16 @@
   },
   "build": {
     "appId": "com.lacuni.overlay-x",
+    "files": [
+      "dist/**/*",
+      "main/**/*",
+      "node_modules/**/*",
+      "src/**/*",
+      "build/**/*",
+      "package.json",
+      "tsconfig.json",
+      "vite.config.ts"
+    ],
     "mac": 
     {
       "category": "public.app-category.developer-tools",
@@ -88,8 +98,10 @@
     },
     "win": {
       "icon": "build/icon.png",
-      "title": "overlay-x",
-      "msi": true
+      "asar": true,
+      "target": [
+        "portable"
+      ]
     }
 }
 }

@@ -6,10 +6,10 @@ import url from 'url';
 // Packages
 import { BrowserWindow, app, screen, Menu, Tray } from 'electron';
 import isDev from 'electron-is-dev';
-import {updateElectronApp} from 'update-electron-app';
+// import {updateElectronApp} from 'update-electron-app';
 import { setupIPCListeners } from './ipcHandlers';
 
-updateElectronApp({updateInterval: '1 hour'});
+// updateElectronApp({updateInterval: '1 hour'});
 
 // print current environment
 if (isDev) {
@@ -17,6 +17,7 @@ if (isDev) {
 } else {
     console.log('Running in production');
 }
+console.log('dir name', __dirname);
 
 const height = 600;
 const width = 800;
@@ -74,8 +75,8 @@ function createWindow(): Array<BrowserWindow | null> {
     // devWindow.setIgnoreMouseEvents(true, { forward: true });
     const port = process.env.PORT || 3000;
 
-    const mainUrl = isDev ? `http://localhost:${port}` : url.format({ pathname: path.join(__dirname, '../src/out/index.html'), hash: '/', protocol: 'file:', slashes: true });
-    const displayUrl = isDev ? mainUrl + '/overlay' : url.format({ pathname: path.join(__dirname, '../src/out/index.html'), hash: '/overlay', protocol: 'file:', slashes: true });
+    const mainUrl = isDev ? `http://localhost:${port}` : url.format({ pathname: path.join(__dirname, '../../src/out/index.html'), hash: '/', protocol: 'file:', slashes: true });
+    const displayUrl = isDev ? mainUrl + '/overlay' : url.format({ pathname: path.join(__dirname, '../../src/out/index.html'), hash: '/overlay', protocol: 'file:', slashes: true });
 
     // and load the index.html of the app.
     isDev && devWindow?.loadURL(displayUrl);
@@ -97,9 +98,12 @@ app.on('before-quit', () => {
 });
 app.whenReady().then(() => {
     const [mainWindow, overlayWindow, devWindow] = createWindow();
-    tray = new Tray('./src/assets/icons/Icon-Electron.png') //placeholder
+
+    tray = new Tray(path.join(__dirname, '../../src/assets/icons/Icon-Electron.png'));
+      
+
     if (process.platform === 'darwin') {
-        tray.setPressedImage('./src/assets/icons/Icon-Electron.png')
+        tray.setPressedImage(path.join(__dirname, '../../src/assets/icons/Icon-Electron.png'))
     }
 
     const contextMenu = Menu.buildFromTemplate([
