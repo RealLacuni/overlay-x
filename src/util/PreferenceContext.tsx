@@ -13,8 +13,7 @@ const PreferenceContext = createContext(preferences);
 function PreferenceProvider({ children }: { children: React.ReactNode }) {
   const [preferences, setPreferences] = React.useState(getPreferences);
 
-  /* This block of code is for the Overlay window, so that it can update context through receiving an IPC message
-  alternatively could get rid of context altogether for the overlay and just move this code directly into the component*/
+  /* This function sets up a callback allowing the front end to update the preferences upon receiving an IPC message */
   const updateCB = (newPreferences: Preferences) => {
     window.Main.PrintInBackend(`\noverlay received changed preferences, ${JSON.stringify(newPreferences)}\n`);
     setPreferences(newPreferences);
@@ -25,21 +24,24 @@ function PreferenceProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const updatePreferences = (newPreferences: Preferences) => {
+    console.log('in updatePreferences function, setting current profile to ' + newPreferences.activeProfile);
     setPreferences(newPreferences);
   };
 
-  const saveToDisk = useCallback(() => {
+  const saveToDisk = useCallback((newPreferences : Preferences) => {
     //write to disk
-    if (!window.Main.UpdatePreferences(preferences)) {
+    console.log('saveToDisk: ' + JSON.stringify(newPreferences));
+    
+    if (!window.Main.UpdatePreferences(newPreferences)) {
       window.Main.PrintInBackend('failed to write preferences to disk');
       //try again
-      if (!window.Main.UpdatePreferences(preferences)) {
+      if (!window.Main.UpdatePreferences(newPreferences)) {
         window.Main.PrintInBackend('failed to write preferences to disk again');
         return false;
       }
     }
     return true;
-  }, [preferences]);
+  }, []);
 
   return (
     <PreferenceContext.Provider value={{ preferences, updatePreferences, saveToDisk }}>

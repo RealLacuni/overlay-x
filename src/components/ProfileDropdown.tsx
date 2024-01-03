@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/24/solid';
 import React from 'react';
@@ -10,6 +10,10 @@ type ProfileDropdownProps = {
 
 
 const ProfileDropdown = ({currentProfile, setCurrentProfile} : ProfileDropdownProps) => {
+  useEffect(() => {
+    console.log(`current profile is ${currentProfile}`);
+  }
+  , [currentProfile]);
   return (<Menu>
           <div>
             <Menu.Button className="z-50 inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500">
