@@ -90,8 +90,8 @@ const Settings = () => {
   return (
     <div className="flex flex-col h-screen overflow-auto p-2 pb-80 bg-slate-50">
       <FormProvider {...methods}>
-        <header className="relative flex flex-row justify-between gap-20">
-          <h1 className={'text-center text-2xl pb-10'}>Overlay Settings</h1>
+        <header className="relative flex flex-row justify-between border-b items-end pb-6">
+          <h1 className={'text-2xl'}>Overlay Settings</h1>
           <ProfileDropdown currentProfile={currentProfile} setCurrentProfile={setCurrentProfile} />
         </header>
 
