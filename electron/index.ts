@@ -35,6 +35,8 @@ function createWindow(): Array<BrowserWindow | null> {
             preload: path.join(__dirname, 'preload.js')
         }
     });
+    isDev ?? window.setMenuBarVisibility(false);
+
     window.once('ready-to-show', () => {
         window.show();
     });
@@ -75,6 +77,8 @@ function createWindow(): Array<BrowserWindow | null> {
     // devWindow.setIgnoreMouseEvents(true, { forward: true });
     const port = process.env.PORT || 3000;
 
+    console.log('prod path name is ', path.join(__dirname, '../../src/out/index.html'));
+    
     const mainUrl = isDev ? `http://localhost:${port}` : url.format({ pathname: path.join(__dirname, '../../src/out/index.html'), hash: '/', protocol: 'file:', slashes: true });
     const displayUrl = isDev ? mainUrl + '/overlay' : url.format({ pathname: path.join(__dirname, '../../src/out/index.html'), hash: '/overlay', protocol: 'file:', slashes: true });
 
