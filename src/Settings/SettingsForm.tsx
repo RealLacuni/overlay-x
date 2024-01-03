@@ -42,12 +42,12 @@ const SettingsForm = ({ onSubmit, methods, preferences, submitting, successfulSa
           <HotkeyInput
             fieldName={'toggleOverlay'}
             startVal={preferences.shortcuts.toggleOverlay}
-            className={'bg-indigo-50 text-indigo-700 border-indigo-500'}
+            className={'bg-indigo-100 text-indigo-700 border-indigo-500'}
           />
           <HotkeyInput
             fieldName={'openMenu'}
             startVal={preferences.shortcuts.openMenu}
-            className={'bg-indigo-50 text-indigo-700 border-indigo-500'}
+            className={'bg-indigo-100 text-indigo-700 border-indigo-500'}
           />
         </div>
         <div className="flex flex-row gap-4 self-end justify-between">

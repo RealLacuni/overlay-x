@@ -92,8 +92,6 @@ function createWindow(): Array<BrowserWindow | null> {
 let tray = null as Tray | null;
 app.on('before-quit', () => {
     if (tray !== null) {
-        console.log('destroying tray');
-        
         tray.destroy();
     }
 });

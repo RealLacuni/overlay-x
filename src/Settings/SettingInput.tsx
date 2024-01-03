@@ -34,10 +34,10 @@ const SettingInput = ({ fieldName, inputType }: InputProps) => {
   } else if (fieldName == 'inverse') {
     inputComponent = (
       <SettingDescription description="Toggle to control empty space around the cursor">
-        <div className="relative flex flex-col items-center align-middle pr-2">
+        <div className="relative flex flex-col items-center align-middle pr-2 pb-5">
           <Toggle fieldName="inverse" />
           <p className="whitespace-nowrap">Invert Overlay</p>
-          {(startValue && shape == 'circle') && (
+          {startValue && shape == 'circle' && (
             <p className="absolute w-96 left-0 top-12 text-xs text-gray-500">
               Use the offset field to control the thickness of the overlay, and size to control the empty space.
             </p>
@@ -45,23 +45,20 @@ const SettingInput = ({ fieldName, inputType }: InputProps) => {
         </div>
       </SettingDescription>
     );
-  } else {
-    // value is a string, probably as part of a dropdown
-    if (fieldName === 'color') {
-      inputComponent = (
-        <SettingDescription description="Color of the overlay" className="">
-          <div className="flex flex-col items-center select-all">
-            <input
-              type="color"
-              {...formMethods.register(`shapeInputs.${fieldName}`)}
-              defaultValue={startValue}
-              className={'w-10 h-6 bg-transparent appearance-none cursor-pointer'}
-            />
-            <p className="text-sm">{startValue}</p>
-          </div>
-        </SettingDescription>
-      );
-    }
+  } else if (fieldName === 'color') {
+    inputComponent = (
+      <SettingDescription description="Color of the overlay" className="">
+        <div className="flex flex-col items-center select-all">
+          <input
+            type="color"
+            {...formMethods.register(`shapeInputs.${fieldName}`)}
+            defaultValue={startValue}
+            className={'w-10 h-6 bg-transparent appearance-none cursor-pointer'}
+          />
+          <p className="text-sm">{startValue}</p>
+        </div>
+      </SettingDescription>
+    );
   }
   if (isString) return inputComponent;
   else
