@@ -44,12 +44,6 @@ const Settings = () => {
     // Reset the form when the current profile, or shape of current profile changes
     if (!shape) return;
 
-    window.Main.PrintInBackend(
-      `shape is ${shape}, resetting form with inputs: ${JSON.stringify(
-        preferences.profiles[currentProfile].shapes[shape]
-      )}`
-    );
-
     methods.reset({
       shape,
       shapeInputs: {
@@ -75,6 +69,7 @@ const Settings = () => {
       window.Main.PrintInBackend('shape is undefined');
       return;
     }
+        
     newPreferences.activeProfile = currentProfile;
     newPreferences.profiles[currentProfile].currentShape = data.shape;
     newPreferences.profiles[currentProfile].shapes[data.shape] = data.shapeInputs;

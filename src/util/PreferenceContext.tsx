@@ -30,8 +30,6 @@ function PreferenceProvider({ children }: { children: React.ReactNode }) {
 
   const saveToDisk = useCallback((newPreferences : Preferences) => {
     //write to disk
-    console.log('saveToDisk: ' + JSON.stringify(newPreferences));
-    
     if (!window.Main.UpdatePreferences(newPreferences)) {
       window.Main.PrintInBackend('failed to write preferences to disk');
       //try again

@@ -16,8 +16,6 @@ const ShapePreview = ({ shape }: ShapePreviewProps) => {
   });
   if (!fields) return <></>;
 
-  console.log(isMinimized);
-
   let shapeInputComponent;
   switch (shape) {
     case 'circle':
