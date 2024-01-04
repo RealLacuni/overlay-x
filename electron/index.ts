@@ -31,11 +31,12 @@ function createWindow(): Array<BrowserWindow | null> {
         show: false,
         resizable: true,
         fullscreenable: true,
+        titleBarOverlay: true,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js')
         }
     });
-    isDev ?? window.setMenuBarVisibility(false);
+    isDev && window.setMenuBarVisibility(false);
 
     window.once('ready-to-show', () => {
         window.show();

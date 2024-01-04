@@ -5,7 +5,6 @@ import { useForm, SubmitHandler, FormProvider } from 'react-hook-form';
 import ShapePreview from '../components/ShapePreview';
 import { FormSettingInputs } from '../types';
 import SettingsForm from './SettingsForm';
-import { SecondaryButton } from '../components/Buttons';
 import Sidebar from '../components/Sidebar';
 import ProfileSelection from './ProfileSelection';
 
@@ -44,7 +43,7 @@ const Settings = () => {
 
   useEffect(() => {
     // Reset the form when the current profile, or shape of current profile changes
-    if (!shape) return;    
+    if (!shape) return;
     methods.reset({
       shape,
       shapeInputs: {
@@ -70,7 +69,7 @@ const Settings = () => {
       window.Main.PrintInBackend('shape is undefined');
       return;
     }
-        
+
     newPreferences.activeProfile = currentProfile;
     newPreferences.profiles[currentProfile].currentShape = data.shape;
     newPreferences.profiles[currentProfile].shapes[data.shape] = data.shapeInputs;
@@ -92,33 +91,36 @@ const Settings = () => {
     <div className="flex flex-row">
       <Sidebar>
         <div className={'flex flex-col justify-between h-full items-center gap-4 py-4'}>
-          <h1 className={'text-2xl text-white pt-2 font-semibold'}>Overlay Settings</h1>
-          <div className='flex flex-col gap-8'>
-          <ProfileSelection currentProfile={currentProfile} setCurrentProfile={setCurrentProfile} />
+          <h1 className={'text-xl text-slate-200 pt-2 font-semibold'}>Overlay Settings</h1>
+          <div className="flex flex-col gap-8">
+            <ProfileSelection currentProfile={currentProfile} setCurrentProfile={setCurrentProfile} />
           </div>
-          <SecondaryButton
-        className={'h-12'}
-        onClick={() => {
-          nav('/');
-        }}
-      >
-        {'\u2190 Back to main menu'}
-      </SecondaryButton>
+          <div className='h-12 flex flex-col items-center justify-end text-white  cursor-pointer hover:text-indigo-400'>
+            <a
+              className={'font-bold select-none'}
+              onClick={() => {
+                nav('/');
+              }}
+            >
+              {'Back to main menu'}
+            </a>
+            <span className='h-4 w-4'>{'\u2190'}</span>
+          </div>
         </div>
       </Sidebar>
-    <div className="flex flex-col w-full h-screen overflow-auto p-2 pb-80 bg-slate-50">
-      <FormProvider {...methods}>
-
-        <SettingsForm
-          onSubmit={onSubmit}
-          methods={methods}
-          preferences={preferences}
-          submitting={submitting}
-          successfulSave={successfulSave}
-        />
-        <ShapePreview shape={shape} />
-      </FormProvider>
-    </div>    </div>
+      <div className="flex flex-col w-full h-screen overflow-auto p-2 pb-80 bg-slate-50">
+        <FormProvider {...methods}>
+          <SettingsForm
+            onSubmit={onSubmit}
+            methods={methods}
+            preferences={preferences}
+            submitting={submitting}
+            successfulSave={successfulSave}
+          />
+          <ShapePreview shape={shape} />
+        </FormProvider>
+      </div>{' '}
+    </div>
   );
 };
 

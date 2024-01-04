@@ -8,14 +8,32 @@ type Props = {
   disabled?: boolean;
 };
 
-const SecondaryButton = ({ submit = false, className, onClick, children, disabled }: Props) => {
+const PrimaryButton = ({ submit = false, className, onClick, children, disabled }: Props) => {
   return (
     <button
       type={submit ? 'submit' : 'button'}
       className={
         `${className}` +
-        `${disabled ? ' bg-gray-300 text-gray-400' : ' bg-indigo-100 hover:bg-indigo-200 text-indigo-700'} ` +
-        'select-none inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs leading-4 font-medium rounded justify-center self-center align-middle  \
+        `${disabled ? ' bg-gray-300 text-gray-400' : ' bg-indigo-600 hover:bg-indigo-700 text-indigo-50'} ` +
+        'select-none inline-flex px-2.5 py-1.5 border border-transparent text-sm font-medium rounded shadow-sm \
+        focus:outline-none justify-center self-center align-middle'
+      }
+      {...(disabled ? { disabled: true } : {})}
+      onClick={submit ? undefined : onClick}
+    >
+      {children}
+    </button>
+  );
+};
+
+const SecondaryButton = ({ submit = false, className, onClick, children, disabled }: Props) => {
+  return (
+    <button
+      type={submit ? 'submit' : 'button'}
+      className={
+        `${className} ` +
+        `${disabled ? ' bg-gray-300 text-gray-400 ' : 'bg-indigo-100 hover:bg-indigo-200 text-indigo-700'} ` +
+        'select-none inline-flex px-2.5 py-1.5 border border-transparent font-medium rounded justify-center self-center text-sm align-middle  \
         focus:outline-none'
       }
       onClick={submit ? undefined : onClick}
@@ -26,14 +44,14 @@ const SecondaryButton = ({ submit = false, className, onClick, children, disable
   );
 };
 
-const PrimaryButton = ({ submit = false, className, onClick, children, disabled }: Props) => {
+const TertiaryButton = ({ submit = false, className, onClick, children, disabled }: Props) => {
   return (
     <button
       type={submit ? 'submit' : 'button'}
       className={
         `${className}` +
-        `${disabled ? ' bg-gray-300 text-gray-400' : ' bg-indigo-600 hover:bg-indigo-700'} ` +
-        'select-none inline-flex items-center px-2.5 py-1.5 border border-transparent text-sm font-medium rounded shadow-sm text-white \
+        `${disabled ? ' bg-gray-300 text-gray-400' : ' hover:bg-indigo-700 text-indigo-800 border-indigo-800'} ` +
+        'select-none inline-flex px-2.5 py-1.5 border border-transparent text-sm font-medium rounded shadow-sm text-white \
         focus:outline-none justify-center self-center align-middle'
       }
       {...(disabled ? { disabled: true } : {})}
@@ -59,4 +77,4 @@ const RoundButton = (props: Props) => {
   );
 };
 
-export { SecondaryButton, PrimaryButton, RoundButton };
+export { SecondaryButton, PrimaryButton, TertiaryButton, RoundButton };
