@@ -1,33 +1,131 @@
-name: Build and Release
+name: Electron Release
 
-on: push
+on:
+  push:
+    branches:
+      - main
 
 jobs:
-  build-and-release:
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+  build:
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Git repository
+      - name: Checkout code
         uses: actions/checkout@v2
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v2
         with:
-          node-version: 18
+          node-version: '14'
 
-      - name: Install Dependencies
-        run: npm ci
+      - name: Install dependencies
+        run: npm install
 
-      - name: Build Electron App
+  package:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Package Electron app for Windows
+        run: npm run pack:win
+
+      - name: Package Electron app for Linux
+        run: npm run pack:linux
+
+  package-mac:
+    needs: build
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Package Electron app for macOS
+        run: npm run pack:mac
+
+  release:
+    needs:
+      - package
+      - package-mac
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npm run dist
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.event.release.tag_name }}
+          release_name: ${{ github.event.release.tag_name }}
+          body: ${{ github.event.release.body }}
+          draft: false
+          prerelease: false
 
-      # - name: Run Semantic Release
-      #   env:
-      #     GH_TOKEN: ${{ secrets.GH_TOKEN }}
-      #   run: npx semantic-release
+      - name: Upload Windows Release Artifact
+        id: upload-release-windows
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dist/overlayX.exe
+          asset_name: overlayX.exe
+          asset_content_type: application/octet-stream
+
+      - name: Upload macOS Release Artifact
+        id: upload-release-macos
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dist/overlayX.dmg
+          asset_name: overlayX.dmg
+          asset_content_type: application/octet-stream
+
+      - name: Upload Linux Release Artifact
+        id: upload-release-linux
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dist/overlayX.AppImage
+          asset_name: overlayX.AppImage
+          asset_content_type: application/octet-stream
+
+      - name: Semantic Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm run semantic-release
