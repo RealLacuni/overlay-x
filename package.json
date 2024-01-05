@@ -30,6 +30,13 @@
     "build:electron": "tsc -p electron",
     "dist": "npm run build && electron-builder",
     "pack": "npm run build && electron-builder --dir",
+    "dist:mac": "npm run build && electron-builder --mac",
+    "dist:win": "npm run build && electron-builder --win",
+    "dist:linux": "npm run build && electron-builder --linux",
+    "pack:mac": "npm run build && electron-builder --dir --mac",
+    "pack:win": "npm run build && electron-builder --dir --win",
+    "pack:linux": "npm run build && electron-builder --dir --linux",
+    
     "clean": "rimraf dist main src/out",
     "type-check": "tsc",
     "lint": "eslint . --ext js,jsx,ts,tsx",
@@ -46,6 +53,7 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.48.2",
     "react-router-dom": "^6.16.0",
+    "update-electron-app": "^3.0.0",
     "vite": "^4.4.9"
   },
   "devDependencies": {
@@ -75,18 +83,40 @@
     "typescript": "^5.1.6"
   },
   "build": {
-    "asar": true,
+    "appId": "com.lacuni.overlay-x",
     "files": [
-      "main",
-      "src/out"
+      "dist/**/*",
+      "main/**/*",
+      "node_modules/**/*",
+      "src/**/*",
+      "build/**/*",
+      "package.json",
+      "tsconfig.json",
+      "vite.config.ts"
     ],
-    "directories": {
-      "buildResources": "resources"
-    },
-    "release": {
-      "branches": [
-        "main"
+    "mac": 
+    {
+      "category": "public.app-category.developer-tools",
+      "icon": "build/icon.png",
+      "target": [
+        "dmg",
+        "zip"
       ]
-    }
+    },
+    "win": {
+      "icon": "build/icon.png",
+      "asar": true,
+      "target": [
+        "portable"
+      ]
+    },
+    "portable": {
+      "artifactName": "overlayX.exe"
   }
+},
+"publishConfig": {
+  "provider": "github",
+  "owner": "RealLacuni",
+  "repo": "overlay-x",
+  "releaseType": "release"}
 }

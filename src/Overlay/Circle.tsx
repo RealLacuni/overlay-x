@@ -12,7 +12,7 @@ type CircleProps = {
 
 const Circle = ({ profile, cursorPosition, renderMiniature }: CircleProps) => {
   const { color, opacity } = profile;
-  let offset = 4 * profile.offset;
+  let offset = 6 * profile.offset;
   let size = 5 * profile.size;
   if (!renderMiniature && profile.size == 100) {
     size = 2000;

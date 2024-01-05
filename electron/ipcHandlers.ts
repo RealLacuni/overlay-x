@@ -1,4 +1,4 @@
-import { BrowserWindow, globalShortcut, ipcMain } from 'electron';
+import { BrowserWindow, app, globalShortcut, ipcMain, shell } from 'electron';
 import { IpcMainEvent } from 'electron/main';
 import { getPreferences, updatePreferences } from './preferences';
 import { Preferences } from '../shared/types';
@@ -12,8 +12,7 @@ export function setupIPCListeners(mainWindow: BrowserWindow, overlayWindow: Brow
         event.preventDefault();
         mainWindow.hide();
     });
-
-
+    
     ipcMain.on('isDevWindow', (event: IpcMainEvent) => {
         if (devWindow) {
             event.returnValue = devWindow.isVisible();
@@ -21,6 +20,18 @@ export function setupIPCListeners(mainWindow: BrowserWindow, overlayWindow: Brow
         else {
             event.returnValue = false;
         }
+    });
+
+    ipcMain.on('appVersion', (event: IpcMainEvent) => {
+        event.returnValue = app.getVersion();
+    });
+
+    ipcMain.on('openLink', (_event: IpcMainEvent, url: string) => {
+        shell.openExternal(url);
+    });
+
+    ipcMain.on('close', () => {
+        app.quit();
     });
 
     //loads the overlay and hides the main app mainWindow

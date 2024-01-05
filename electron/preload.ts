@@ -52,6 +52,12 @@ const mainAPI = {
   Close: () => {
     ipcRenderer.send('close');
   },
+  GetVersion: () => {
+    return ipcRenderer.sendSync('appVersion');
+  },
+  OpenLink: (url: string) => {
+    ipcRenderer.send('openLink', url);
+  },
   /**
    * Provide an easier way to listen to events
    */

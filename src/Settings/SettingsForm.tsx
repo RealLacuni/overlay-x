@@ -33,7 +33,7 @@ const SettingsForm = ({ onSubmit, methods, preferences, submitting, successfulSa
   }
   return (
     <form onSubmit={methods.handleSubmit(onSubmit)} className="p-6">
-      <div className="flex w-full flex-col gap-12 justify-center outline outline-1 px-2 py-4 outline-gray-400 bg-slate-100">
+      <div className="flex w-full flex-col gap-16 justify-center outline outline-1 px-2 py-8 outline-gray-400 bg-slate-100 select-none">
         <SettingDescription description="Overlay shape selection" className="gap-2">
           <ShapeDropdown />
         </SettingDescription>
@@ -42,12 +42,12 @@ const SettingsForm = ({ onSubmit, methods, preferences, submitting, successfulSa
           <HotkeyInput
             fieldName={'toggleOverlay'}
             startVal={preferences.shortcuts.toggleOverlay}
-            className={'bg-indigo-50 text-indigo-700 border-indigo-500'}
+            className={'bg-indigo-100 text-indigo-700 border-indigo-500'}
           />
           <HotkeyInput
             fieldName={'openMenu'}
             startVal={preferences.shortcuts.openMenu}
-            className={'bg-indigo-50 text-indigo-700 border-indigo-500'}
+            className={'bg-indigo-100 text-indigo-700 border-indigo-500'}
           />
         </div>
         <div className="flex flex-row gap-4 self-end justify-between">
