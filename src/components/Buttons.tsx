@@ -49,9 +49,9 @@ const TertiaryButton = ({ submit = false, className, onClick, children, disabled
     <button
       type={submit ? 'submit' : 'button'}
       className={
-        `${className}` +
-        `${disabled ? ' bg-gray-300 text-gray-400' : ' hover:bg-indigo-700 text-indigo-800 border-indigo-800'} ` +
-        'select-none inline-flex px-2.5 py-1.5 border border-transparent text-sm font-medium rounded shadow-sm text-white \
+        `${className} ` +
+        `${disabled ? ' bg-gray-300 text-gray-400' : ' hover:bg-indigo-200 border border-indigo-600 text-indigo-600 '}` +
+        'select-none inline-flex px-2.5 py-1.5 border border-transparent text-sm font-medium rounded shadow-sm \
         focus:outline-none justify-center self-center align-middle'
       }
       {...(disabled ? { disabled: true } : {})}
