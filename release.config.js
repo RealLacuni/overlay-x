@@ -9,13 +9,13 @@ module.exports = {
       [
         '@semantic-release/exec',
         {
-          prepareCmd: 'npm run package-win && npm run package-mac',
+          prepareCmd: 'npm run dist:win && npm run dist:mac && npm run dist:linux',
         },
       ],
       [
         'semantic-release-electron',
         {
-          assets: ['dist/*.exe', 'dist/*.dmg'],
+          assets: ['dist/*.exe', 'dist/*.dmg', 'dist/*.AppImage'],
           channel: 'latest',
         },
       ],
