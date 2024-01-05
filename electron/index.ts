@@ -78,15 +78,14 @@ function createWindow(): Array<BrowserWindow | null> {
     // devWindow.setIgnoreMouseEvents(true, { forward: true });
     const port = process.env.PORT || 3000;
 
-    console.log('prod path name is ', path.join(__dirname, '../../src/out/index.html'));
-    
     const mainUrl = isDev ? `http://localhost:${port}` : url.format({ pathname: path.join(__dirname, '../../src/out/index.html'), hash: '/', protocol: 'file:', slashes: true });
     const displayUrl = isDev ? mainUrl + '/overlay' : url.format({ pathname: path.join(__dirname, '../../src/out/index.html'), hash: '/overlay', protocol: 'file:', slashes: true });
-
+    
     // and load the index.html of the app.
     isDev && devWindow?.loadURL(displayUrl);
     window?.loadURL(mainUrl);
     overlayWindow?.loadURL(displayUrl);
+
 
     return [window, overlayWindow, devWindow];
 }
@@ -105,7 +104,7 @@ app.whenReady().then(() => {
     const [mainWindow, overlayWindow, devWindow] = createWindow();
 
     tray = new Tray(path.join(__dirname, '../../src/assets/icons/Icon-Electron.png'));
-      
+
 
     if (process.platform === 'darwin') {
         tray.setPressedImage(path.join(__dirname, '../../src/assets/icons/Icon-Electron.png'))

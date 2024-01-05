@@ -27,7 +27,6 @@ const Settings = () => {
   const [successfulSave, setSuccessfulSave] = useState(0); //state for displaying successful save alert
   const [submitting, setSubmitting] = useState(false);
   const [currentProfile, setCurrentProfile] = useState(preferences.activeProfile);
-  console.log('currnet profile is ' + currentProfile);
 
   const methods = useForm<Partial<FormSettingInputs>>({
     defaultValues: {
