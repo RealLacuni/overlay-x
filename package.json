@@ -98,6 +98,7 @@
     {
       "category": "public.app-category.developer-tools",
       "icon": "build/icon.png",
+      "artifactName": "overlayX.dmg",
       "target": [
         "dmg",
         "zip"
@@ -112,6 +113,14 @@
     },
     "portable": {
       "artifactName": "overlayX.exe"
+  },
+  "linux": {
+    "icon": "build/icon.png",
+    "target": [
+      "AppImage",
+      "deb"
+    ],
+    "artifactName": "overlayX.AppImage"
   }
 },
 "publishConfig": {
