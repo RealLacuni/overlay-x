@@ -27,10 +27,6 @@ jobs:
       - name: Build Electron app for Windows
         run: npm run dist:win
 
-      - name: Find .exe File
-        run: dir /s /b dist\overlayX.exe
-
-
   build-macos:
     env:
       GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
