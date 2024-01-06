@@ -68,7 +68,19 @@ jobs:
 
       - name: Build Electron app for Linux
         run: npm run dist:linux
-
+  
+  update-tag:
+    runs-on: ubuntu-latest
+    env:      
+      GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: codfish/semantic-release-action@v3
+        id: semantic
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  
   release:
     permissions:
       contents: write
@@ -95,18 +107,12 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Semantic Release
+      - run: echo ${{ steps.semantic.outputs.release-version }}
+    
+      - run: echo "$OUTPUTS"
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx semantic-release
-        
-      # - name: Create GitHub Release
-      #   uses: elgohr/Github-Release-Action@20231116201936
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-      #     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     title: ${{github.event.release.tag_name}}
+          OUTPUTS: ${{ toJson(steps.semantic.outputs) }}
+
         
       - name: Upload Windows Release Artifact
         id: upload-release-windows
