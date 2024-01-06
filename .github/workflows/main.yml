@@ -28,7 +28,8 @@ jobs:
         run: npm run dist:win
 
       - name: Find .exe File
-        run: find . -name "overlayX.exe"
+        run: dir /s /b dist\overlayX.exe
+
 
   build-macos:
     env:
