@@ -94,7 +94,6 @@
       "tsconfig.json",
       "vite.config.ts"
     ],
-    
     "mac": {
       "icon": "build/icon.png",
       "target": [
