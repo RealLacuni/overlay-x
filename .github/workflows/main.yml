@@ -71,7 +71,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
@@ -87,16 +87,11 @@ jobs:
         run: npx semantic-release
         
       - name: Create GitHub Release
-        id: create_release
-        uses: actions/create-release@v1
+        uses: elgohr/Github-Release-Action@20231116201936
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
         with:
-          tag_name: ${{ github.event.release.tag_name }}
-          release_name: ${{ github.event.release.tag_name }}
-          body: ${{ github.event.release.body }}
-          draft: false
-          prerelease: false
+          title: ${{github.event.release.tag_name}}
 
       - name: Upload Windows Release Artifact
         id: upload-release-windows
