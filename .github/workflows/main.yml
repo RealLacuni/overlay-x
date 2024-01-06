@@ -123,9 +123,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: https://uploads.github.com/repos/RealLacuni/overlay-x/releases/${{ github.event.release.id }}/assets?name=overlayX-${{ github.event.release.tag_name }}.exe
-          asset_path: ./dist/overlayX-${{ steps.semantic.outputs.release-version }}.exe
-          asset_name: overlayX-${{ steps.semantic.outputs.release-version }}.exe
+          upload_url: https://uploads.github.com/repos/RealLacuni/overlay-x/releases/${{ github.event.release.id }}/assets?name=overlay-x-${{ github.event.release.tag_name }}.exe
+          asset_path: ./dist/overlay-x-${{ steps.semantic.outputs.release-version }}.exe
+          asset_name: overlay-x-${{ steps.semantic.outputs.release-version }}.exe
           asset_content_type: application/octet-stream
 
       - name: Upload macOS Release Artifact
@@ -134,9 +134,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: https://uploads.github.com/repos/RealLacuni/overlay-x/releases/${{ github.event.release.id }}/assets?name=overlayX-${{ github.event.release.tag_name }}.dmg
-          asset_path: ./dist/overlayX-${{ steps.semantic.outputs.release-version }}.dmg
-          asset_name: overlayX-${{ steps.semantic.outputs.release-version }}.dmg
+          upload_url: https://uploads.github.com/repos/RealLacuni/overlay-x/releases/${{ github.event.release.id }}/assets?name=overlay-x-${{ github.event.release.tag_name }}.dmg
+          asset_path: ./dist/overlay-x-${{ steps.semantic.outputs.release-version }}.dmg
+          asset_name: overlay-x-${{ steps.semantic.outputs.release-version }}.dmg
           asset_content_type: application/octet-stream
 
       - name: Upload Linux Release Artifact
@@ -146,7 +146,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
         with:
-          upload_url: https://uploads.github.com/repos/RealLacuni/overlay-x/releases/${{ github.event.release.id }}/assets?name=overlayX-${{ github.event.release.tag_name }}.AppImage
-          asset_path: ./dist/overlayX-${{ steps.semantic.outputs.release-version }}.AppImage
-          asset_name: overlayX-${{ steps.semantic.outputs.release-version }}.AppImage
+          upload_url: https://uploads.github.com/repos/RealLacuni/overlay-x/releases/${{ github.event.release.id }}/assets?name=overlay-x-${{ github.event.release.tag_name }}.AppImage
+          asset_path: ./dist/overlay-x-${{ steps.semantic.outputs.release-version }}.AppImage
+          asset_name: overlay-x-${{ steps.semantic.outputs.release-version }}.AppImage
           asset_content_type: application/octet-stream
