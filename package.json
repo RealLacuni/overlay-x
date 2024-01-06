@@ -36,7 +36,6 @@
     "pack:mac": "npm run build && electron-builder --dir --mac",
     "pack:win": "npm run build && electron-builder --dir --win",
     "pack:linux": "npm run build && electron-builder --dir --linux",
-    
     "clean": "rimraf dist main src/out",
     "type-check": "tsc",
     "lint": "eslint . --ext js,jsx,ts,tsx",
@@ -94,8 +93,7 @@
       "tsconfig.json",
       "vite.config.ts"
     ],
-    "mac": 
-    {
+    "mac": {
       "icon": "build/icon.png",
       "artifactName": "overlayX.dmg",
       "target": [
@@ -112,19 +110,20 @@
     },
     "portable": {
       "artifactName": "overlayX.exe"
+    },
+    "linux": {
+      "icon": "build/icon.png",
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "artifactName": "overlayX.AppImage"
+    }
   },
-  "linux": {
-    "icon": "build/icon.png",
-    "target": [
-      "AppImage",
-      "deb"
-    ],
-    "artifactName": "overlayX.AppImage"
+  "publishConfig": {
+    "provider": "github",
+    "owner": "RealLacuni",
+    "repo": "overlay-x",
+    "releaseType": "release"
   }
-},
-"publishConfig": {
-  "provider": "github",
-  "owner": "RealLacuni",
-  "repo": "overlay-x",
-  "releaseType": "release"}
 }
