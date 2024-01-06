@@ -1,4 +1,4 @@
-name: Electron Release
+name: Build and Release
 
 on:
   push:
@@ -6,162 +6,85 @@ on:
       - main
 
 jobs:
-  update-tag:
-    runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-      GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-    steps:
-      - uses: actions/checkout@v3
-  
-      # you'll need to add an `id` in order to access output variables
-      - uses: codfish/semantic-release-action@v3
-        id: semantic
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      
-      - run: echo ${{ steps.semantic.outputs.release-version }}
-      
-      - run: echo "$OUTPUTS"
-        env:
-          OUTPUTS: ${{ toJson(steps.semantic.outputs) }}
-          
-      - name: Commit Package.json
-        run: |
-          git config --local user.email "actions@github.com"
-          git config --local user.name "GitHub Actions"
-          git add package.json
-          git commit -m "chore(release): ${{ steps.semantic.outputs.release-version }}"
-
-        
-  build-windows:
-    env:
-      GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    runs-on: windows-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '16'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build Electron app for Windows
-        run: npm run dist:win
-
   build-macos:
-    env:
-      GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     runs-on: macos-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout Repository
+      uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '16'
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14
 
-      - name: Install dependencies
-        run: npm install
+    - name: Install Dependencies
+      run: npm install
 
-      - name: Build Electron app for macOS
-        run: npm run dist:mac
+    - name: Build and Package Electron App for macOS
+      run: npm run dist:mac
+
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14
+
+    - name: Install Dependencies
+      run: npm install
+
+    - name: Build and Package Electron App for Windows
+      run: npm run dist:win
 
   build-linux:
-    env:
-      GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout Repository
+      uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '16'
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14
 
-      - name: Install dependencies
-        run: npm install
+    - name: Install Dependencies
+      run: npm install
 
-      - name: Build Electron app for Linux
-        run: npm run dist:linux
-  
+    - name: Build and Package Electron App for Linux
+      run: npm run dist:linux
+
   release:
-    permissions:
-      contents: write
     needs:
-      - build-windows
       - build-macos
+      - build-windows
       - build-linux
     runs-on: ubuntu-latest
 
     steps:
-    
-      - name: Debug Build Artifacts
-        run: ls -R
-      - name: Debug Working Directory
-        run: pwd
-        
-      - name: Checkout code
-        uses: actions/checkout@v3
+    - name: Checkout Repository
+      uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '21.5.0'
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14
 
-      - name: Install dependencies
-        run: npm install
+    - name: Install Dependencies
+      run: npm install
 
-      - run: echo ${{ steps.semantic.outputs.release-version }}
-    
-      - run: echo "$OUTPUTS"
-        env:
-          OUTPUTS: ${{ toJson(steps.semantic.outputs) }}
-
-        
-      - name: Upload Windows Release Artifact
-        id: upload-release-windows
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: https://uploads.github.com/repos/RealLacuni/overlay-x/releases/${{ github.event.release.id }}/assets?name=overlayX-${{ github.event.release.tag_name }}.exe
-          asset_path: ./dist/overlayX-${{ steps.semantic.outputs.release-version }}.exe
-          asset_name: overlayX-${{ steps.semantic.outputs.release-version }}.exe
-          asset_content_type: application/octet-stream
-
-      - name: Upload macOS Release Artifact
-        id: upload-release-macos
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: https://uploads.github.com/repos/RealLacuni/overlay-x/releases/${{ github.event.release.id }}/assets?name=overlay-x-${{ github.event.release.tag_name }}.dmg
-          asset_path: ./dist/overlay-x-${{ steps.semantic.outputs.release-version }}.dmg
-          asset_name: overlay-x-${{ steps.semantic.outputs.release-version }}.dmg
-          asset_content_type: application/octet-stream
-
-      - name: Upload Linux Release Artifact
-        id: upload-release-linux
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
-        with:
-          upload_url: https://uploads.github.com/repos/RealLacuni/overlay-x/releases/${{ github.event.release.id }}/assets?name=overlay-x-${{ github.event.release.tag_name }}.AppImage
-          asset_path: ./dist/overlay-x-${{ steps.semantic.outputs.release-version }}.AppImage
-          asset_name: overlay-x-${{ steps.semantic.outputs.release-version }}.AppImage
-          asset_content_type: application/octet-stream
+    - name: Create Release
+      id: create_release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          ./dist/*.dmg
+          ./dist/*.AppImage
+          ./dist/*.exe
+        token: ${{ secrets.GITHUB_TOKEN }}
