@@ -100,9 +100,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: https://uploads.github.com/repos/RealLacuni/overlay-x/releases/${{ github.event.release.id }}/assets?name=overlayX-win.exe
-          asset_path: ./dist/overlayX-win.exe
-          asset_name: overlayX-win.exe
+          upload_url: https://uploads.github.com/repos/RealLacuni/overlay-x/releases/${{ github.event.release.id }}/assets?name=overlayX.exe
+          asset_path: ./dist/overlayX.exe
+          asset_name: overlayX.exe
           asset_content_type: application/octet-stream
 
       - name: Upload macOS Release Artifact
@@ -111,9 +111,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: https://uploads.github.com/repos/RealLacuni/overlay-x/releases/${{ github.event.release.id }}/assets?name=overlayX-mac.dmg
-          asset_path: ./dist/overlayX-mac.dmg
-          asset_name: overlayX-mac.dmg
+          upload_url: https://uploads.github.com/repos/RealLacuni/overlay-x/releases/${{ github.event.release.id }}/assets?name=overlayX.dmg
+          asset_path: ./dist/overlayX.dmg
+          asset_name: overlayX.dmg
           asset_content_type: application/octet-stream
 
       - name: Upload Linux Release Artifact
@@ -122,7 +122,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: https://uploads.github.com/repos/RealLacuni/overlay-x/releases/${{ github.event.release.id }}/assets?name=overlayX-linux.AppImage
-          asset_path: ./dist/overlayX-linux.AppImage
-          asset_name: overlayX-linux.AppImage
+          upload_url: https://uploads.github.com/repos/RealLacuni/overlay-x/releases/${{ github.event.release.id }}/assets?name=overlayX.AppImage
+          asset_path: ./dist/overlayX.AppImage
+          asset_name: overlayX.AppImage
           asset_content_type: application/octet-stream
