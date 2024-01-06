@@ -7,6 +7,9 @@ on:
 
 jobs:
   build-windows:
+    env:
+      GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     runs-on: windows-latest
 
     steps:
@@ -25,6 +28,9 @@ jobs:
         run: npm run dist:win
 
   build-macos:
+    env:
+      GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     runs-on: macos-latest
 
     steps:
@@ -43,6 +49,9 @@ jobs:
         run: npm run dist:mac
 
   build-linux:
+    env:
+      GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     runs-on: ubuntu-latest
 
     steps:
@@ -101,8 +110,7 @@ jobs:
         id: upload-release-windows
         uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: https://uploads.github.com/repos/RealLacuni/overlay-x/releases/${{ github.event.release.id }}/assets?name=overlayX-${{ github.event.release.tag_name }}.exe
           asset_path: ./dist/overlayX.exe
@@ -113,8 +121,7 @@ jobs:
         id: upload-release-macos
         uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: https://uploads.github.com/repos/RealLacuni/overlay-x/releases/${{ github.event.release.id }}/assets?name=overlayX-${{ github.event.release.tag_name }}.dmg
           asset_path: ./dist/overlayX.dmg
@@ -125,8 +132,7 @@ jobs:
         id: upload-release-linux
         uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
         with:
           upload_url: https://uploads.github.com/repos/RealLacuni/overlay-x/releases/${{ github.event.release.id }}/assets?name=overlayX-${{ github.event.release.tag_name }}.AppImage
