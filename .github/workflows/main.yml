@@ -82,7 +82,7 @@ jobs:
       - name: Semantic Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npm run semantic-release
+        run: npx semantic-release
 
       - name: Create GitHub Release
         id: create_release
