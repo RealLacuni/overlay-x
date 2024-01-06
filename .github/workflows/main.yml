@@ -76,6 +76,18 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Get version from package.json
+        run: echo "::set-env name=RELEASE_VERSION::$(node -e "console.log(require('./package.json').version)")"
+
+      - name: Set up Git
+        run: git config --global user.email "actions@github.com" && git config --global user.name "GitHub Actions"
+
+      - name: Create Git tag
+        run: git tag -a v${RELEASE_VERSION} -m "Release version ${RELEASE_VERSION}"
+
+      - name: Push Git tag
+        run: git push origin v${RELEASE_VERSION}
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
