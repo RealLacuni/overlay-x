@@ -80,23 +80,24 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-
+        
       - name: Semantic Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx semantic-release
-
+        
       - name: Create GitHub Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.event.release.tag_name }}
-          release_name: ${{ github.event.release.tag_name }}
-          body: ${{ github.event.release.body }}
+          tag_name: ${{ steps.create_release.outputs.tag_name }}
+          release_name: ${{ steps.create_release.outputs.tag_name }}
+          body: ${{ steps.create_release.outputs.body }}
           draft: false
           prerelease: false
+
 
       - name: Upload Windows Release Artifact
         id: upload-release-windows
