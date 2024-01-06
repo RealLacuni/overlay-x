@@ -6,6 +6,35 @@ on:
       - main
 
 jobs:
+  update-tag:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v3
+  
+      # you'll need to add an `id` in order to access output variables
+      - uses: codfish/semantic-release-action@v3
+        id: semantic
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      
+      - run: echo ${{ steps.semantic.outputs.release-version }}
+      
+      - run: echo "$OUTPUTS"
+        env:
+          OUTPUTS: ${{ toJson(steps.semantic.outputs) }}
+          
+      - name: Commit Package.json
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add package.json
+          git commit -m "chore(release): ${{ steps.semantic.outputs.release-version }}"
+
+        
   build-windows:
     env:
       GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
@@ -79,21 +108,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
     
-      # you'll need to add an `id` in order to access output variables
-      - uses: codfish/semantic-release-action@v3
-        id: semantic
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - run: echo ${{ steps.semantic.outputs.release-version }}
-
-      - run: echo "$OUTPUTS"
-        env:
-          OUTPUTS: ${{ toJson(steps.semantic.outputs) }}
-          
       - name: Debug Build Artifacts
         run: ls -R
       - name: Debug Working Directory
@@ -123,9 +138,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: https://uploads.github.com/repos/RealLacuni/overlay-x/releases/${{ github.event.release.id }}/assets?name=overlay-x-0.0.1.exe
-          asset_path: ./dist/overlay-x-0.0.1.exe
-          asset_name: overlay-x-0.0.1.exe
+          upload_url: https://uploads.github.com/repos/RealLacuni/overlay-x/releases/${{ github.event.release.id }}/assets?name=overlayX-${{ github.event.release.tag_name }}.exe
+          asset_path: ./dist/overlayX-${{ steps.semantic.outputs.release-version }}.exe
+          asset_name: overlayX-${{ steps.semantic.outputs.release-version }}.exe
           asset_content_type: application/octet-stream
 
       - name: Upload macOS Release Artifact
