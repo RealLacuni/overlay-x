@@ -22,7 +22,7 @@ jobs:
         run: npm install
 
       - name: Build Electron app for Windows
-        run: npm run pack:win
+        run: npm run dist:win
 
   build-macos:
     runs-on: macos-latest
@@ -40,7 +40,7 @@ jobs:
         run: npm install
 
       - name: Build Electron app for macOS
-        run: npm run pack:mac
+        run: npm run dist:mac
 
   build-linux:
     runs-on: ubuntu-latest
@@ -58,7 +58,7 @@ jobs:
         run: npm install
 
       - name: Build Electron app for Linux
-        run: npm run pack:linux
+        run: npm run dist:linux
 
   release:
     permissions:
@@ -93,7 +93,10 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           title: ${{github.event.release.tag_name}}
-
+          
+      - name: List Files in dist Directory
+        run: ls -l ./dist
+        
       - name: Upload Windows Release Artifact
         id: upload-release-windows
         uses: actions/upload-release-asset@v1
