@@ -82,6 +82,7 @@
     "tailwindcss": "^3.3.3",
     "typescript": "^5.1.6"
   },
+  
   "build": {
     "appId": "com.lacuni.overlay-x",
     "files": [
