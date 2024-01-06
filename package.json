@@ -125,5 +125,10 @@
     "owner": "RealLacuni",
     "repo": "overlay-x",
     "releaseType": "release"
+  },
+  "release": {
+    "branches": [
+      "main"
+    ]
   }
 }
