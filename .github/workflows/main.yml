@@ -102,9 +102,6 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           title: ${{github.event.release.tag_name}}
-          
-      - name: List Files in dist Directory
-        run: ls -l ./dist
         
       - name: Upload Windows Release Artifact
         id: upload-release-windows
