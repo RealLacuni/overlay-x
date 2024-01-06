@@ -68,6 +68,10 @@ jobs:
 
       - name: Build Electron app for Linux
         run: npm run dist:linux
+      - name: Debug Build Artifacts
+        run: ls -R
+      - name: Debug Working Directory
+        run: pwd
 
   release:
     permissions:
