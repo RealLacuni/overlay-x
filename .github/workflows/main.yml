@@ -99,14 +99,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx semantic-release
-
-      - name: Create GitHub Release
-        uses: elgohr/Github-Release-Action@20231116201936
-        env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          title: ${{github.event.release.tag_name}}
+        
+      # - name: Create GitHub Release
+      #   uses: elgohr/Github-Release-Action@20231116201936
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+      #     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     title: ${{github.event.release.tag_name}}
         
       - name: Upload Windows Release Artifact
         id: upload-release-windows
