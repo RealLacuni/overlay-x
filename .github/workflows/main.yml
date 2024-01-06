@@ -80,12 +80,18 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-
+        
+      - name: List Tags Before Semantic Release
+        run: git tag -l
+        
       - name: Semantic Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx semantic-release
-
+        
+      - name: List Tags After Semantic Release
+        run: git tag -l
+        
       - name: Create GitHub Release
         id: create_release
         uses: actions/create-release@v1
