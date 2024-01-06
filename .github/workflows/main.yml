@@ -1,4 +1,4 @@
-name: Build and Release
+name: Electron Release
 
 on:
   push:
@@ -6,60 +6,56 @@ on:
       - main
 
 jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Electron app for Windows
+        run: npm run pack:win
+
   build-macos:
     runs-on: macos-latest
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: 21.5.0
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
 
-    - name: Install Dependencies
-      run: npm install
+      - name: Install dependencies
+        run: npm install
 
-    - name: Build and Package Electron App for macOS
-      env:
-        GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-      run: npm run dist:mac
-
-  build-windows:
-    runs-on: windows-latest
-    env:
-      GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-    steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
-
-    - name: Setup Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: 21.5.0
-
-    - name: Install Dependencies
-      run: npm install
-
-    - name: Build and Package Electron App for Windows
-      run: npm run dist:win
+      - name: Build Electron app for macOS
+        run: npm run pack:mac
 
   build-linux:
     runs-on: ubuntu-latest
-    env:
-      GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: 21.5.0
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
 
-    - name: Install Dependencies
-      run: npm install
+      - name: Install dependencies
+        run: npm install
 
-    - name: Build and Package Electron App for Linux
-      run: npm run dist:linux
+      - name: Build Electron app for Linux
+        run: npm run pack:linux
