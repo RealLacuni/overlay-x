@@ -123,9 +123,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: https://uploads.github.com/repos/RealLacuni/overlay-x/releases/${{ github.event.release.id }}/assets?name=overlay-x-${{ github.event.release.tag_name }}.exe
-          asset_path: ./dist/overlay-x-${{ steps.semantic.outputs.release-version }}.exe
-          asset_name: overlay-x-${{ steps.semantic.outputs.release-version }}.exe
+          upload_url: https://uploads.github.com/repos/RealLacuni/overlay-x/releases/${{ github.event.release.id }}/assets?name=overlay-x-0.0.1.exe
+          asset_path: ./dist/overlay-x-0.0.1.exe
+          asset_name: overlay-x-0.0.1.exe
           asset_content_type: application/octet-stream
 
       - name: Upload macOS Release Artifact
