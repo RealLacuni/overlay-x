@@ -81,16 +81,10 @@ jobs:
       - name: Install dependencies
         run: npm install
         
-      - name: List Tags Before Semantic Release
-        run: git tag -l
-        
       - name: Semantic Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx semantic-release
-        
-      - name: List Tags After Semantic Release
-        run: git tag -l
         
       - name: Create GitHub Release
         id: create_release
@@ -98,11 +92,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.event.release.tag_name }}
-          release_name: ${{ github.event.release.tag_name }}
-          body: ${{ github.event.release.body }}
+          tag_name: ${{ steps.create_release.outputs.tag_name }}
+          release_name: ${{ steps.create_release.outputs.tag_name }}
+          body: ${{ steps.create_release.outputs.body }}
           draft: false
           prerelease: false
+
 
       - name: Upload Windows Release Artifact
         id: upload-release-windows
