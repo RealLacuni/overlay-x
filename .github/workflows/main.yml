@@ -7,9 +7,6 @@ on:
 
 jobs:
   build-windows:
-    env:
-      GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     runs-on: windows-latest
 
     steps:
@@ -25,12 +22,9 @@ jobs:
         run: npm install
 
       - name: Build Electron app for Windows
-        run: npm run dist:win
+        run: npm run pack:win
 
   build-macos:
-    env:
-      GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     runs-on: macos-latest
 
     steps:
@@ -46,12 +40,9 @@ jobs:
         run: npm install
 
       - name: Build Electron app for macOS
-        run: npm run dist:mac
+        run: npm run pack:mac
 
   build-linux:
-    env:
-      GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     runs-on: ubuntu-latest
 
     steps:
@@ -67,86 +58,26 @@ jobs:
         run: npm install
 
       - name: Build Electron app for Linux
-        run: npm run dist:linux
-  
+        run: npm run pack:linux
+
   release:
-    permissions:
-      contents: write
-    needs:
-      - build-windows
-      - build-macos
-      - build-linux
+    needs: [build-windows, build-macos, build-linux]
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-    
-      # you'll need to add an `id` in order to access output variables
-      - uses: codfish/semantic-release-action@v3
-        id: semantic
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - run: echo ${{ steps.semantic.outputs.release-version }}
-
-      - run: echo "$OUTPUTS"
-        env:
-          OUTPUTS: ${{ toJson(steps.semantic.outputs) }}
-          
-      - name: Debug Build Artifacts
-        run: ls -R
-      - name: Debug Working Directory
-        run: pwd
-        
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '21.5.0'
+          node-version: '16'
 
       - name: Install dependencies
         run: npm install
 
-      - run: echo ${{ steps.semantic.outputs.release-version }}
-    
-      - run: echo "$OUTPUTS"
-        env:
-          OUTPUTS: ${{ toJson(steps.semantic.outputs) }}
-
-        
-      - name: Upload Windows Release Artifact
-        id: upload-release-windows
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
         with:
-          upload_url: https://uploads.github.com/repos/RealLacuni/overlay-x/releases/${{ github.event.release.id }}/assets?name=overlayX-${{ github.event.release.tag_name }}.exe
-          asset_path: ./dist/overlayX-${{ steps.semantic.outputs.release-version }}.exe
-          asset_name: overlayX-${{ steps.semantic.outputs.release-version }}.exe
-          asset_content_type: application/octet-stream
-
-      - name: Upload macOS Release Artifact
-        id: upload-release-macos
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: https://uploads.github.com/repos/RealLacuni/overlay-x/releases/${{ github.event.release.id }}/assets?name=overlayX-${{ github.event.release.tag_name }}.dmg
-          asset_path: ./dist/overlayX-${{ steps.semantic.outputs.release-version }}.dmg
-          asset_name: overlayX-${{ steps.semantic.outputs.release-version }}.dmg
-          asset_content_type: application/octet-stream
-
-      - name: Upload Linux Release Artifact
-        id: upload-release-linux
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
-        with:
-          upload_url: https://uploads.github.com/repos/RealLacuni/overlay-x/releases/${{ github.event.release.id }}/assets?name=overlayX-${{ github.event.release.tag_name }}.AppImage
-          asset_path: ./dist/overlayX-${{ steps.semantic.outputs.release-version }}.AppImage
-          asset_name: overlayX-${{ steps.semantic.outputs.release-version }}.AppImage
-          asset_content_type: application/octet-stream
+          files: dist/**
+          token: ${{ secrets.RELEASE_TOKEN }}
