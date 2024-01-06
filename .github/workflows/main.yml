@@ -61,6 +61,8 @@ jobs:
         run: npm run pack:linux
 
   release:
+    permissions:
+      contents: write
     needs:
       - build-windows
       - build-macos
