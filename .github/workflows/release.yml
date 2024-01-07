@@ -3,7 +3,7 @@ name: Workflow B
 on:
   push:
     tags:
-      - '*'
+      - 'v**'
 
 jobs:
   on-tag-push:
