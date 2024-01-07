@@ -62,6 +62,12 @@ jobs:
         
       - name: Print Current Directory Contents
         run: ls -al
+        
+      - name: Archive build artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: dist-linux
+          path: dist
 
   release:
     needs: [build-linux]
@@ -97,12 +103,20 @@ jobs:
       - name: Print Current Directory Contents
         run: ls -al
 
-
-
+      - name: Download build artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: dist-linux
+          
+      - name: Merge build artifacts
+        run: |
+          cp -R dist-linux/. dist/
+          # cp -R dist-mac/. dist/
+          # cp -R dist-win/. dist/
         
-      # - name: Tag and Release
-      #   uses: ncipollo/release-action@v1
-      #   with:
-      #     artifacts: "dist/*"
-      #     tag: "v${{ steps.version.outputs.version }}"
-      #     commit: "main"
+      - name: Tag and Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "dist/*"
+          tag: "v${{ steps.version.outputs.version }}"
+          commit: "main"
