@@ -95,6 +95,5 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           artifacts: "dist/*"
-          bodyFile: "body.md"
           tag: "v${{ steps.version.outputs.version }}"
           commit: "main"
