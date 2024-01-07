@@ -91,9 +91,12 @@ jobs:
       #   run: git push origin v${{ steps.version.outputs.version }}
       #   env:
       #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Tag and Release
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: "dist/*"
-          tag: "v${{ steps.version.outputs.version }}"
-          commit: "main"
+      - name: Print current directory
+        run: echo "current dir - ${pwd}"
+        
+      # - name: Tag and Release
+      #   uses: ncipollo/release-action@v1
+      #   with:
+      #     artifacts: "dist/*"
+      #     tag: "v${{ steps.version.outputs.version }}"
+      #     commit: "main"
