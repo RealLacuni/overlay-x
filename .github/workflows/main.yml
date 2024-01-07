@@ -78,7 +78,7 @@ jobs:
 
       - name: Tag and release on push
         env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: rymndhng/release-on-push-action@v0.28.0
         with:
           bump_version_scheme: minor
