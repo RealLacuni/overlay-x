@@ -94,6 +94,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GITHUB_TOKEN: ${{ secrets.overlayx-release-token }}
+      GH_TOKEN: ${{ secrets.overlayx-release-token }}
     permissions:
       contents: write
     
