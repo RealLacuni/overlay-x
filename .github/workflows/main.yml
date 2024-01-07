@@ -61,7 +61,7 @@ jobs:
         run: npm run pack:linux
         
       - name: Print Current Directory Contents
-        run: ls -al
+        run: ls -al dist
         
       - name: Archive build artifacts
         uses: actions/upload-artifact@v2
@@ -105,6 +105,8 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: dist-linux
+          path: dist-linux
+          
       - name: Debug dist-linux
         run: ls -al
         
