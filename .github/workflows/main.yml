@@ -53,7 +53,9 @@ jobs:
         with:
           name: dist-mac
           path: dist
-
+          
+      - name: Debug dist-linux
+        run: ls -al
   build-linux:
     runs-on: ubuntu-latest
 
