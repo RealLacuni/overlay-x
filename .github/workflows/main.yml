@@ -22,13 +22,13 @@ jobs:
         run: npm install
 
       - name: Build Electron app for Windows
-        run: npm run dist:win
+        run: npm run pack:win
         
       - name: Archive build artifacts
         uses: actions/upload-artifact@v2
         with:
           name: dist-win
-          path: dist
+          path: dist/win-unpacked/*.exe
         
   build-macos:
     runs-on: macos-latest
@@ -46,13 +46,13 @@ jobs:
         run: npm install
 
       - name: Build Electron app for macOS
-        run: npm run dist:mac
+        run: npm run pack:mac
 
       - name: Archive build artifacts
         uses: actions/upload-artifact@v2
         with:
           name: dist-mac
-          path: dist
+          path: dist/mac
           
   build-linux:
     runs-on: ubuntu-latest
@@ -70,13 +70,13 @@ jobs:
         run: npm install
 
       - name: Build Electron app for Linux
-        run: npm run dist:linux
+        run: npm run pack:linux
         
       - name: Archive build artifacts
         uses: actions/upload-artifact@v2
         with:
           name: dist-linux
-          path: dist
+          path: dist/linux-unpacked
 
   release:
     needs: [build-linux, build-macos, build-windows]
