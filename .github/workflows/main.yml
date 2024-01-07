@@ -87,9 +87,3 @@ jobs:
 
       - name: Push the tag
         run: git push origin v${{ steps.version.outputs.version }}
-
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: dist/**
-          token: ${{ secrets.overlayx-release-token }}
