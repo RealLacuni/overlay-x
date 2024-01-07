@@ -1,4 +1,4 @@
-name: Electron Release
+name: Build and tag
 
 on:
   push:
