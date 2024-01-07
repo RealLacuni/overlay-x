@@ -83,8 +83,7 @@ jobs:
         with:
           name: dist-linux
           path: |
-                dist/linux-unpacked/*.AppImage
-                dist/linux-unpacked/*.deb
+                dist/linux-unpacked/overlay-x
 
   release:
     needs: [build-linux, build-macos, build-windows]
