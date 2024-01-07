@@ -74,9 +74,6 @@ jobs:
       - name: Build Electron app for Linux
         run: npm run pack:linux
         
-      - name: Print Current Directory Contents
-        run: ls -al dist
-        
       - name: Archive build artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -125,24 +122,31 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: dist-mac
-          path: dist-mac      
+          path: dist-mac    
+          
       - name: Download build artifacts
         uses: actions/download-artifact@v2
         with:
           name: dist-win
           path: dist-win   
           
-      - name: Debug dist-linux
+      - name: Debug all
         run: ls -al
         
-      - name: Debug dist-linux
-        run: ls -al dist-linux
+      - name: Debug dist-mac
+        run: ls -al dist-mac
+        
+      - name: debug dist-win
+        run: ls -al dist-win
         
       - name: Merge build artifacts
         run: |
           cp -R dist-linux/. dist/
           cp -R dist-mac/. dist/
           cp -R dist-win/. dist/
+
+      - name: Print Current Directory Contents
+        run: ls -al dist
         
       - name: Tag and Release
         uses: ncipollo/release-action@v1
