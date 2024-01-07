@@ -116,8 +116,8 @@ jobs:
       - name: Merge build artifacts
         run: |
           cp -R dist-linux/. dist/
-          # cp -R dist-mac/. dist/
-          # cp -R dist-win/. dist/
+          cp -R dist-mac/. dist/
+          cp -R dist-win/. dist/
         
       - name: Tag and Release
         uses: ncipollo/release-action@v1
