@@ -77,11 +77,11 @@ jobs:
         run: npm install
 
       - name: Tag and release on push
-        uses: gautamkrishnar/tag-release-on-push-action@v1
+        uses: rymndhng/release-on-push-action@v0.28.0
         with:
           push-token: ${{ secrets.RELEASE_TOKEN }}
           draft: false
           prerelease: false
-          files: dist/**
+          # files: dist/**
 
       
