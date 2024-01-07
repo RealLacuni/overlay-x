@@ -29,7 +29,10 @@ jobs:
         with:
           name: dist-win
           path: dist
-          
+    
+      - name: Debug win-unpacked
+        run: ls -al dist/win-unpacked
+        
   build-macos:
     runs-on: macos-latest
 
@@ -54,8 +57,6 @@ jobs:
           name: dist-mac
           path: dist
           
-      - name: Debug dist-linux
-        run: ls -al
   build-linux:
     runs-on: ubuntu-latest
 
