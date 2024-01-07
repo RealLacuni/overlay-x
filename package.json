@@ -2,9 +2,11 @@
   "name": "overlay-x",
   "version": "0.0.1",
   "license": "GNU GPLv3",
+  "private": true,
   "main": "main/electron/index.js",
   "author": {
-    "name": "Rene Pazitny"
+    "name": "Rene Pazitny",
+    "email": "renepazitnyeng@gmail.com"
   },
   "description": "overlay-x, a highly customizable overlay intended to be used while browsing and reading. Place a border on areas of your screen that may be too bright or distracting, or focus on a specific area of your screen.",
   "keywords": [
@@ -30,13 +32,12 @@
     "build:electron": "tsc -p electron",
     "dist": "npm run build && electron-builder",
     "pack": "npm run build && electron-builder --dir",
-    "dist:mac": "npm run build && electron-builder --mac",
-    "dist:win": "npm run build && electron-builder --win",
-    "dist:linux": "npm run build && electron-builder --linux",
-    "pack:mac": "npm run build && electron-builder --dir --mac",
-    "pack:win": "npm run build && electron-builder --dir --win",
-    "pack:linux": "npm run build && electron-builder --dir --linux",
-    
+    "dist:mac": "npm run build && electron-builder --mac --publish=never",
+    "dist:win": "npm run build && electron-builder --win --publish=never",
+    "dist:linux": "npm run build && electron-builder --linux --publish=never",
+    "pack:mac": "npm run build && electron-builder --dir --mac --publish=never",
+    "pack:win": "npm run build && electron-builder --dir --win --publish=never",
+    "pack:linux": "npm run build && electron-builder --dir --linux --publish=never",
     "clean": "rimraf dist main src/out",
     "type-check": "tsc",
     "lint": "eslint . --ext js,jsx,ts,tsx",
@@ -78,7 +79,6 @@
     "eslint-plugin-react-refresh": "^0.4.3",
     "postcss": "^8.4.28",
     "prettier": "3.0.2",
-    "semantic-release": "^22.0.12",
     "tailwindcss": "^3.3.3",
     "typescript": "^5.1.6"
   },
@@ -94,9 +94,7 @@
       "tsconfig.json",
       "vite.config.ts"
     ],
-    "mac": 
-    {
-      "category": "public.app-category.developer-tools",
+    "mac": {
       "icon": "build/icon.png",
       "target": [
         "dmg",
@@ -110,13 +108,24 @@
         "portable"
       ]
     },
-    "portable": {
-      "artifactName": "overlayX.exe"
+    "linux": {
+      "icon": "build/icon.png",
+      "target": [
+        "AppImage",
+        "deb"
+      ]
+    }
+  },
+  "publishConfig": {
+    "provider": "github",
+    "owner": "RealLacuni",
+    "repo": "overlay-x",
+    "releaseType": "release"
+  },
+  "release": {
+    "branches": [
+      "main"
+    ],
+    "tagFormat": "v${version}"
   }
-},
-"publishConfig": {
-  "provider": "github",
-  "owner": "RealLacuni",
-  "repo": "overlay-x",
-  "releaseType": "release"}
 }

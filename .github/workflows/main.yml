@@ -1,4 +1,4 @@
-name: Electron Release
+name: Build and tag
 
 on:
   push:
@@ -6,8 +6,8 @@ on:
       - main
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  build-windows:
+    runs-on: windows-latest
 
     steps:
       - name: Checkout code
@@ -16,36 +16,24 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: '21.1.0'
 
       - name: Install dependencies
         run: npm install
 
-  package:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Package Electron app for Windows
+      - name: Build Electron app for Windows
         run: npm run dist:win
-
-      - name: Package Electron app for Linux
-        run: npm run dist:linux
-
-  package-mac:
-    needs: build
+        
+      - name: Archive build artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: dist-win
+          path: dist/*.exe
+        
+  build-macos:
     runs-on: macos-latest
+    env:
+      GITHUB_TOKEN: ${{secrets.overlayx-release-token}}
 
     steps:
       - name: Checkout code
@@ -54,20 +42,27 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: '21.1.0'
 
       - name: Install dependencies
         run: npm install
 
-      - name: Package Electron app for macOS
+      - name: Build Electron app for macOS
         run: npm run dist:mac
 
-  release:
-    needs:
-      - package
-      - package-mac
+      - name: Archive build artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: dist-mac
+          path: |
+              dist/*.app
+              dist/*.dmg
+              dist/*.zip
+          
+  build-linux:
     runs-on: ubuntu-latest
-
+    env:
+      GITHUB_TOKEN: ${{secrets.overlayx-release-token}}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -75,57 +70,97 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: '21.1.0'
 
       - name: Install dependencies
         run: npm install
 
-      - name: Create GitHub Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build Electron app for Linux
+        run: npm run dist:linux
+        
+      - name: Debug dist-linux
+        run: ls -al dist/linux-unpacked
+        
+      - name: Archive build artifacts
+        uses: actions/upload-artifact@v2
         with:
-          tag_name: ${{ github.event.release.tag_name }}
-          release_name: ${{ github.event.release.tag_name }}
-          body: ${{ github.event.release.body }}
-          draft: false
-          prerelease: false
+          name: dist-linux
+          path: |
+                dist/*.deb
+                dist/*.AppImage
 
-      - name: Upload Windows Release Artifact
-        id: upload-release-windows
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  release:
+    needs: [build-linux, build-macos, build-windows]
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.overlayx-release-token }}
+      GH_TOKEN: ${{ secrets.overlayx-release-token }}
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dist/overlayX.exe
-          asset_name: overlayX.exe
-          asset_content_type: application/octet-stream
+          node-version: '21.1.0'
 
-      - name: Upload macOS Release Artifact
-        id: upload-release-macos
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install dependencies
+        run: npm install
+        
+      - name: Get version from package.json
+        id: version
+        run: echo "::set-output name=version::$(node -p "require('./package.json').version")"
+
+      # - name: Create a new tag
+      #   run: git tag v${{ steps.version.outputs.version }}
+        
+      # - name: Push Git tag
+      #   run: git push origin v${{ steps.version.outputs.version }}
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v2
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dist/overlayX.dmg
-          asset_name: overlayX.dmg
-          asset_content_type: application/octet-stream
-
-      - name: Upload Linux Release Artifact
-        id: upload-release-linux
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          name: dist-linux
+          path: dist-linux
+          
+      - name: Download build artifacts
+        uses: actions/download-artifact@v2
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dist/overlayX.AppImage
-          asset_name: overlayX.AppImage
-          asset_content_type: application/octet-stream
+          name: dist-mac
+          path: dist-mac    
+          
+      - name: Download build artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: dist-win
+          path: dist-win   
+          
+      - name: Debug all
+        run: ls -al
+        
+      - name: Debug dist-mac
+        run: ls -al dist-mac
+        
+      - name: debug dist-win
+        run: ls -al dist-win
+        
+      - name: Merge build artifacts
+        run: |
+          cp -R dist-linux/. dist/
+          cp -R dist-mac/. dist/
+          cp -R dist-win/. dist/
 
-      - name: Semantic Release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npm run semantic-release
+      - name: Print Current Directory Contents
+        run: ls -al dist
+        
+      - name: Tag and Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "dist/*"
+          tag: "v${{ steps.version.outputs.version }}"
+          commit: "main"
