@@ -91,7 +91,6 @@ jobs:
       #   run: git push origin v${{ steps.version.outputs.version }}
       #   env:
       #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Tag and Release
         uses: ncipollo/release-action@v1
         with:
