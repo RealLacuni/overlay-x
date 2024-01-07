@@ -77,7 +77,9 @@ jobs:
         run: npm install
 
       - name: Tag and release on push
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
         uses: rymndhng/release-on-push-action@v0.28.0
         with:
-          bump_version_scheme: norelease
+          bump_version_scheme: minor
       
