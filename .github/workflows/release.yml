@@ -1,0 +1,28 @@
+name: Workflow B
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  on-tag-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Download artifacts from main Workflow
+        uses: actions/download-artifact@v2
+        with:
+          name: dist
+          path: dist
+
+      - name: Display structure of downloaded files
+        run: ls -R dist
+  
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist/**
+          token: ${{ secrets.overlayx-release-token }}
