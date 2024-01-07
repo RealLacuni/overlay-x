@@ -121,6 +121,17 @@ jobs:
           name: dist-linux
           path: dist-linux
           
+      - name: Download build artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: dist-mac
+          path: dist-mac      
+      - name: Download build artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: dist-win
+          path: dist-win   
+          
       - name: Debug dist-linux
         run: ls -al
         
