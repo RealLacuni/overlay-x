@@ -22,16 +22,18 @@ jobs:
         run: npm install
 
       - name: Build Electron app for Windows
-        run: npm run pack:win
+        run: npm run dist:win
         
       - name: Archive build artifacts
         uses: actions/upload-artifact@v2
         with:
           name: dist-win
-          path: dist/win-unpacked/*.exe
+          path: dist/*.exe
         
   build-macos:
     runs-on: macos-latest
+    env:
+      GITHUB_TOKEN: ${{secrets.overlayx-release-token}}
 
     steps:
       - name: Checkout code
@@ -46,20 +48,21 @@ jobs:
         run: npm install
 
       - name: Build Electron app for macOS
-        run: npm run pack:mac
+        run: npm run dist:mac
 
       - name: Archive build artifacts
         uses: actions/upload-artifact@v2
         with:
           name: dist-mac
           path: |
-              dist/mac/*.app
-              dist/mac/*.dmg
-              dist/mac/*.zip
+              dist/*.app
+              dist/*.dmg
+              dist/*.zip
           
   build-linux:
     runs-on: ubuntu-latest
-
+    env:
+      GITHUB_TOKEN: ${{secrets.overlayx-release-token}}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -73,7 +76,7 @@ jobs:
         run: npm install
 
       - name: Build Electron app for Linux
-        run: npm run pack:linux
+        run: npm run dist:linux
         
       - name: Debug dist-linux
         run: ls -al dist/linux-unpacked
@@ -83,7 +86,8 @@ jobs:
         with:
           name: dist-linux
           path: |
-                dist/linux-unpacked/overlay-x
+                dist/*.deb
+                dist/*.AppImage
 
   release:
     needs: [build-linux, build-macos, build-windows]
