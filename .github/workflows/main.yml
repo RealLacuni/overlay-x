@@ -6,41 +6,41 @@ on:
       - main
 
 jobs:
-  build-windows:
-    runs-on: windows-latest
+  # build-windows:
+  #   runs-on: windows-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '16'
+  #     - name: Set up Node.js
+  #       uses: actions/setup-node@v2
+  #       with:
+  #         node-version: '16'
 
-      - name: Install dependencies
-        run: npm install
+  #     - name: Install dependencies
+  #       run: npm install
 
-      - name: Build Electron app for Windows
-        run: npm run pack:win
+  #     - name: Build Electron app for Windows
+  #       run: npm run pack:win
 
-  build-macos:
-    runs-on: macos-latest
+  # build-macos:
+  #   runs-on: macos-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '16'
+  #     - name: Set up Node.js
+  #       uses: actions/setup-node@v2
+  #       with:
+  #         node-version: '16'
 
-      - name: Install dependencies
-        run: npm install
+  #     - name: Install dependencies
+  #       run: npm install
 
-      - name: Build Electron app for macOS
-        run: npm run pack:mac
+  #     - name: Build Electron app for macOS
+  #       run: npm run pack:mac
 
   build-linux:
     runs-on: ubuntu-latest
@@ -61,7 +61,7 @@ jobs:
         run: npm run pack:linux
 
   release:
-    needs: [build-windows, build-macos, build-linux]
+    needs: [build-linux]
     runs-on: ubuntu-latest
 
     steps:
@@ -76,26 +76,12 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Get version from package.json
-        id: version
-        run: echo "::set-output name=RELEASE_VERSION::$(node -e "console.log(require('./package.json').version)")"
-
-      - name: Set up Git
-        run: |
-          git config --global user.email "actions@github.com" && git config --global user.name "GitHub Actions"
-          git config --global credential.helper store
-          echo "machine github.com login ${{ secrets.RELEASE_TOKEN }}" > ~/.git-credentials
-      
-      - name: Create Git tag
-        run: git tag -a v${{ steps.version.outputs.RELEASE_VERSION }} -m "Release version ${{ steps.version.outputs.RELEASE_VERSION }}"
-      
-      - name: Push Git tag
-        run: git push origin v${{ steps.version.outputs.RELEASE_VERSION }}
-
-      
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
+      - name: Tag and release on push
+        uses: gautamkrishnar/tag-release-on-push-action@v1
         with:
+          push-token: ${{ secrets.RELEASE_TOKEN }}
+          draft: false
+          prerelease: false
           files: dist/**
-          token: ${{ secrets.RELEASE_TOKEN }}
+
       
