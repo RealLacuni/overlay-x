@@ -31,7 +31,7 @@ jobs:
           path: dist
     
       - name: Debug win-unpacked
-        run: ls -al dist/win-unpacked
+        run: Get-ChildItem -Path dist/win-unpacked
         
   build-macos:
     runs-on: macos-latest
