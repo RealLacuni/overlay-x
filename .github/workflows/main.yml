@@ -78,10 +78,4 @@ jobs:
 
       - name: Tag and release on push
         uses: rymndhng/release-on-push-action@v0.28.0
-        with:
-          push-token: ${{ secrets.RELEASE_TOKEN }}
-          draft: false
-          prerelease: false
-          # files: dist/**
-
       
