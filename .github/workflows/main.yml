@@ -1,4 +1,4 @@
-name: Build and tag
+name: Semantic Release
 
 on:
   push:
@@ -8,10 +8,15 @@ on:
 jobs:
   build-windows:
     runs-on: windows-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+        with:
+         token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
@@ -33,11 +38,13 @@ jobs:
   build-macos:
     runs-on: macos-latest
     env:
-      GITHUB_TOKEN: ${{secrets.overlayx-release-token}}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
@@ -62,10 +69,10 @@ jobs:
   build-linux:
     runs-on: ubuntu-latest
     env:
-      GITHUB_TOKEN: ${{secrets.overlayx-release-token}}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
@@ -88,46 +95,33 @@ jobs:
           path: |
                 dist/*.deb
                 dist/*.AppImage
-
   release:
     needs: [build-linux, build-macos, build-windows]
     runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.overlayx-release-token }}
-      GH_TOKEN: ${{ secrets.overlayx-release-token }}
     permissions:
       contents: write
-    
+      pull-requests: write
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
-          node-version: '21.1.0'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Set up Node.js with Yarn
+        uses: actions/setup-node@v4
+        with:
+          node-version: 21.5.0
+          registry-url: 'https://registry.yarnpkg.com/'
 
-      - name: Install dependencies
-        run: npm install
+      - name: Install dependencies with Yarn
+        run: yarn install
         
-      - name: Get version from package.json
-        id: version
-        run: echo "::set-output name=version::$(node -p "require('./package.json').version")"
-
-      # - name: Create a new tag
-      #   run: git tag v${{ steps.version.outputs.version }}
-        
-      # - name: Push Git tag
-      #   run: git push origin v${{ steps.version.outputs.version }}
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Download build artifacts
         uses: actions/download-artifact@v2
         with:
           name: dist-linux
           path: dist-linux
-          
+              
       - name: Download build artifacts
         uses: actions/download-artifact@v2
         with:
@@ -158,9 +152,14 @@ jobs:
       - name: Print Current Directory Contents
         run: ls -al dist
         
-      - name: Tag and Release
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: "dist/*"
-          tag: "v${{ steps.version.outputs.version }}"
-          commit: "main"
+      - name: Run Semantic Release on merge to main
+        uses: cycjimmy/semantic-release-action@v4
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Capture new release version
+        id: capture-release
+        run: echo "::set-output name=new_release_version::$(git describe --tags --abbrev=0)"
+
+      - name: Display captured release version
+        run: echo "new release version - ${{ steps.capture-release.outputs.new_release_version }}"
