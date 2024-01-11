@@ -20,7 +20,7 @@
     "accessibility"
   ],
   "repository": {
-    "url": "https://github.com/RealLacuni/overlay-x"
+    "url": "https://github.com/RealLacuni/overlay-x.git"
   },
   "productName": "overlay-x",
   "scripts": {
@@ -126,6 +126,19 @@
     "branches": [
       "main"
     ],
-    "tagFormat": "v${version}"
+    "tagFormat": "v${version}",
+    "plugins": [
+      "@semantic-release/git",
+      [
+        "@semantic-release/github",
+        {
+          "assets": [
+            {
+              "path": "dist/*"
+            }
+          ]
+        }
+      ]
+    ]
   }
 }
