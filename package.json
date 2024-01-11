@@ -135,8 +135,17 @@
           "assets": [
             {
               "path": "dist/*"
+            },
+            {
+              "path": "CHANGELOG.md"
             }
           ]
+        }
+      ],
+      [
+        "@semantic-release/changelog",
+        {
+          "changelogFile": "CHANGELOG.md"
         }
       ]
     ]
