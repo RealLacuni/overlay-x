@@ -118,7 +118,7 @@ const Settings = () => {
           />
           <ShapePreview shape={shape} />
         </FormProvider>
-      </div>{' '}
+      </div>
     </div>
   );
 };
