@@ -5,7 +5,7 @@ type SidebarProps = {
     }
 const Sidebar = ({children} : SidebarProps) => {
   return (
-    <div className='h-screen w-72 bg-indigo-800'>{children}</div>
+    <div className='h-screen w-2/5 bg-indigo-800'>{children}</div>
   )
 }
 
