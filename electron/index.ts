@@ -79,7 +79,9 @@ function createWindow(): Array<BrowserWindow | null> {
     const port = process.env.PORT || 3000;
 
     const mainUrl = isDev ? `http://localhost:${port}` : url.format({ pathname: path.join(__dirname, '../../src/out/index.html'), hash: '/', protocol: 'file:', slashes: true });
-    const displayUrl = isDev ? mainUrl + '/overlay' : url.format({ pathname: path.join(__dirname, '../../src/out/index.html'), hash: '/overlay', protocol: 'file:', slashes: true });
+    const displayUrl = isDev ? mainUrl + '#/overlay' : url.format({ pathname: path.join(__dirname, '../../src/out/index.html'), hash: '/overlay', protocol: 'file:', slashes: true });
+    
+    console.log(displayUrl);
     
     // and load the index.html of the app.
     isDev && devWindow?.loadURL(displayUrl);
