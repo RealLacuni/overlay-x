@@ -30,7 +30,7 @@ const Settings = () => {
 
   const methods = useForm<Partial<FormSettingInputs>>({
     defaultValues: {
-      shape: preferences.profiles['profile 1'].currentShape,
+      shape: preferences.profiles[currentProfile].currentShape,
       shapeInputs: {
         ...preferences.profiles[currentProfile].shapes[preferences.profiles[currentProfile].currentShape]
       },
@@ -44,7 +44,7 @@ const Settings = () => {
     // Reset the form when the current profile, or shape of current profile changes
     if (!shape) return;
     methods.reset({
-      shape,
+      shape: preferences.profiles[currentProfile].currentShape,
       shapeInputs: {
         ...preferences.profiles[currentProfile].shapes[shape]
       }
@@ -118,7 +118,7 @@ const Settings = () => {
           />
           <ShapePreview shape={shape} />
         </FormProvider>
-      </div>{' '}
+      </div>
     </div>
   );
 };

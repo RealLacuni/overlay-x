@@ -13,8 +13,16 @@ const Home = () => {
   const nav = useNavigate();
 
   return (
-    <div className='flex flex-row'>
-      <Sidebar></Sidebar>
+    <div className='flex flex-row '>
+      <Sidebar>
+        <div className='flex flex-col gap-12 text-indigo-50 items-baseline justify-center p-4'>
+          <h1 className='text-3xl font-light'> About </h1>
+          <p>Click <span>Launch Overlay</span> to minimize the window and display the overlay.</p>
+          <p>To <span>switch profiles</span> or change overlay settings click <span>Settings</span>.</p>
+          <p>To exit the app click close. </p>
+        </div>
+
+      </Sidebar>
       <div className={'w-full flex flex-col h-screen justify-center gap-12 bg-slate-50 items-center text-blue-900'}>
         <div className='flex flex-col gap-12'>
         <PrimaryButton className={'w-32'} onClick={() => sendLoadOverlay(false)}>
@@ -44,7 +52,7 @@ const Home = () => {
       {/* absolute div containing the current version */}
       <div className="absolute bottom-0 left-0 flex flex-row gap-2 p-1 items-end">
         <div
-          className={'hover:cursor-pointer bg-white rounded-full flex flex-row items-center justify-center'}
+          className={'hover:cursor-pointer rounded-full bg-white opacity-80 flex flex-row items-center justify-center'}
           onClick={() => window.Main.OpenLink('https://github.com/RealLacuni/overlay-x')}
         >
           <img src="assets/icons/github-mark.svg" className={'w-6 h-6 p-0.5'} alt="github link" />

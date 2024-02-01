@@ -95,21 +95,21 @@
       "vite.config.ts"
     ],
     "mac": {
-      "icon": "build/icon.png",
+      "icon": "icon-512.png",
       "target": [
         "dmg",
         "zip"
       ]
     },
     "win": {
-      "icon": "build/icon.png",
+      "icon": "icon-512.png",
       "asar": true,
       "target": [
         "portable"
       ]
     },
     "linux": {
-      "icon": "build/icon.png",
+      "icon": "icon-512.png",
       "target": [
         "AppImage",
         "deb"
@@ -135,8 +135,17 @@
           "assets": [
             {
               "path": "dist/*"
+            },
+            {
+              "path": "CHANGELOG.md"
             }
           ]
+        }
+      ],
+      [
+        "@semantic-release/changelog",
+        {
+          "changelogFile": "CHANGELOG.md"
         }
       ]
     ]
