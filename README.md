@@ -74,8 +74,8 @@ It can be used to reduce contrast, and selectively reduce brightness in areas of
 
 * [![React][React.js]][React-url]
 * [![Tailwind][Tailwind.css]][Tailwind-url]
-* [Electron][Electron-url]
-* [Electron Forge][Electron-Forge-url]
+* [![Electron][Electron.js]][Electron-url]
+* [![Electron Forge][Electron-Forge.js]][Electron-Forge-url]
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -203,7 +203,7 @@ Project Link: [https://github.com/RealLacuni/overlay-x](https://github.com/RealL
 [React-url]: https://reactjs.org/
 [Tailwind.css]: https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white
 [Tailwind-url]: https://tailwindcss.com/
-[Electron]: https://img.shields.io/badge/Electron-191717?style=for-the-badge&logo=electron&logoColor=white
+[Electron.js]: https://img.shields.io/badge/Electron-191717?style=for-the-badge&logo=electron&logoColor=white
 [Electron-url]: https://www.electronjs.org/
-[Electron-Forge]: https://img.shields.io/badge/Electron_Forge-6D4A9C?style=for-the-badge&logo=electron&logoColor=white
+[Electron-Forge.js]: https://img.shields.io/badge/Electron_Forge-6D4A9C?style=for-the-badge&logo=electron&logoColor=white
 [Electron-Forge-url]: https://www.electronforge.io/
