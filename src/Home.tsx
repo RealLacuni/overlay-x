@@ -18,11 +18,11 @@ const Home = () => {
   return (
     <div className='flex flex-row '>
       <Sidebar>
-        <div className='flex flex-col gap-12 text-indigo-50 items-baseline justify-center p-4'>
-          <h1 className='text-3xl font-light'> About </h1>
-          <p>Click <span>Launch Overlay</span> to minimize the window and display the overlay.</p>
-          <p>To <span>switch profiles</span> or change overlay settings click <span>Settings</span>.</p>
-          <p>To exit the app click close. </p>
+        <div className='flex flex-col gap-12 text-indigo-100 p-4'>
+          <h1 className='text-3xl font-light'>About</h1>
+          <p>Click <span className='bg-gray-800 rounded px-0.5'>Launch Overlay</span> to minimize the window and display the overlay.</p>
+          <p>To <span>switch profiles</span> or change overlay settings click <span className='bg-gray-800 rounded px-0.5'>Settings</span>.</p>
+          <p>To exit the app click <span className='bg-gray-800 rounded px-0.5'>Close</span>.</p>
         </div>
 
       </Sidebar>

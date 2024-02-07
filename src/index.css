@@ -14,3 +14,8 @@
     -webkit-app-region: no-drag;
   }
 
+  /* For some reason tailwind refuses to add this when scanning the project */
+.border-indigo-600 {
+    --tw-border-opacity: 1;
+    border-color: rgb(79 70 229 / var(--tw-border-opacity));
+}
