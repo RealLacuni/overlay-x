@@ -38,16 +38,31 @@ const Settings = () => {
     }
   });
 
+  const onProfileSwitch = (profile: string) => {
+    setCurrentProfile(profile);
+    methods.reset({
+      shape: preferences.profiles[profile].currentShape,
+      shapeInputs: {
+        ...preferences.profiles[profile].shapes[preferences.profiles[profile].currentShape]
+      },
+      toggleOverlay: preferences.shortcuts.toggleOverlay,
+      openMenu: preferences.shortcuts.openMenu
+    });
+  };
+  const shape = methods.watch('shape');
+  console.log('shape is', shape);
+
   useEffect(() => {
     // Reset the form when the current profile, or shape of current profile changes
-
-    methods.reset({
-      shapeInputs: {
-        ...preferences.profiles[currentProfile].shapes[preferences.profiles[currentProfile].currentShape]
-      }
-    });
-  }, [preferences.profiles, currentProfile, methods]);
-
+    if (shape) {
+      methods.reset({
+        shape: shape,
+        shapeInputs: {
+          ...preferences.profiles[currentProfile].shapes[shape]
+        }
+      });
+    }
+  }, [shape, preferences.profiles, currentProfile, methods]);
 
   const onSubmit: SubmitHandler<Partial<FormSettingInputs>> = async (data) => {
     setSubmitting(true);
@@ -85,7 +100,7 @@ const Settings = () => {
         <div className={'flex flex-col justify-between h-full items-center gap-4 py-4'}>
           <h1 className={'text-xl text-slate-200 pt-2 font-semibold'}>Overlay Settings</h1>
           <div className="flex flex-col gap-8">
-            <ProfileSelection currentProfile={currentProfile} setCurrentProfile={setCurrentProfile} />
+            <ProfileSelection currentProfile={currentProfile} setCurrentProfile={onProfileSwitch} />
           </div>
           <div className="h-12 flex flex-col items-center justify-end text-white  cursor-pointer hover:text-indigo-400">
             <a

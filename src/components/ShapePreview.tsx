@@ -15,9 +15,6 @@ const ShapePreview = () => {
   });
   const fields = inputs[0];
   const shape = inputs[1];
-  console.log('testing if fields is ever undefined');
-  
-  console.log(fields);
   
 
   let shapeInputComponent;
