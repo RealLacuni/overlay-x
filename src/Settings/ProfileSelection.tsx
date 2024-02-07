@@ -2,13 +2,13 @@ import React from 'react';
 
 type ProfileSelectionProps = {
   currentProfile: string;
-  setCurrentProfile: React.Dispatch<React.SetStateAction<string>>;
+  setCurrentProfile: (profile : string) => void;
 };
 
 const profiles = ['default', 'profile 1', 'profile 2', 'profile 3'];
 const ProfileSelection = ({ currentProfile, setCurrentProfile }: ProfileSelectionProps) => {
   return profiles.map((profile) => {
-    
+
     return (
       <div
         className={

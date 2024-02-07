@@ -79,7 +79,9 @@ function createWindow(): Array<BrowserWindow | null> {
     const port = process.env.PORT || 3000;
 
     const mainUrl = isDev ? `http://localhost:${port}` : url.format({ pathname: path.join(__dirname, '../../src/out/index.html'), hash: '/', protocol: 'file:', slashes: true });
-    const displayUrl = isDev ? mainUrl + '/overlay' : url.format({ pathname: path.join(__dirname, '../../src/out/index.html'), hash: '/overlay', protocol: 'file:', slashes: true });
+    const displayUrl = isDev ? mainUrl + '#/overlay' : url.format({ pathname: path.join(__dirname, '../../src/out/index.html'), hash: '/overlay', protocol: 'file:', slashes: true });
+    
+    console.log(displayUrl);
     
     // and load the index.html of the app.
     isDev && devWindow?.loadURL(displayUrl);
@@ -103,11 +105,11 @@ app.on('before-quit', () => {
 app.whenReady().then(() => {
     const [mainWindow, overlayWindow, devWindow] = createWindow();
 
-    tray = new Tray(path.join(__dirname, '../../src/assets/icons/Icon-Electron.png'));
+    tray = new Tray(path.join(__dirname, '../../icon-512.png'));
 
 
     if (process.platform === 'darwin') {
-        tray.setPressedImage(path.join(__dirname, '../../src/assets/icons/Icon-Electron.png'))
+        tray.setPressedImage(path.join(__dirname, '../../icon-512.png'))
     }
 
     const contextMenu = Menu.buildFromTemplate([

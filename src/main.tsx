@@ -42,7 +42,7 @@ const settingsCB = () => {
 window.Main.OpenSettings(settingsCB);
 
 ReactDOM.render(
-  <div className="flex flex-col h-screen">
+  <div className="flex flex-col h-screen font-sans">
     <React.StrictMode>
       <RouterProvider router={router}/>
     </React.StrictMode>

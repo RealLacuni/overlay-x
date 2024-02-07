@@ -1,6 +1,6 @@
 {
   "name": "overlay-x",
-  "version": "0.0.1",
+  "version": "1.0.1",
   "license": "GNU GPLv3",
   "private": true,
   "main": "main/electron/index.js",
@@ -8,7 +8,7 @@
     "name": "Rene Pazitny",
     "email": "renepazitnyeng@gmail.com"
   },
-  "description": "overlay-x, a highly customizable overlay intended to be used while browsing and reading. Place a border on areas of your screen that may be too bright or distracting, or focus on a specific area of your screen.",
+  "description": "overlay-x, a highly customizable overlay intended to be used while browsing and reading.",
   "keywords": [
     "vite",
     "react",
@@ -58,6 +58,7 @@
     "vite": "^4.4.9"
   },
   "devDependencies": {
+    "@playwright/test": "^1.41.2",
     "@types/babel__core": "^7.20.3",
     "@types/node": "^20.5.0",
     "@types/react": "^18.2.20",
@@ -77,6 +78,7 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
+    "playwright": "^1.41.2",
     "postcss": "^8.4.28",
     "prettier": "3.0.2",
     "tailwindcss": "^3.3.3",
@@ -95,21 +97,21 @@
       "vite.config.ts"
     ],
     "mac": {
-      "icon": "build/icon.png",
+      "icon": "icon-512.png",
       "target": [
         "dmg",
         "zip"
       ]
     },
     "win": {
-      "icon": "build/icon.png",
+      "icon": "icon-512.png",
       "asar": true,
       "target": [
         "portable"
       ]
     },
     "linux": {
-      "icon": "build/icon.png",
+      "icon": "icon-512.png",
       "target": [
         "AppImage",
         "deb"
@@ -135,8 +137,17 @@
           "assets": [
             {
               "path": "dist/*"
+            },
+            {
+              "path": "CHANGELOG.md"
             }
           ]
+        }
+      ],
+      [
+        "@semantic-release/changelog",
+        {
+          "changelogFile": "CHANGELOG.md"
         }
       ]
     ]

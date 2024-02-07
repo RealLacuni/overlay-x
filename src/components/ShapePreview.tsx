@@ -5,16 +5,17 @@ import Rectangle from '../Overlay/Rectangle';
 import { useWatch } from 'react-hook-form';
 import { ChevronUpDownIcon } from '@heroicons/react/24/solid';
 
-type ShapePreviewProps = {
-  shape: string;
-};
 
-const ShapePreview = ({ shape }: ShapePreviewProps) => {
+const ShapePreview = () => {
   const [isMinimized, setIsMinimized] = useState(false);
-  const fields = useWatch({
-    name: `shapeInputs`
+
+    const inputs = useWatch({
+    name: [`shapeInputs`,
+    `shape`]
   });
-  if (!fields) return <></>;
+  const fields = inputs[0];
+  const shape = inputs[1];
+  
 
   let shapeInputComponent;
   switch (shape) {
@@ -26,7 +27,11 @@ const ShapePreview = ({ shape }: ShapePreviewProps) => {
         <Rectangle profile={fields as RectangleFields} cursorPosition={{ x: 0, y: 0 }} renderMiniature />
       );
       break;
+    default:
+      <p>Something went wrong. Shape type could not be determined.</p>;
   }
+  
+  
   return (
     <>
       <div className={`fixed bottom-0 right-4 w-36` + `${isMinimized ? ' h-4' : ' h-36'}`}>
