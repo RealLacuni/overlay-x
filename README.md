@@ -3,7 +3,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="icon-512.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Overlay-X</h3>
@@ -74,6 +74,9 @@ It can be used to reduce contrast, and selectively reduce brightness in areas of
 
 * [![React][React.js]][React-url]
 * [![Tailwind][Tailwind.css]][Tailwind-url]
+* [Electron][Electron-url]
+* [Electron Forge][Electron-Forge-url]
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -99,9 +102,17 @@ Uninstalling is as simple as deleting the executable file. If a clean install is
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+The application is designed to be simple and intuitive to use. From the main menu, you can launch the overlay, access the settings menu, or exit the application.
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+The settings menu allows you to customize the overlay. You can select general features such as the shape of the overlay, the color, the transparency, and the size. 
+
+  *Size and offset*: A numerical slider input. Can be adjusted using the arrow keys. The overlay will be centered around the cursor. At maximum size, the value will change to "Fullscreen" this represents the overlay covering the entire screen. 
+  *Invert Overlay*: Inverts the color of the overlay. Useful for reducing contrast. Default (off) has the overlay centered at the cursor with the selected color. When inverted, empty space in the shape of the overlay will isntead be centered at the cursor.
+  *Opacity*: A numerical slider input. Can be adjusted using the arrow keys. The overlay will be centered around the cursor.
+  *Shape*: Select from a list of shapes. Currently, the options are: Circle and Rectangle.
+  *Color*: Select a color for the overlay. The color picker is a standard color picker.
+
+Advanced settings currently include setting hotkeys.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -192,3 +203,5 @@ Project Link: [https://github.com/RealLacuni/overlay-x](https://github.com/RealL
 [React-url]: https://reactjs.org/
 [Tailwind.css]: https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white
 [Tailwind-url]: https://tailwindcss.com/
+[Electron-url]: https://www.electronjs.org/
+[Electron-Forge-url]: https://www.electronforge.io/
