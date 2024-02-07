@@ -55,7 +55,7 @@
 
 Check out some of the possible uses of the tool in the video below:
 
-<video autoplay loop muted src="https://github.com/RealLacuni/overlay-x/assets/71047915/c3a9d40d-341c-48d9-b588-e6b24112a2d6">
+<video autoplay loop muted src="demo.mp4">
 </video>
 
 Overlay-X is a simple desktop application that allows you to overlay a transparent image centered around the cursor. Inspired by tools such as F.lux and [visual snow relief overlay](https://github.com/belvederef/visual-snow-relief-overlay).
