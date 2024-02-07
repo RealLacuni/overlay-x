@@ -58,7 +58,7 @@ Check out some of the possible uses of the tool in the video below:
 <video autoplay loop muted src="demo.mp4">
 </video>
 
-Overlay-X is a simple desktop application that allows you to overlay a transparent image centered around the cursor. Inspired by tools such as F.lux and [visual snow relief overlay](https://github.com/belvederef/visual-snow-relief-overlay).
+Overlay-X is a simple desktop application that allows you to overlay a transparent image centered around the cursor. Inspired by tools such as [F.lux](https://justgetflux.com) and [visual snow relief overlay](https://github.com/belvederef/visual-snow-relief-overlay).
 
 Select from different overlay shapes and control aspects of the overlay such as transparency, size, and color.
 
@@ -66,9 +66,8 @@ This tool is designed with the intent of being useful for people who suffer from
 It can be used to reduce contrast, and selectively reduce brightness in areas of the screen.
 
 *\* This tool is not a replacement for medical advice. If you are experiencing visual disturbances, please consult a medical professional.*
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 
 ### Built With
 
@@ -104,13 +103,22 @@ Uninstalling is as simple as deleting the executable file. If a clean install is
 
 The application is designed to be simple and intuitive to use. From the main menu, you can launch the overlay, access the settings menu, or exit the application.
 
+<img width="962" alt="main-menu" src="https://github.com/RealLacuni/overlay-x/assets/71047915/cb5ac4d4-a17e-4f0c-a70a-f2ebf098e355">
+
 The settings menu allows you to customize the overlay. You can select general features such as the shape of the overlay, the color, the transparency, and the size. 
 
-  *Size and offset*: A numerical slider input. Can be adjusted using the arrow keys. The overlay will be centered around the cursor. At maximum size, the value will change to "Fullscreen" this represents the overlay covering the entire screen. 
-  *Invert Overlay*: Inverts the color of the overlay. Useful for reducing contrast. Default (off) has the overlay centered at the cursor with the selected color. When inverted, empty space in the shape of the overlay will isntead be centered at the cursor.
-  *Opacity*: A numerical slider input. Can be adjusted using the arrow keys. The overlay will be centered around the cursor.
-  *Shape*: Select from a list of shapes. Currently, the options are: Circle and Rectangle.
-  *Color*: Select a color for the overlay. The color picker is a standard color picker.
+<img width="962" alt="settings-menu" src="https://github.com/RealLacuni/overlay-x/assets/71047915/65fc12c8-5f89-45a2-9239-bd20a3053ef6">
+
+  **Size and offset**: A numerical slider input. Can be adjusted using the arrow keys. The overlay will be centered around the cursor. At maximum size, the value will change to "Fullscreen" This represents the overlay covering the entire screen. 
+
+  **Invert Overlay**: Inverts the color of the overlay. Useful for reducing contrast. Default (off) has the overlay centered at the cursor with the selected color.
+   When inverted, adjustable empty space will instead be centered at the cursor in the shape of the overlay.
+
+  **Opacity**: A numerical slider input. Can be adjusted using the arrow keys. The overlay will be centered around the cursor.
+
+  **Shape**: Select from a list of shapes. Currently, the options are Circle and Rectangle.
+
+  **Color**: Select a color for the overlay. The color picker is a standard color picker.
 
 Advanced settings currently include setting hotkeys.
 
