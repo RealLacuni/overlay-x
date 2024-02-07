@@ -8,7 +8,7 @@
     "name": "Rene Pazitny",
     "email": "renepazitnyeng@gmail.com"
   },
-  "description": "overlay-x, a highly customizable overlay intended to be used while browsing and reading. Place a border on areas of your screen that may be too bright or distracting, or focus on a specific area of your screen.",
+  "description": "overlay-x, a highly customizable overlay intended to be used while browsing and reading.",
   "keywords": [
     "vite",
     "react",

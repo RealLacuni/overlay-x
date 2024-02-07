@@ -27,7 +27,6 @@ const Settings = () => {
   const [successfulSave, setSuccessfulSave] = useState(0); //state for displaying successful save alert
   const [submitting, setSubmitting] = useState(false);
   const [currentProfile, setCurrentProfile] = useState(preferences.activeProfile);
-
   const methods = useForm<Partial<FormSettingInputs>>({
     defaultValues: {
       shape: preferences.profiles[currentProfile].currentShape,
@@ -38,23 +37,32 @@ const Settings = () => {
       openMenu: preferences.shortcuts.openMenu
     }
   });
+
+  const onProfileSwitch = (profile: string) => {
+    setCurrentProfile(profile);
+    methods.reset({
+      shape: preferences.profiles[profile].currentShape,
+      shapeInputs: {
+        ...preferences.profiles[profile].shapes[preferences.profiles[profile].currentShape]
+      },
+      toggleOverlay: preferences.shortcuts.toggleOverlay,
+      openMenu: preferences.shortcuts.openMenu
+    });
+  };
   const shape = methods.watch('shape');
+  console.log('shape is', shape);
 
   useEffect(() => {
     // Reset the form when the current profile, or shape of current profile changes
-    if (!shape) return;
-    methods.reset({
-      shape: preferences.profiles[currentProfile].currentShape,
-      shapeInputs: {
-        ...preferences.profiles[currentProfile].shapes[shape]
-      }
-    });
+    if (shape) {
+      methods.reset({
+        shape: shape,
+        shapeInputs: {
+          ...preferences.profiles[currentProfile].shapes[shape]
+        }
+      });
+    }
   }, [shape, preferences.profiles, currentProfile, methods]);
-
-  if (!shape) {
-    window.Main.PrintInBackend(`shape is undefined, pref is ${preferences}`);
-    return <p>Something went wrong! Try to restart the app.</p>;
-  }
 
   const onSubmit: SubmitHandler<Partial<FormSettingInputs>> = async (data) => {
     setSubmitting(true);
@@ -92,9 +100,9 @@ const Settings = () => {
         <div className={'flex flex-col justify-between h-full items-center gap-4 py-4'}>
           <h1 className={'text-xl text-slate-200 pt-2 font-semibold'}>Overlay Settings</h1>
           <div className="flex flex-col gap-8">
-            <ProfileSelection currentProfile={currentProfile} setCurrentProfile={setCurrentProfile} />
+            <ProfileSelection currentProfile={currentProfile} setCurrentProfile={onProfileSwitch} />
           </div>
-          <div className='h-12 flex flex-col items-center justify-end text-white  cursor-pointer hover:text-indigo-400'>
+          <div className="h-12 flex flex-col items-center justify-end text-white  cursor-pointer hover:text-indigo-400">
             <a
               className={'font-bold select-none'}
               onClick={() => {
@@ -103,7 +111,7 @@ const Settings = () => {
             >
               {'Back to main menu'}
             </a>
-            <span className='h-4 w-4'>{'\u2190'}</span>
+            <span className="h-4 w-4">{'\u2190'}</span>
           </div>
         </div>
       </Sidebar>
@@ -116,7 +124,7 @@ const Settings = () => {
             submitting={submitting}
             successfulSave={successfulSave}
           />
-          <ShapePreview shape={shape} />
+          <ShapePreview />
         </FormProvider>
       </div>
     </div>
