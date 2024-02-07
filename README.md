@@ -2,11 +2,13 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="icon-512.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Overlay-X</h3>
+
+
+
 
   <p align="center">
     A simple desktop application that allows you to overlay a transparent image centered around the cursor. Inspired by tools such as F.lux and visual snow relief overlay.
@@ -25,15 +27,13 @@
   <summary>Table of Contents</summary>
   <ol>
     <li>
-      <a href="#about-the-project">About The Project</a>
+      <a href="#about-overlay-x">About The Project</a>
       <ul>
         <li><a href="#built-with">Built With</a></li>
       </ul>
     </li>
     <li>
-      <a href="#getting-started">Getting Started</a>
       <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
@@ -50,9 +50,11 @@
 <!-- ABOUT THE PROJECT -->
 ## About Overlay-X
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+<div align="center">
+  <img src="demo.gif" alt="Demo" />
+</div>
 
-Overlay-X is a simple desktop application that allows you to overlay a transparent image centered around the cursor. Inspired by tools such as F.lux and [visual snow relief overlay](https://github.com/belvederef/visual-snow-relief-overlay).
+Overlay-X is a simple desktop application that allows you to overlay a transparent image centered around the cursor. Inspired by tools such as [F.lux](https://justgetflux.com) and [visual snow relief overlay](https://github.com/belvederef/visual-snow-relief-overlay).
 
 Select from different overlay shapes and control aspects of the overlay such as transparency, size, and color.
 
@@ -60,49 +62,20 @@ This tool is designed with the intent of being useful for people who suffer from
 It can be used to reduce contrast, and selectively reduce brightness in areas of the screen.
 
 *\* This tool is not a replacement for medical advice. If you are experiencing visual disturbances, please consult a medical professional.*
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 
 ### Built With
-
 * [![React][React.js]][React-url]
 * [![Tailwind][Tailwind.css]][Tailwind-url]
+* [![Electron][Electron.js]][Electron-url]
+* [![Electron Forge][Electron-Forge.js]][Electron-Forge-url]
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-### Installation
-
-1. Go to the latest release page [here](https://github.com/RealLacuni/overlay-x/releases/latest).
-2. Download the latest release for your operating system.
-    (Windows: `overlay-x.exe`, Mac: `overlay-x.dmg / overlay-x-mac.zip`, Linux: `overlay-x.AppImage / overlay-x_amd64.deb`)
-3. Extract the file if necessary.
-4. Run the executable file.
-
-Uninstalling is as simple as deleting the executable file. If a clean install is needed, remove the user preferences located in the following locations:
-
-    windows: ~\User\AppData\Roaming\overlay-x
-
-    mac: ~/Library/Application Support/overlay-x
-
-    linux: ~/.config/overlay-x
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-<!-- USAGE EXAMPLES -->
-## Usage
-
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
 <!-- ROADMAP -->
-## Roadmap
+
+### Roadmap
 
 - [ ] Bug Fixes
 - [ ] Dark Mode for UI
@@ -118,10 +91,59 @@ See the [open issues](https://github.com/github_username/repo_name/issues) for a
 
 
 
+## Installation
+
+1. Go to the latest release page [here](https://github.com/RealLacuni/overlay-x/releases/latest).
+2. Download the latest release for your operating system.
+    (Windows: `overlay-x.exe`, Mac: `overlay-x.dmg / overlay-x-mac.zip`, Linux: `overlay-x.AppImage / overlay-x_amd64.deb`)
+3. Extract the file if necessary.
+4. Run the executable file.
+
+Uninstalling is as simple as deleting the executable file. If a full uninstall is needed, additionally remove the user preferences file located in the following locations:
+
+    windows: ~\User\AppData\Roaming\overlay-x
+
+    mac: ~/Library/Application Support/overlay-x
+
+    linux: ~/.config/overlay-x
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+<!-- USAGE EXAMPLES -->
+## Usage
+
+The application is designed to be simple and intuitive to use. From the main menu, you can launch the overlay, access the settings menu, or exit the application.
+<div align="center">
+<img width="600" alt="main-menu" src="https://github.com/RealLacuni/overlay-x/assets/71047915/cb5ac4d4-a17e-4f0c-a70a-f2ebf098e355">
+</div>
+The settings menu allows you to customize the overlay. You can select general features such as the shape of the overlay, the color, the transparency, and the size. 
+<div align="center">
+<img width="600" alt="settings-menu" src="https://github.com/RealLacuni/overlay-x/assets/71047915/65fc12c8-5f89-45a2-9239-bd20a3053ef6">
+</div>
+<br>
+
+  `Size` and `Offset`: A numerical slider input. Can be adjusted using the arrow keys. The overlay will be centered around the cursor. At maximum size, the value will change to "Fullscreen" This represents the overlay covering the entire screen. 
+
+  `Invert Overlay`: Inverts the color of the overlay. Useful for reducing contrast. Default (off) has the overlay centered at the cursor with the selected color.
+   When inverted, adjustable empty space will instead be centered at the cursor in the shape of the overlay.
+
+  `Opacity`: A numerical slider input. Can be adjusted using the arrow keys. The overlay will be centered around the cursor.
+
+  `Shape`: Select from a list of shapes. Currently, the options are Circle and Rectangle.
+
+  `Color`: Select a color for the overlay. The color picker is a standard color picker.
+
+Advanced settings currently include setting hotkeys.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
 <!-- CONTRIBUTING -->
 ## Contributing
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
 If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
 Don't forget to give the project a star! Thanks again!
@@ -186,3 +208,7 @@ Project Link: [https://github.com/RealLacuni/overlay-x](https://github.com/RealL
 [React-url]: https://reactjs.org/
 [Tailwind.css]: https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white
 [Tailwind-url]: https://tailwindcss.com/
+[Electron.js]: https://img.shields.io/badge/Electron-191717?style=for-the-badge&logo=electron&logoColor=white
+[Electron-url]: https://www.electronjs.org/
+[Electron-Forge.js]: https://img.shields.io/badge/Electron_Forge-6D4A9C?style=for-the-badge&logo=electron&logoColor=white
+[Electron-Forge-url]: https://www.electronforge.io/
