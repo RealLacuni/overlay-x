@@ -105,11 +105,11 @@ app.on('before-quit', () => {
 app.whenReady().then(() => {
     const [mainWindow, overlayWindow, devWindow] = createWindow();
 
-    tray = new Tray(path.join(__dirname, '../../src/assets/icons/Icon-Electron.png'));
+    tray = new Tray(path.join(__dirname, '../../icon-512.png'));
 
 
     if (process.platform === 'darwin') {
-        tray.setPressedImage(path.join(__dirname, '../../src/assets/icons/Icon-Electron.png'))
+        tray.setPressedImage(path.join(__dirname, '../../icon-512.png'))
     }
 
     const contextMenu = Menu.buildFromTemplate([
