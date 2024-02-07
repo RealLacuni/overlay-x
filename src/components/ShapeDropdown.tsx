@@ -7,6 +7,7 @@ import { useFormContext, useWatch } from 'react-hook-form';
 const ShapeDropdown = () => {
   const shape = useWatch({ name: 'shape' });
   const { register, setValue } = useFormContext();
+
   
   return (
     <Menu as="div" className={'relative inline-block text-left'}>
@@ -45,7 +46,7 @@ const ShapeDropdown = () => {
           </Menu.Item>
         </Menu.Items>
       </Transition>
-      <input value={shape} type="hidden" name="shape" {...register} />
+      <input value={shape} type="hidden" {...register("shape")} />
     </Menu>
   );
 };

@@ -19,8 +19,9 @@ interface SettingsFormProps {
 }
 
 const SettingsForm = ({ onSubmit, methods, preferences, submitting, successfulSave }: SettingsFormProps) => {
-  const shape = useWatch({ name: 'shape', control: methods.control });
+  const shape = useWatch({ name: 'shape'});
   let settingComponent;
+  
   switch (shape) {
     case 'circle':
       settingComponent = <CircleSettings />;
