@@ -3,6 +3,9 @@ import { PrimaryButton, SecondaryButton, TertiaryButton } from './components/But
 import { useNavigate } from 'react-router-dom';
 import { PreferenceContext } from './util/PreferenceContext';
 import Sidebar from './components/Sidebar';
+import gitHubLogo from './assets/icons/github-mark.svg';
+
+
 
 const sendLoadOverlay = (useDev = false) => {
   window.Main.LoadOverlay(useDev);
@@ -52,10 +55,10 @@ const Home = () => {
       {/* absolute div containing the current version */}
       <div className="absolute bottom-0 left-0 flex flex-row gap-2 p-1 items-end">
         <div
-          className={'hover:cursor-pointer rounded-full bg-white opacity-80 flex flex-row items-center justify-center'}
+          className={'hover:cursor-pointer rounded-full bg-white opacity-80 p-1 flex flex-row items-center justify-center'}
           onClick={() => window.Main.OpenLink('https://github.com/RealLacuni/overlay-x')}
         >
-          <img src="assets/icons/github-mark.svg" className={'w-6 h-6 p-0.5'} alt="github link" />
+          <img src={gitHubLogo} className={'w-5 h-5'} alt="github link" />
         </div>
       </div>
       <div className={'absolute bottom-0 right-0 p-1 text-xs text-gray-500'}>
