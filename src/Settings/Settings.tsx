@@ -33,8 +33,8 @@ const Settings = () => {
       shapeInputs: {
         ...preferences.profiles[currentProfile].shapes[preferences.profiles[currentProfile].currentShape]
       },
-      toggleOverlay: preferences.shortcuts.toggleOverlay,
-      openMenu: preferences.shortcuts.openMenu
+      toggleOverlay: preferences.shortcuts.toggleOverlay ? preferences.shortcuts.toggleOverlay : 'F1',
+      openMenu: preferences.shortcuts.openMenu ? preferences.shortcuts.openMenu : 'F2'
     }
   });
 

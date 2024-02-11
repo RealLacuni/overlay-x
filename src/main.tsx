@@ -7,6 +7,7 @@ import Overlay from './Overlay/Overlay';
 import Settings from './Settings/Settings';
 import { PreferenceProvider } from './util/PreferenceContext';
 
+
 const router = createHashRouter([
     {
       path: '/',

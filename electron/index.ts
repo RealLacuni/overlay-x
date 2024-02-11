@@ -2,16 +2,16 @@
 // Native
 import path from 'path';
 import url from 'url';
-
 // Packages
 import { BrowserWindow, app, screen, Menu, Tray } from 'electron';
 import isDev from 'electron-is-dev';
-// import {updateElectronApp} from 'update-electron-app';
 import { setupIPCListeners } from './ipcHandlers';
-
-// updateElectronApp({updateInterval: '1 hour'});
+import log from 'electron-log/main';
 
 // print current environment
+log.initialize();
+
+console.log = log.log
 if (isDev) {
     console.log('Running in development');
 } else {
@@ -80,14 +80,21 @@ function createWindow(): Array<BrowserWindow | null> {
 
     const mainUrl = isDev ? `http://localhost:${port}` : url.format({ pathname: path.join(__dirname, '../../src/out/index.html'), hash: '/', protocol: 'file:', slashes: true });
     const displayUrl = isDev ? mainUrl + '#/overlay' : url.format({ pathname: path.join(__dirname, '../../src/out/index.html'), hash: '/overlay', protocol: 'file:', slashes: true });
-    
+
     console.log(displayUrl);
-    
+
     // and load the index.html of the app.
     isDev && devWindow?.loadURL(displayUrl);
     window?.loadURL(mainUrl);
     overlayWindow?.loadURL(displayUrl);
 
+    window.on('close', (e: Electron.Event) => {
+        e.preventDefault();
+        overlayWindow?.close();
+        devWindow?.close();
+        window?.destroy();
+        app.quit();
+    });
 
     return [window, overlayWindow, devWindow];
 }
@@ -97,7 +104,7 @@ function createWindow(): Array<BrowserWindow | null> {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 let tray = null as Tray | null;
-app.on('before-quit', () => {
+app.on('will-quit', () => {
     if (tray !== null) {
         tray.destroy();
     }
