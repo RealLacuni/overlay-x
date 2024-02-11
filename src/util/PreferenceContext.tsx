@@ -1,9 +1,15 @@
 import { createContext, useCallback, useEffect } from 'react';
 import React from 'react';
 import { Preferences } from '../../shared/types';
+import log from 'electron-log/renderer';
 
 const getPreferences = () => {
+  // this test call allows the timing between main and renderer to work otherwise GetPreferences returns no reply sent..
+  log.log('test by calling isdevmode')
+  window.Main.IsDevMode();
+  log.log('made it past isdevmode')
   const preferences = window.Main.GetPreferences();
+  log.log('preferences received in overlay', JSON.stringify(preferences));
   return preferences;
 };
 

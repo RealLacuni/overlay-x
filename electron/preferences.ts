@@ -3,10 +3,12 @@ import path from 'path';
 import { app } from 'electron';
 import { Preferences } from '../shared/types';
 import { validatePreferences } from '../shared/validatePreferences';
+import log from 'electron-log/main';
 
 const appPath = app.getPath('userData');
 const preferencesPath = path.join(appPath, 'profiles', 'preferences.json');
 const dirPath = path.dirname(preferencesPath);
+console.log = log.log
 
 function getPreferences(): Preferences {
   if (!fs.existsSync(dirPath)) {
@@ -20,9 +22,17 @@ function getPreferences(): Preferences {
     return defaultPreferences;
   }
 
+  log.info('reading preferences from', preferencesPath);
   const file = fs.readFileSync(preferencesPath, 'utf8');
+  // check that file was able to be opened
+  if (file === undefined) {
+    log.info('preferences file is invalid, creating defaults');
+    createPreferences(defaultPreferences);
+    return defaultPreferences;
+  }
   const pref = JSON.parse(file);
   if (validatePreferences(pref)) {
+    log.info('preferences file is valid, \n', JSON.stringify(pref));
     return pref;
   }
   else {

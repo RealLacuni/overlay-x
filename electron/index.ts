@@ -69,7 +69,8 @@ function createWindow(): Array<BrowserWindow | null> {
             transparent: true,
             fullscreenable: true,
             webPreferences: {
-                preload: path.join(__dirname, 'preload.js')
+                preload: path.join(__dirname, 'preload.js'),
+                devTools: isDev
             }
         });
         devWindow.setAlwaysOnTop(true);
@@ -111,7 +112,11 @@ app.on('will-quit', () => {
 });
 app.whenReady().then(() => {
     const [mainWindow, overlayWindow, devWindow] = createWindow();
-
+    if (mainWindow == null || overlayWindow == null) {
+        console.log('window is null');
+        return;
+    }
+    setupIPCListeners(mainWindow, overlayWindow, devWindow);
     tray = new Tray(path.join(__dirname, '../../icon-512.png'));
 
 
@@ -148,11 +153,8 @@ app.whenReady().then(() => {
         tray?.popUpContextMenu();
     });
 
-    if (mainWindow == null || overlayWindow == null) {
-        console.log('window is null');
-        return;
-    }
-    setupIPCListeners(mainWindow, overlayWindow, devWindow);
+
+
 
 
     app.on('activate', () => {
