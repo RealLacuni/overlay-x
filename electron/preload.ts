@@ -37,8 +37,8 @@ const mainAPI = {
   IsDevWindow: () => {
     return ipcRenderer.sendSync('isDevWindow');
   },
-  LoadOverlay: (useDev: boolean) => {
-    ipcRenderer.send('loadOverlay', useDev);
+  LoadOverlay: () => {
+    ipcRenderer.send('loadOverlay');
   },
   OpenDevTools: (targetWindow = 'main') => {
     ipcRenderer.send('openDevTools', targetWindow);

@@ -3,6 +3,7 @@ import { IpcMainEvent } from 'electron/main';
 import { getPreferences, updatePreferences } from './preferences';
 import { Preferences } from '../shared/types';
 import isDev from 'electron-is-dev';
+import log from 'electron-log/main';
 
 // Export the function that sets up IPC handlers
 export function setupIPCListeners(mainWindow: BrowserWindow, overlayWindow: BrowserWindow, devWindow: BrowserWindow | null) {
@@ -35,14 +36,8 @@ export function setupIPCListeners(mainWindow: BrowserWindow, overlayWindow: Brow
     });
 
     //loads the overlay and hides the main app mainWindow
-    ipcMain.on('loadOverlay', (_event, useDev) => {
-        if (useDev && devWindow != null) {
-            console.log('loading dev overlay');
-            devWindow.show();
-        }
-        else {
-            overlayWindow.show();
-        }
+    ipcMain.on('loadOverlay', () => {
+        overlayWindow.show();
         mainWindow.hide();
     });
 
@@ -123,6 +118,7 @@ export function setupIPCListeners(mainWindow: BrowserWindow, overlayWindow: Brow
     });
 
     ipcMain.on('getPreferences', (event: IpcMainEvent) => {
+        log.info('getting preferences');
         event.returnValue = getPreferences();
     });
 

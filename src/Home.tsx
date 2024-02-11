@@ -7,8 +7,8 @@ import gitHubLogo from './assets/icons/github-mark.svg';
 
 
 
-const sendLoadOverlay = (useDev = false) => {
-  window.Main.LoadOverlay(useDev);
+const sendLoadOverlay = () => {
+  window.Main.LoadOverlay();
 };
 
 const Home = () => {
@@ -28,7 +28,7 @@ const Home = () => {
       </Sidebar>
       <div className={'w-full flex flex-col h-screen justify-center gap-12 bg-slate-50 items-center text-blue-900'}>
         <div className='flex flex-col gap-12'>
-        <PrimaryButton className={'w-32'} onClick={() => sendLoadOverlay(false)}>
+        <PrimaryButton className={'w-32'} onClick={() => sendLoadOverlay()}>
           Launch Overlay
         </PrimaryButton>
         <SecondaryButton
